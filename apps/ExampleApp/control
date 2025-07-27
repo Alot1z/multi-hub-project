@@ -1,0 +1,8 @@
+Package: com.example.trollapp
+Name: TrollStore ExampleApp
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Injects custom behavior into SpringBoard
+Maintainer: You
+Author: You
+Section: Tweaks
