@@ -23,7 +23,7 @@ jobs:
           make clean package
 
       - name: 📦 Upload IPA
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Built-IPA
           path: apps/ExampleApp/packages/*.ipa
