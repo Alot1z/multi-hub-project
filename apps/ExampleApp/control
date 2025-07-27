@@ -1,8 +1,14 @@
-Package: com.example.trollapp
-Name: TrollStore ExampleApp
+Package: com.trollstorefactory.exampleapp
+Name: TrollStore Factory ExampleApp
 Version: 1.0.0
-Architecture: iphoneos-arm
-Description: Injects custom behavior into SpringBoard
-Maintainer: You
-Author: You
-Section: Tweaks
+Architecture: iphoneos-arm64
+Description: Advanced system-level iOS tweak built with TrollStore Factory automation. Provides full system access, background monitoring, app launch detection, and custom UI integration. Demonstrates the power of unsigned app installation through TrollStore with complete iOS privilege escalation.
+Maintainer: TrollStore Factory <factory@trollstore.dev>
+Author: TrollStore Factory Automation
+Section: System
+Priority: optional
+Depends: firmware (>= 13.0)
+Conflicts: com.example.conflictingtweak
+Homepage: https://mose.windsurf.build
+Depiction: https://mose.windsurf.build/depiction/exampleapp
+Icon: https://mose.windsurf.build/icons/exampleapp.png
