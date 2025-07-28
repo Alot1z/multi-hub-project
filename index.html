@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 TrollStore Factory - AI App Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🏭</span>
+                <h1>TrollStore Factory</h1>
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot online"></span>
+                    <span>GitHub Actions: Online</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot online"></span>
+                    <span>Netlify: Deployed</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot online"></span>
+                    <span>TrollStore: Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Prompt Input Section -->
+            <section class="prompt-section">
+                <h2>🤖 Beskriv din iOS app</h2>
+                <p class="subtitle">Skriv hvad din app skal kunne, så genererer AI'en koden og bygger IPA'en automatisk</p>
+                
+                <div class="prompt-container">
+                    <textarea 
+                        id="prompt" 
+                        placeholder="Eksempel: Lav en app der kan læse SMS beskeder, sende notifikationer, og have en rød baggrund med hvid tekst. Den skal kunne køre i baggrunden og logge alle app launches..."
+                        rows="8"
+                    ></textarea>
+                    
+                    <div class="prompt-actions">
+                        <button id="buildBtn" class="build-btn" onclick="startAppWizard()">
+                            <span class="btn-icon">🚀</span>
+                            Start App Wizard
+                        </button>
+                        <button class="example-btn" onclick="loadExample()">
+                            <span class="btn-icon">💡</span>
+                            Load Eksempel
+                        </button>
+                        <button class="clear-btn" onclick="clearPrompt()">
+                            <span class="btn-icon">🗑️</span>
+                            Ryd
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- App Wizard Section -->
+            <section id="appWizard" class="wizard-section hidden">
+                <h3>🧙‍♂️ App Configuration Wizard</h3>
+                <div class="wizard-container">
+                    <div class="wizard-progress">
+                        <div class="progress-step active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Basic Info</span>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Features</span>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Permissions</span>
+                        </div>
+                        <div class="progress-step" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Environment</span>
+                        </div>
+                        <div class="progress-step" data-step="5">
+                            <span class="step-number">5</span>
+                            <span class="step-label">Build</span>
+                        </div>
+                    </div>
+
+                    <div class="wizard-content">
+                        <!-- Step 1: Basic Info -->
+                        <div class="wizard-step active" data-step="1">
+                            <h4>📱 Basic App Information</h4>
+                            <div class="form-group">
+                                <label for="appName">App Name:</label>
+                                <input type="text" id="appName" placeholder="My Custom App">
+                            </div>
+                            <div class="form-group">
+                                <label for="appDescription">Description:</label>
+                                <textarea id="appDescription" rows="3" placeholder="Describe what your app does..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="targetVersion">Target iOS Version:</label>
+                                <select id="targetVersion">
+                                    <option value="15.5">iOS 15.5 (Jailbreak + TrollStore)</option>
+                                    <option value="17.0">iOS 17.0 (Bootstrap + TrollStore)</option>
+                                    <option value="both">Both (Universal)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Features -->
+                        <div class="wizard-step" data-step="2">
+                            <h4>⚡ App Features</h4>
+                            <div class="feature-grid">
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-sms" value="sms">
+                                    <label for="feat-sms">
+                                        <span class="feature-icon">💬</span>
+                                        <span class="feature-name">SMS Access</span>
+                                        <span class="feature-desc">Read and send SMS messages</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-notifications" value="notifications">
+                                    <label for="feat-notifications">
+                                        <span class="feature-icon">🔔</span>
+                                        <span class="feature-name">Notifications</span>
+                                        <span class="feature-desc">Send custom notifications</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-background" value="background">
+                                    <label for="feat-background">
+                                        <span class="feature-icon">🔄</span>
+                                        <span class="feature-name">Background Tasks</span>
+                                        <span class="feature-desc">Run continuously in background</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-location" value="location">
+                                    <label for="feat-location">
+                                        <span class="feature-icon">📍</span>
+                                        <span class="feature-name">Location Services</span>
+                                        <span class="feature-desc">Access GPS and location data</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-camera" value="camera">
+                                    <label for="feat-camera">
+                                        <span class="feature-icon">📷</span>
+                                        <span class="feature-name">Camera Access</span>
+                                        <span class="feature-desc">Take photos and videos</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-files" value="files">
+                                    <label for="feat-files">
+                                        <span class="feature-icon">📁</span>
+                                        <span class="feature-name">File System</span>
+                                        <span class="feature-desc">Full file system access</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-system" value="system">
+                                    <label for="feat-system">
+                                        <span class="feature-icon">⚙️</span>
+                                        <span class="feature-name">System Monitoring</span>
+                                        <span class="feature-desc">Monitor system processes</span>
+                                    </label>
+                                </div>
+                                <div class="feature-option">
+                                    <input type="checkbox" id="feat-network" value="network">
+                                    <label for="feat-network">
+                                        <span class="feature-icon">🌐</span>
+                                        <span class="feature-name">Network Access</span>
+                                        <span class="feature-desc">HTTP requests and API calls</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Permissions -->
+                        <div class="wizard-step" data-step="3">
+                            <h4>🔐 TrollStore Permissions</h4>
+                            <div class="permission-grid">
+                                <div class="permission-category">
+                                    <h5>🏠 Standard TrollStore</h5>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-container" value="com.apple.private.security.no-container">
+                                        <label for="perm-container">No Container Restriction</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-validation" value="com.apple.private.skip-library-validation">
+                                        <label for="perm-validation">Skip Library Validation</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-tcc" value="com.apple.private.tcc.allow">
+                                        <label for="perm-tcc">TCC Bypass</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="permission-category">
+                                    <h5>🔓 Semi-Jailbreak (Sileo/Filza Style)</h5>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-root" value="com.apple.private.security.no-sandbox">
+                                        <label for="perm-root">Root File System Access</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-daemon" value="com.apple.private.security.system-application">
+                                        <label for="perm-daemon">System Application Rights</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-kernel" value="com.apple.private.kernel.get-kext-info">
+                                        <label for="perm-kernel">Kernel Extension Info</label>
+                                    </div>
+                                </div>
+
+                                <div class="permission-category">
+                                    <h5>⚡ Advanced (Bootstrap JB)</h5>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-bootstrap" value="com.apple.private.security.clear-library-validation">
+                                        <label for="perm-bootstrap">Bootstrap Integration</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-substrate" value="com.apple.private.mobilesubstrate">
+                                        <label for="perm-substrate">Substrate/Substitute Access</label>
+                                    </div>
+                                    <div class="permission-option">
+                                        <input type="checkbox" id="perm-procursus" value="com.apple.private.procursus">
+                                        <label for="perm-procursus">Procursus Environment</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Environment -->
+                        <div class="wizard-step" data-step="4">
+                            <h4>🛠️ Build Environment</h4>
+                            <div class="env-options">
+                                <div class="env-section">
+                                    <h5>📱 Target Environment</h5>
+                                    <div class="radio-group">
+                                        <input type="radio" id="env-trollstore" name="environment" value="trollstore" checked>
+                                        <label for="env-trollstore">Pure TrollStore (Recommended)</label>
+                                    </div>
+                                    <div class="radio-group">
+                                        <input type="radio" id="env-jb15" name="environment" value="jailbreak15">
+                                        <label for="env-jb15">iOS 15.5 Jailbreak + TrollStore</label>
+                                    </div>
+                                    <div class="radio-group">
+                                        <input type="radio" id="env-jb17" name="environment" value="jailbreak17">
+                                        <label for="env-jb17">iOS 17.0 Bootstrap + TrollStore</label>
+                                    </div>
+                                </div>
+
+                                <div class="env-section">
+                                    <h5>🎨 UI Configuration</h5>
+                                    <div class="form-group">
+                                        <label for="bgColor">Background Color:</label>
+                                        <input type="color" id="bgColor" value="#000000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="textColor">Text Color:</label>
+                                        <input type="color" id="textColor" value="#FFFFFF">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="uiStyle">UI Style:</label>
+                                        <select id="uiStyle">
+                                            <option value="minimal">Minimal</option>
+                                            <option value="standard">Standard</option>
+                                            <option value="advanced">Advanced</option>
+                                            <option value="none">No UI (Background Only)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Build -->
+                        <div class="wizard-step" data-step="5">
+                            <h4>🚀 Ready to Build</h4>
+                            <div class="build-summary">
+                                <div class="summary-section">
+                                    <h5>📋 Build Summary</h5>
+                                    <div id="buildSummary"></div>
+                                </div>
+                                <div class="build-actions">
+                                    <button class="build-final-btn" onclick="buildCustomApp()">
+                                        <span class="btn-icon">🔨</span>
+                                        Build My App
+                                    </button>
+                                    <button class="save-config-btn" onclick="saveConfiguration()">
+                                        <span class="btn-icon">💾</span>
+                                        Save Configuration
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-navigation">
+                        <button class="nav-btn prev-btn" onclick="previousStep()" disabled>
+                            <span>← Previous</span>
+                        </button>
+                        <button class="nav-btn next-btn" onclick="nextStep()">
+                            <span>Next →</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Build Status Section -->
+            <section class="status-section">
+                <h3>📊 Build Status</h3>
+                <div id="buildStatus" class="build-status">
+                    <div class="status-message">
+                        <span class="status-icon">⏳</span>
+                        <span>Klar til at bygge din første app...</span>
+                    </div>
+                </div>
+                
+                <div id="buildLog" class="build-log hidden">
+                    <h4>🔍 Build Log</h4>
+                    <pre id="logContent"></pre>
+                </div>
+            </section>
+
+            <!-- Generated Apps Section -->
+            <section class="apps-section">
+                <h3>📱 Dine Apps</h3>
+                <div id="appsList" class="apps-grid">
+                    <div class="app-card placeholder">
+                        <div class="app-icon">📦</div>
+                        <div class="app-info">
+                            <h4>Ingen apps endnu</h4>
+                            <p>Brug App Wizard ovenfor for at generere din første app</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>🔨 Bygger din app...</h3>
+            <p id="loadingMessage">Genererer kode fra din konfiguration...</p>
+            <div class="loading-steps">
+                <div class="loading-step" id="step1">
+                    <span class="step-icon">⏳</span>
+                    <span>Analyserer konfiguration</span>
+                </div>
+                <div class="loading-step" id="step2">
+                    <span class="step-icon">⏳</span>
+                    <span>Genererer Objective-C kode</span>
+                </div>
+                <div class="loading-step" id="step3">
+                    <span class="step-icon">⏳</span>
+                    <span>Starter GitHub Actions build</span>
+                </div>
+                <div class="loading-step" id="step4">
+                    <span class="step-icon">⏳</span>
+                    <span>Kompilerer IPA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
