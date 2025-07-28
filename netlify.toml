@@ -1,7 +1,6 @@
 [build]
-  base = "prompt-interface"
-  publish = "prompt-interface"
-  command = "echo 'Static site - no build needed'"
+  publish = "."
+  command = "echo 'Static site deployed successfully'"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -18,6 +17,11 @@
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 [functions]
