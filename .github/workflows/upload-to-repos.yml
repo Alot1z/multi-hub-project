@@ -93,4 +93,4 @@ jobs:
               echo "ℹ️ No changes for $folder_name"
             else
               echo "💾 Committing..."
-              git commit -m "🚀 Auto upload from 
+              git commit -m "🚀 Auto upload from
