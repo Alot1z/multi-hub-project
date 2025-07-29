@@ -23,29 +23,24 @@ jobs:
         env:
           UPLOAD_PATH: ${{ secrets.UPLOAD_PATH }}
         run: |
-          # Find all upload-path.txt files
           find . -name "upload-path.txt" -type f | while read config_file; do
             folder=$(dirname "$config_file")
             folder_name=$(basename "$folder")
             
             echo "📁 Processing: $folder_name"
             
-            # Skip if not in target list
             if [[ "${{ github.event.inputs.folders }}" != "all" ]] && [[ "${{ github.event.inputs.folders }}" != *"$folder_name"* ]]; then
               echo "⏭️ Skipping $folder_name"
               continue
             fi
             
-            # Read URL from txt file
             url=$(cat "$config_file" | tr -d '\n\r')
             
             if [[ "$url" == *"USERNAME"* ]] || [[ "$url" == *"REPO-NAME"* ]]; then
               echo "⚠️ Skipping $folder_name - URL template not replaced"
-              echo "💡 Replace USERNAME/REPO-NAME with your actual GitHub info"
               continue
             fi
             
-            # Extract owner/repo
             if [[ "$url" =~ github\.com/([^/]+)/([^/]+) ]]; then
               owner="${BASH_REMATCH[1]}"
               repo="${BASH_REMATCH[2]}"
@@ -55,7 +50,6 @@ jobs:
               continue
             fi
             
-            # Clone target repo
             temp_dir="/tmp/${repo}_$$"
             echo "📥 Cloning $owner/$repo..."
             
@@ -66,35 +60,26 @@ jobs:
             
             cd "$temp_dir"
             
-            # Configure git
             git config user.name "Upload Bot"
             git config user.email "bot@github.com"
             
-            # Clear all files except .git
             echo "🧹 Clearing existing files..."
             find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} + 2>/dev/null || true
             
-            # Copy ALL content from source folder
             echo "📤 Copying all files from $folder..."
             cp -r "${GITHUB_WORKSPACE}/${folder}"/* . 2>/dev/null || true
             cp -r "${GITHUB_WORKSPACE}/${folder}"/.[^.]* . 2>/dev/null || true
             
-            # Show what we're uploading
             echo "📊 Files to upload:"
             ls -la
             
-            # Add and commit
             git add .
             
             if git diff --staged --quiet; then
               echo "ℹ️ No changes for $folder_name"
             else
               echo "💾 Committing..."
-              git commit -m "🚀 Auto upload from multi-hub-project
-
-📁 Source folder: $folder_name
-🤖 Uploaded by: Ultra Simple Upload System
-⏰ Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+              git commit -m "Auto upload from multi-hub-project - Source: $folder_name - Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
               
               echo "🚀 Pushing to $url..."
               if git push origin main; then
@@ -104,7 +89,6 @@ jobs:
               fi
             fi
             
-            # Cleanup
             cd "${GITHUB_WORKSPACE}"
             rm -rf "$temp_dir"
             
