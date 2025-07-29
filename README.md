@@ -33,7 +33,7 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 ## 🛠️ Upload System
 
 ### **Ultra Simple Upload:**
-- Hver mappe har `upload-path.txt` med target repo URL
+- Hver mappe har `upload-path.txt` med target repo URL (inklusiv alo1z-github-io/)
 - GitHub Actions workflow uploader automatisk til alle repos
 - Ét klik = alle repos opdateret
 
@@ -44,6 +44,14 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 4. Skriv `all`
 5. Klik **"Run workflow"**
 
+### **Inkluderede Upload Mapper:**
+- `alo1z-github-io/` → `https://github.com/Alot1z/alo1z.github.io` (Public launcher)
+- `hub-ui/` → `https://github.com/Alot1z/hub-ui` (Main platform)
+- `ipa-builder/` → `https://github.com/Alot1z/ipa-builder` (iOS builder)
+- `printer-builder/` → `https://github.com/Alot1z/printer-builder` (3D builder)
+- `game-builder/` → `https://github.com/Alot1z/game-builder` (Game builder)
+- `ai-models/` → `https://github.com/Alot1z/ai-models` (AI management)
+
 ## 📁 Mappestruktur
 
 ```
@@ -52,6 +60,7 @@ multi-hub-project/
 ├── alo1z-github-io/                # Public repo filer
 │   ├── index.html                  # Launcher med sikkerhed
 │   ├── platform.txt                # Kun base URL + private repo
+│   ├── upload-path.txt             # Upload target URL
 │   └── README.md                   # Public info
 ├── hub-ui/                         # Main platform router
 ├── ipa-builder/                    # iOS app builder
