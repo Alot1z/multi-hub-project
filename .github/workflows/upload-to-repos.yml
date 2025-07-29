@@ -104,7 +104,6 @@ jobs:
               fi
             fi
             
-            # Cleanup
             cd "${GITHUB_WORKSPACE}"
             rm -rf "$temp_dir"
             
