@@ -1,9 +1,6 @@
 [build]
-  publish = "dist"
-  command = "npm run build"
-
-[build.environment]
-  NODE_VERSION = "18"
+  publish = "."
+  command = "echo 'Static HTML deployment'"
 
 [[headers]]
   for = "/*"
@@ -12,11 +9,3 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
-[functions]
-  directory = "netlify/functions"

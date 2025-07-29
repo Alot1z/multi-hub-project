@@ -1,25 +1,11 @@
 [build]
-  publish = "dist"
-  command = "npm run build"
-
-[build.environment]
-  NODE_VERSION = "18"
+  publish = "."
+  command = "echo 'Static HTML deployment'"
 
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "ALLOWALL"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
-    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; frame-src 'self' https://*.netlify.app https://*.github.io;"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[functions]
-  directory = "netlify/functions"
