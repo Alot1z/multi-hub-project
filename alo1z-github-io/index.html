@@ -3,57 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Hub Platform</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #111827;
-            color: white;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            text-align: center;
-            max-width: 600px;
-        }
-        .logo {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        .title {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: #9ca3af;
-        }
-        .redirect-btn {
-            background: #3b82f6;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-        .redirect-btn:hover {
-            background: #2563eb;
-        }
-        .loading {
-            margin-top: 2rem;
-            color: #6b7280;
-        }
-    </style>
+    <meta name="description" content="Multi-Hub Platform - AI-driven DevOps for iOS, 3D Printing, Games & More">
+    <meta name="keywords" content="iOS apps, 3D printing, game development, AI models, TrollStore">
+    <meta name="author" content="Multi-Hub Platform">
+    
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <title>Multi-Hub Platform - Secure Launch</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/styles.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./js/security.js" as="script">
+    <link rel="preload" href="./platform.txt" as="fetch" crossorigin>
 </head>
 <body>
     <div class="container">
@@ -61,103 +31,54 @@
         <h1 class="title">Multi-Hub Platform</h1>
         <p class="subtitle">AI-driven DevOps for iOS, 3D Printing & More</p>
         
-        <a href="#" id="mainPlatform" class="redirect-btn">
+        <button id="mainPlatform" class="redirect-btn">
             🚀 Launch Platform
-        </a>
+        </button>
         
-        <div class="loading" id="loading" style="display: none;">
-            Loading secure platform configuration...
+        <div id="loading" class="loading">
+            Initializing secure connection...
+        </div>
+        
+        <div id="error"></div>
+        
+        <div class="security-info">
+            Secure multi-layer authentication system active
         </div>
     </div>
 
+    <!-- Security system -->
+    <script src="./js/security.js"></script>
+    
+    <!-- Main application logic -->
     <script>
-        async function loadSecurePlatform() {
-            const loading = document.getElementById('loading');
+        document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('mainPlatform');
             
-            try {
-                loading.style.display = 'block';
-                
-                // Step 1: Read public platform.txt
-                const publicResponse = await fetch('./platform.txt');
-                const publicData = await publicResponse.text();
-                const lines = publicData.trim().split('\n').filter(line => line.trim());
-                
-                // First line is base URL
-                const baseUrl = lines[0]?.trim();
-                console.log('Base URL from platform.txt:', baseUrl);
-                console.log('Current URL:', window.location.href);
-                
-                // Security check - check if current domain matches base URL
-                const currentDomain = window.location.hostname.toLowerCase();
-                const baseDomain = baseUrl ? new URL(baseUrl).hostname.toLowerCase() : '';
-                
-                console.log('Current domain:', currentDomain);
-                console.log('Base domain:', baseDomain);
-                
-                if (!currentDomain.includes('alot1z.github.io') && !currentDomain.includes('localhost')) {
-                    throw new Error('Unauthorized access - invalid base URL');
+            // Manual launch
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.PlatformSecurity.loadSecurePlatform();
+            });
+            
+            // Auto-launch after 3 seconds
+            setTimeout(function() {
+                console.log('🚀 Auto-launching platform...');
+                window.PlatformSecurity.loadSecurePlatform();
+            }, 3000);
+            
+            // Prevent right-click context menu (basic protection)
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            
+            // Prevent F12 key (basic protection)
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                    console.log('🔒 Developer tools access detected');
+                    // Don't prevent - just log for awareness
                 }
-                
-                // Step 2: Get private repo URL
-                const privateRepoUrl = lines[1]?.trim();
-                console.log('Private repo URL:', privateRepoUrl);
-                
-                if (!privateRepoUrl) {
-                    throw new Error('Private repo URL not found');
-                }
-                
-                // Step 3: Access private repo platform.txt
-                const privateUrl = privateRepoUrl.replace('github.com', 'raw.githubusercontent.com') + '/main/platform.txt';
-                console.log('Fetching private config from:', privateUrl);
-                
-                const privateResponse = await fetch(privateUrl);
-                if (!privateResponse.ok) {
-                    throw new Error(`Cannot access private platform config: ${privateResponse.status}`);
-                }
-                
-                const privateData = await privateResponse.text();
-                const privateLines = privateData.trim().split('\n').filter(line => line.trim());
-                console.log('Private config lines:', privateLines);
-                
-                // Step 4: Verify base URL match
-                const privateBaseUrl = privateLines[0]?.trim();
-                console.log('Private base URL:', privateBaseUrl);
-                
-                if (baseUrl && privateBaseUrl && baseUrl !== privateBaseUrl) {
-                    console.warn('Base URL mismatch, but proceeding...');
-                }
-                
-                // Step 5: Get hub URL and redirect
-                const hubUrl = privateLines[2]?.trim();
-                console.log('Hub URL:', hubUrl);
-                
-                if (hubUrl) {
-                    console.log('Redirecting to:', hubUrl);
-                    window.location.href = hubUrl;
-                } else {
-                    throw new Error('Hub URL not found in private config');
-                }
-                
-            } catch (error) {
-                console.error('Failed to load secure platform:', error);
-                loading.innerHTML = `Error: ${error.message}`;
-                btn.style.display = 'none';
-                
-                // Show debug info
-                setTimeout(() => {
-                    loading.innerHTML += '<br><br>Debug info in console (F12)';
-                }, 2000);
-            }
-        }
-        
-        document.getElementById('mainPlatform').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadSecurePlatform();
+            });
         });
-        
-        // Auto-redirect after 3 seconds
-        setTimeout(loadSecurePlatform, 3000);
     </script>
 </body>
 </html>
