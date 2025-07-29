@@ -1,130 +1,109 @@
-name: 🚀 Smart Repository Upload System
+name: 🚀 Ultra Simple Upload System
 
 on:
   workflow_dispatch:
     inputs:
-      target_folders:
-        description: 'Comma separated folders to upload (or "all")'
+      folders:
+        description: 'Folders to upload (or "all")'
         required: true
         default: 'all'
         type: string
 
 jobs:
-  smart-upload:
+  upload:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout source
+      - name: 📥 Checkout
         uses: actions/checkout@v4
         
-      - name: 🔧 Setup tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
+      - name: 🔧 Setup
+        run: sudo apt-get install -y jq
         
-      - name: 🚀 Find and upload all folders with upload-path.json
+      - name: 🚀 Upload folders with upload-path.json
         env:
-          UPLOAD_PATH_TOKEN: ${{ secrets.upload_path }}
+          UPLOAD_PATH: ${{ secrets.UPLOAD_PATH }}
         run: |
-          echo "🔍 Scanning for upload-path.json files..."
-          
           # Find all upload-path.json files
           find . -name "upload-path.json" -type f | while read config_file; do
-            folder_path=$(dirname "$config_file")
-            folder_name=$(basename "$folder_path")
+            folder=$(dirname "$config_file")
+            folder_name=$(basename "$folder")
             
-            echo "📋 Processing folder: $folder_name"
-            echo "📁 Path: $folder_path"
+            echo "📁 Processing: $folder_name"
             
-            # Skip if not in target list (unless "all")
-            if [[ "${{ github.event.inputs.target_folders }}" != "all" ]] && [[ "${{ github.event.inputs.target_folders }}" != *"$folder_name"* ]]; then
-              echo "⏭️ Skipping $folder_name (not in target list)"
+            # Skip if not in target list
+            if [[ "${{ github.event.inputs.folders }}" != "all" ]] && [[ "${{ github.event.inputs.folders }}" != *"$folder_name"* ]]; then
+              echo "⏭️ Skipping $folder_name"
               continue
             fi
             
-            # Read config
-            target_repo=$(jq -r '.target_repo' "$config_file")
-            repo_name=$(jq -r '.repo_name' "$config_file")
-            description=$(jq -r '.description' "$config_file")
+            # Read URL
+            url=$(jq -r '.url' "$config_file")
             
-            echo "🎯 Target repo: $target_repo"
-            echo "📝 Description: $description"
-            
-            # Skip placeholder URLs
-            if [[ "$target_repo" == "PLACEHOLDER_REPO_URL" ]]; then
-              echo "⚠️ Skipping $repo_name - placeholder URL not replaced"
-              echo "💡 Replace PLACEHOLDER_REPO_URL with your actual GitHub repo URL"
+            if [[ "$url" == "PLACEHOLDER" ]]; then
+              echo "⚠️ Skipping $folder_name - URL not set"
+              echo "💡 Change 'PLACEHOLDER' to your GitHub repo URL"
               continue
             fi
             
-            # Extract owner/repo from GitHub URL
-            if [[ "$target_repo" =~ github\.com/([^/]+)/([^/\.]+) ]]; then
+            # Extract owner/repo
+            if [[ "$url" =~ github\.com/([^/]+)/([^/]+) ]]; then
               owner="${BASH_REMATCH[1]}"
               repo="${BASH_REMATCH[2]}"
-              echo "👤 Owner: $owner"
-              echo "📦 Repo: $repo"
+              echo "🎯 Target: $owner/$repo"
             else
-              echo "❌ Invalid GitHub URL format: $target_repo"
+              echo "❌ Invalid URL: $url"
               continue
             fi
             
-            # Create temporary directory for cloning
-            temp_dir="/tmp/upload_${repo_name}_$$"
-            mkdir -p "$temp_dir"
+            # Clone target repo
+            temp_dir="/tmp/${repo}_$$"
+            echo "📥 Cloning $owner/$repo..."
             
-            echo "📥 Cloning target repository..."
-            if ! git clone "https://x-access-token:${UPLOAD_PATH_TOKEN}@github.com/${owner}/${repo}.git" "$temp_dir"; then
-              echo "❌ Failed to clone $target_repo"
-              echo "🔑 Check if your upload_path token has access to this repo"
+            if ! git clone "https://x-access-token:${UPLOAD_PATH}@github.com/${owner}/${repo}.git" "$temp_dir"; then
+              echo "❌ Failed to clone. Check your UPLOAD_PATH token!"
               continue
             fi
             
             cd "$temp_dir"
             
             # Configure git
-            git config user.name "Auto Upload Bot"
-            git config user.email "auto-upload@github.com"
+            git config user.name "Upload Bot"
+            git config user.email "bot@github.com"
             
+            # Clear all files except .git
             echo "🧹 Clearing existing files..."
-            # Remove all files except .git directory
             find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} + 2>/dev/null || true
             
-            echo "📤 Copying new files from $folder_path..."
-            # Copy all files from source folder
-            cp -r "${GITHUB_WORKSPACE}/${folder_path}"/* . 2>/dev/null || true
-            cp -r "${GITHUB_WORKSPACE}/${folder_path}"/.[^.]* . 2>/dev/null || true
+            # Copy ALL content from source folder
+            echo "📤 Copying all files from $folder..."
+            cp -r "${GITHUB_WORKSPACE}/${folder}"/* . 2>/dev/null || true
+            cp -r "${GITHUB_WORKSPACE}/${folder}"/.[^.]* . 2>/dev/null || true
             
-            # Remove the upload-path.json from target (we don't need it there)
+            # Remove upload-path.json from target
             rm -f upload-path.json
             
-            # Remove excluded files
-            echo "🗑️ Removing excluded files..."
-            rm -rf node_modules dist .DS_Store 2>/dev/null || true
-            
-            echo "📊 Files to be uploaded:"
+            # Show what we're uploading
+            echo "📊 Files to upload:"
             ls -la
             
-            # Add all changes
+            # Add and commit
             git add .
             
-            # Check if there are changes
             if git diff --staged --quiet; then
-              echo "ℹ️ No changes detected for $repo_name"
+              echo "ℹ️ No changes for $folder_name"
             else
-              echo "💾 Committing changes..."
-              commit_message="🚀 Auto upload from multi-hub-project
+              echo "💾 Committing..."
+              git commit -m "🚀 Auto upload from $folder_name
 
-📁 Source folder: $folder_name
-📝 Description: $description
-🤖 Uploaded by: Smart Repository Upload System
+📁 Source: $folder_name
+🤖 Bot: Ultra Simple Upload System
 ⏰ Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
               
-              git commit -m "$commit_message"
-              
-              echo "🚀 Pushing to $target_repo..."
+              echo "🚀 Pushing to $owner/$repo..."
               if git push origin main; then
-                echo "✅ Successfully uploaded $folder_name to $target_repo"
+                echo "✅ SUCCESS: $folder_name → $owner/$repo"
               else
-                echo "❌ Failed to push to $target_repo"
+                echo "❌ FAILED to push to $owner/$repo"
               fi
             fi
             
@@ -132,7 +111,7 @@ jobs:
             cd "${GITHUB_WORKSPACE}"
             rm -rf "$temp_dir"
             
-            echo "🎉 Completed processing $folder_name"
+            echo "🎉 Completed $folder_name"
             echo "----------------------------------------"
           done
           
