@@ -16,11 +16,11 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - **Alot1z.github.io** - https://github.com/Alot1z/Alot1z.github.io
 
 ### 🚀 **NETLIFY DEPLOYMENTS:**
-- **Hub-UI** - https://hub-uii.netlify.app (Main Platform)
-- **IPA Builder** - https://ipa-builder.netlify.app (iOS Apps)
-- **Printer Builder** - https://printer-builder.netlify.app (3D Models)
-- **Game Builder** - https://game-build.netlify.app (Games)
-- **AI Models** - https://ai-modelss.netlify.app (AI Management)
+- **Hub-UI** - https://alot1z-hub-ui.netlify.app (Main Platform)
+- **IPA Builder** - https://alot1z-ipa-builder.netlify.app (iOS Apps)
+- **Printer Builder** - https://alot1z-printer-builder.netlify.app (3D Models)
+- **Game Builder** - https://alot1z-game-builder.netlify.app (Games)
+- **AI Models** - https://alot1z-ai-models.netlify.app (AI Management)
 
 ## 🔒 Sikkerhedssystem
 

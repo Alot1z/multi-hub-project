@@ -88,30 +88,30 @@ function parseSecurePlatformTxt(publicData: string, privateData: string): Platfo
   return {
     version: "2.0.0",
     base_url: publicBaseUrl,
-    fallback_url: privateLines[2]?.trim() || "https://hub-uii.netlify.app",
+    fallback_url: privateLines[2]?.trim() || "https://alot1z-hub-ui.netlify.app",
     subprojects: {
       "hub-ui": {
-        url: privateLines[2]?.trim() || "https://hub-uii.netlify.app",
+        url: privateLines[2]?.trim() || "https://alot1z-hub-ui.netlify.app",
         local_path: "/hub-ui",
         description: "Main platform interface and router"
       },
       "ipa-builder": {
-        url: privateLines[3]?.trim() || "https://ipa-builder.netlify.app",
+        url: privateLines[3]?.trim() || "https://alot1z-ipa-builder.netlify.app",
         local_path: "/ipa-builder", 
         description: "iOS IPA builder with TrollStore support"
       },
       "printer-builder": {
-        url: privateLines[4]?.trim() || "https://printer-builder.netlify.app",
+        url: privateLines[4]?.trim() || "https://alot1z-printer-builder.netlify.app",
         local_path: "/printer-builder",
         description: "3D printer model generator"
       },
       "game-builder": {
-        url: privateLines[5]?.trim() || "https://game-build.netlify.app",
+        url: privateLines[5]?.trim() || "https://alot1z-game-builder.netlify.app",
         local_path: "/game-builder",
         description: "Game development platform"
       },
       "ai-models": {
-        url: privateLines[6]?.trim() || "https://ai-modelss.netlify.app",
+        url: privateLines[6]?.trim() || "https://alot1z-ai-models.netlify.app",
         local_path: "/ai-models",
         description: "AI model management and inference"
       }
@@ -136,25 +136,25 @@ function createFallbackConfig(): PlatformConfig {
   return {
     version: "1.0.0",
     base_url: "https://Alot1z.github.io",
-    fallback_url: "https://hub-uii.netlify.app",
+    fallback_url: "https://alot1z-hub-ui.netlify.app",
     subprojects: {
       "ipa-builder": {
-        url: "https://ipa-builder.netlify.app",
+        url: "https://alot1z-ipa-builder.netlify.app",
         local_path: "/ipa-builder",
         description: "iOS App Builder with TrollStore support"
       },
       "printer-builder": {
-        url: "https://printer-builder.netlify.app",
+        url: "https://alot1z-printer-builder.netlify.app",
         local_path: "/printer-builder",
         description: "3D printer model generator"
       },
       "game-builder": {
-        url: "https://game-build.netlify.app",
+        url: "https://alot1z-game-builder.netlify.app",
         local_path: "/game-builder",
         description: "Game development platform"
       },
       "ai-models": {
-        url: "https://ai-modelss.netlify.app",
+        url: "https://alot1z-ai-models.netlify.app",
         local_path: "/ai-models",
         description: "AI model management and inference"
       }
