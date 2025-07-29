@@ -78,18 +78,19 @@
             try {
                 loading.style.display = 'block';
                 
-                // Load platform config
-                const response = await fetch('/.platform.json');
-                const config = await response.json();
+                // Load platform config from txt
+                const response = await fetch('/platform.txt');
+                const textData = await response.text();
+                const lines = textData.trim().split('\n').filter(line => line.trim());
                 
                 // Redirect to main hub
-                const hubUrl = config.subprojects['hub-ui']?.url || config.base_url;
+                const hubUrl = lines[1] || lines[0];
                 window.location.href = hubUrl;
                 
             } catch (error) {
                 console.error('Failed to load platform:', error);
                 // Fallback redirect
-                window.location.href = 'https://mose.windsurf.build';
+                window.location.href = 'https://hub-uii.netlify.app';
             }
         }
         
