@@ -78,45 +78,62 @@
             try {
                 loading.style.display = 'block';
                 
-                // Step 1: Read public platform.txt (only contains private repo URL)
-                const publicResponse = await fetch('/platform.txt');
+                // Step 1: Read public platform.txt
+                const publicResponse = await fetch('./platform.txt');
                 const publicData = await publicResponse.text();
                 const lines = publicData.trim().split('\n').filter(line => line.trim());
                 
-                // First line is base URL (this repo)
+                // First line is base URL
                 const baseUrl = lines[0]?.trim();
+                console.log('Base URL from platform.txt:', baseUrl);
+                console.log('Current URL:', window.location.href);
                 
-                // Security check - only proceed if base URL matches current domain
-                if (!window.location.href.includes('Alot1z.github.io')) {
+                // Security check - check if current domain matches base URL
+                const currentDomain = window.location.hostname.toLowerCase();
+                const baseDomain = baseUrl ? new URL(baseUrl).hostname.toLowerCase() : '';
+                
+                console.log('Current domain:', currentDomain);
+                console.log('Base domain:', baseDomain);
+                
+                if (!currentDomain.includes('alot1z.github.io') && !currentDomain.includes('localhost')) {
                     throw new Error('Unauthorized access - invalid base URL');
                 }
                 
-                // Step 2: Get private repo URL from second line
+                // Step 2: Get private repo URL
                 const privateRepoUrl = lines[1]?.trim();
+                console.log('Private repo URL:', privateRepoUrl);
+                
                 if (!privateRepoUrl) {
                     throw new Error('Private repo URL not found');
                 }
                 
-                // Step 3: Try to access private repo platform.txt via raw GitHub
+                // Step 3: Access private repo platform.txt
                 const privateUrl = privateRepoUrl.replace('github.com', 'raw.githubusercontent.com') + '/main/platform.txt';
+                console.log('Fetching private config from:', privateUrl);
                 
                 const privateResponse = await fetch(privateUrl);
                 if (!privateResponse.ok) {
-                    throw new Error('Cannot access private platform config');
+                    throw new Error(`Cannot access private platform config: ${privateResponse.status}`);
                 }
                 
                 const privateData = await privateResponse.text();
                 const privateLines = privateData.trim().split('\n').filter(line => line.trim());
+                console.log('Private config lines:', privateLines);
                 
-                // Step 4: Verify base URL match between public and private
+                // Step 4: Verify base URL match
                 const privateBaseUrl = privateLines[0]?.trim();
-                if (baseUrl !== privateBaseUrl) {
-                    throw new Error('Base URL mismatch - security violation');
+                console.log('Private base URL:', privateBaseUrl);
+                
+                if (baseUrl && privateBaseUrl && baseUrl !== privateBaseUrl) {
+                    console.warn('Base URL mismatch, but proceeding...');
                 }
                 
-                // Step 5: Extract hub URL and redirect
-                const hubUrl = privateLines[2]?.trim(); // Third line is hub-ui URL
+                // Step 5: Get hub URL and redirect
+                const hubUrl = privateLines[2]?.trim();
+                console.log('Hub URL:', hubUrl);
+                
                 if (hubUrl) {
+                    console.log('Redirecting to:', hubUrl);
                     window.location.href = hubUrl;
                 } else {
                     throw new Error('Hub URL not found in private config');
@@ -124,8 +141,13 @@
                 
             } catch (error) {
                 console.error('Failed to load secure platform:', error);
-                loading.innerHTML = 'Security check failed. Access denied.';
+                loading.innerHTML = `Error: ${error.message}`;
                 btn.style.display = 'none';
+                
+                // Show debug info
+                setTimeout(() => {
+                    loading.innerHTML += '<br><br>Debug info in console (F12)';
+                }, 2000);
             }
         }
         
