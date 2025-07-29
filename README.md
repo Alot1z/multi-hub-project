@@ -13,7 +13,7 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - **ai-models** - https://github.com/Alot1z/ai-models
 
 ### 🌐 **PUBLIC REPO (Launcher):**
-- **Alot1z.github.io** - https://github.com/Alot1z/Alot1z.github.io
+- **Alot1z.github.io** - https://github.com/Alot1z/Alot1z.github.io (GitHub Pages - IKKE Netlify)
 
 ### 🚀 **NETLIFY DEPLOYMENTS:**
 - **Hub-UI** - https://alot1z-hub-ui.netlify.app (Main Platform)
@@ -21,6 +21,11 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - **Printer Builder** - https://alot1z-printer-builder.netlify.app (3D Models)
 - **Game Builder** - https://alot1z-game-builder.netlify.app (Games)
 - **AI Models** - https://alot1z-ai-models.netlify.app (AI Management)
+
+### 🎯 **HOSTING OVERSIGT:**
+- **Public launcher:** GitHub Pages (gratis)
+- **Private apps:** Netlify (gratis tier)
+- **Total:** 1 GitHub Pages + 5 Netlify sites
 
 ## 🔒 Sikkerhedssystem
 
