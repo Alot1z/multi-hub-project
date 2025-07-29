@@ -13,7 +13,7 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - **ai-models** - https://github.com/Alot1z/ai-models
 
 ### 🌐 **PUBLIC REPO (Launcher):**
-- **alo1z.github.io** - https://github.com/Alot1z/alo1z.github.io
+- **Alot1z.github.io** - https://github.com/Alot1z/Alot1z.github.io
 
 ### 🚀 **NETLIFY DEPLOYMENTS:**
 - **Hub-UI** - https://hub-uii.netlify.app (Main Platform)
@@ -25,10 +25,10 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 ## 🔒 Sikkerhedssystem
 
 ### **2-Lags Sikkerhed:**
-1. **Public repo** (`alo1z.github.io`) indeholder kun launcher
+1. **Public repo** (`Alot1z.github.io`) indeholder kun launcher
 2. **Private repo** (`multi-hub-project`) indeholder alle rigtige URLs
 3. **Dobbelt base URL check** forhindrer uautoriseret adgang
-4. **Kun alo1z.github.io** kan aktivere systemet
+4. **Kun Alot1z.github.io** kan aktivere systemet
 
 ## 🛠️ Upload System
 
@@ -45,7 +45,7 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 5. Klik **"Run workflow"**
 
 ### **Inkluderede Upload Mapper:**
-- `alo1z-github-io/` → `https://github.com/Alot1z/alo1z.github.io` (Public launcher)
+- `alo1z-github-io/` → `https://github.com/Alot1z/Alot1z.github.io` (Public launcher)
 - `hub-ui/` → `https://github.com/Alot1z/hub-ui` (Main platform)
 - `ipa-builder/` → `https://github.com/Alot1z/ipa-builder` (iOS builder)
 - `printer-builder/` → `https://github.com/Alot1z/printer-builder` (3D builder)
@@ -57,7 +57,7 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 ```
 multi-hub-project/
 ├── platform.txt                    # Alle Netlify URLs (sikker)
-├── alo1z-github-io/                # Public repo filer
+├── alo1z-github-io/                # Public repo filer (Alot1z.github.io)
 │   ├── index.html                  # Launcher med sikkerhed
 │   ├── platform.txt                # Kun base URL + private repo
 │   ├── upload-path.txt             # Upload target URL

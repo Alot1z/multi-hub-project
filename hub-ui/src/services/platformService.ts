@@ -1,8 +1,8 @@
 import { PlatformConfig } from '../types/platform'
 
 const SECURE_CONFIG_URLS = [
-  'https://alo1z.github.io/platform.txt',
-  'https://raw.githubusercontent.com/Alot1z/alo1z.github.io/main/platform.txt'
+  'https://Alot1z.github.io/platform.txt',
+  'https://raw.githubusercontent.com/Alot1z/Alot1z.github.io/main/platform.txt'
 ]
 
 export const loadPlatformConfig = async (): Promise<PlatformConfig> => {
@@ -26,7 +26,7 @@ export const loadPlatformConfig = async (): Promise<PlatformConfig> => {
       
       // Step 2: Security check - verify base URL
       const baseUrl = publicLines[0]?.trim()
-      if (!baseUrl || !baseUrl.includes('alo1z.github.io')) {
+      if (!baseUrl || !baseUrl.includes('Alot1z.github.io')) {
         throw new Error('Invalid base URL in public config')
       }
       
@@ -80,7 +80,7 @@ function parseSecurePlatformTxt(publicData: string, privateData: string): Platfo
     throw new Error('Base URL mismatch - security violation')
   }
   
-  if (!publicBaseUrl?.includes('alo1z.github.io')) {
+  if (!publicBaseUrl?.includes('Alot1z.github.io')) {
     throw new Error('Unauthorized access')
   }
   
@@ -135,7 +135,7 @@ function parseSecurePlatformTxt(publicData: string, privateData: string): Platfo
 function createFallbackConfig(): PlatformConfig {
   return {
     version: "1.0.0",
-    base_url: "https://alo1z.github.io", 
+    base_url: "https://Alot1z.github.io",
     fallback_url: "https://hub-uii.netlify.app",
     subprojects: {
       "ipa-builder": {
