@@ -79,9 +79,6 @@ jobs:
             cp -r "${GITHUB_WORKSPACE}/${folder}"/* . 2>/dev/null || true
             cp -r "${GITHUB_WORKSPACE}/${folder}"/.[^.]* . 2>/dev/null || true
             
-            # Remove upload-path.txt from target
-            rm -f upload-path.txt
-            
             # Show what we're uploading
             echo "📊 Files to upload:"
             ls -la
