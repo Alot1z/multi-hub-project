@@ -4,33 +4,33 @@
   "fallback_url": "https://alo1z.github.io",
   "subprojects": {
     "hub-ui": {
-      "url": "https://hub-main.netlify.app",
+      "url": "PLACEHOLDER_HUB_URL",
       "local_path": "/hub-ui",
       "description": "Main platform interface and router"
     },
     "ipa-builder": {
-      "url": "https://ipa-factory.netlify.app",
+      "url": "PLACEHOLDER_IPA_URL",
       "local_path": "/ipa-builder",
       "description": "iOS IPA builder with TrollStore support",
       "models": ["mistral-7b", "codellama"],
       "tools": ["theos", "ldid", "dpkg"]
     },
     "printer-builder": {
-      "url": "https://3d-forge.netlify.app", 
+      "url": "PLACEHOLDER_3D_URL",
       "local_path": "/printer-builder",
       "description": "3D printer model generator",
       "models": ["phi-2", "tinyllama"],
       "tools": ["openscad", "blender"]
     },
     "game-builder": {
-      "url": "https://game-studio.netlify.app",
+      "url": "PLACEHOLDER_GAME_URL",
       "local_path": "/game-builder", 
       "description": "Game development platform",
       "models": ["mistral-7b", "codellama"],
       "tools": ["theos", "unity-cli"]
     },
     "ai-models": {
-      "url": "https://ai-engine.netlify.app",
+      "url": "PLACEHOLDER_AI_URL",
       "local_path": "/ai-models",
       "description": "AI model router and prompt engine",
       "models": ["all"],
