@@ -66,41 +66,76 @@
         </a>
         
         <div class="loading" id="loading" style="display: none;">
-            Loading platform configuration...
+            Loading secure platform configuration...
         </div>
     </div>
 
     <script>
-        async function loadPlatform() {
+        async function loadSecurePlatform() {
             const loading = document.getElementById('loading');
             const btn = document.getElementById('mainPlatform');
             
             try {
                 loading.style.display = 'block';
                 
-                // Load platform config from txt
-                const response = await fetch('/platform.txt');
-                const textData = await response.text();
-                const lines = textData.trim().split('\n').filter(line => line.trim());
+                // Step 1: Read public platform.txt (only contains private repo URL)
+                const publicResponse = await fetch('/platform.txt');
+                const publicData = await publicResponse.text();
+                const lines = publicData.trim().split('\n').filter(line => line.trim());
                 
-                // Redirect to main hub
-                const hubUrl = lines[1] || lines[0];
-                window.location.href = hubUrl;
+                // First line is base URL (this repo)
+                const baseUrl = lines[0]?.trim();
+                
+                // Security check - only proceed if base URL matches current domain
+                if (!window.location.href.includes('alo1z.github.io')) {
+                    throw new Error('Unauthorized access - invalid base URL');
+                }
+                
+                // Step 2: Get private repo URL from second line
+                const privateRepoUrl = lines[1]?.trim();
+                if (!privateRepoUrl) {
+                    throw new Error('Private repo URL not found');
+                }
+                
+                // Step 3: Try to access private repo platform.txt via raw GitHub
+                const privateUrl = privateRepoUrl.replace('github.com', 'raw.githubusercontent.com') + '/main/platform.txt';
+                
+                const privateResponse = await fetch(privateUrl);
+                if (!privateResponse.ok) {
+                    throw new Error('Cannot access private platform config');
+                }
+                
+                const privateData = await privateResponse.text();
+                const privateLines = privateData.trim().split('\n').filter(line => line.trim());
+                
+                // Step 4: Verify base URL match between public and private
+                const privateBaseUrl = privateLines[0]?.trim();
+                if (baseUrl !== privateBaseUrl) {
+                    throw new Error('Base URL mismatch - security violation');
+                }
+                
+                // Step 5: Extract hub URL and redirect
+                const hubUrl = privateLines[2]?.trim(); // Third line is hub-ui URL
+                if (hubUrl) {
+                    window.location.href = hubUrl;
+                } else {
+                    throw new Error('Hub URL not found in private config');
+                }
                 
             } catch (error) {
-                console.error('Failed to load platform:', error);
-                // Fallback redirect
-                window.location.href = 'https://hub-uii.netlify.app';
+                console.error('Failed to load secure platform:', error);
+                loading.innerHTML = 'Security check failed. Access denied.';
+                btn.style.display = 'none';
             }
         }
         
         document.getElementById('mainPlatform').addEventListener('click', (e) => {
             e.preventDefault();
-            loadPlatform();
+            loadSecurePlatform();
         });
         
         // Auto-redirect after 3 seconds
-        setTimeout(loadPlatform, 3000);
+        setTimeout(loadSecurePlatform, 3000);
     </script>
 </body>
 </html>
