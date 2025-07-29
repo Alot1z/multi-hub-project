@@ -37,12 +37,24 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - GitHub Actions workflow uploader automatisk til alle repos
 - Ét klik = alle repos opdateret
 
+### **Auto Netlify Deployment:**
+- GitHub Actions deployer automatisk til Netlify
+- Kræver Netlify auth token og site IDs som secrets
+- Se `NETLIFY_DEPLOYMENT_GUIDE.md` for setup
+
 ### **Kør Upload:**
 1. Gå til **Actions** tab
 2. Vælg **"🚀 Ultra Simple Upload System"**
 3. Klik **"Run workflow"**
 4. Skriv `all`
 5. Klik **"Run workflow"**
+
+### **Kør Netlify Deploy:**
+1. Setup Netlify secrets (se guide)
+2. Gå til **Actions** tab
+3. Vælg **"🚀 Auto Deploy All Projects to Netlify"**
+4. Klik **"Run workflow"**
+5. Skriv `all`
 
 ### **Inkluderede Upload Mapper:**
 - `alo1z-github-io/` → `https://github.com/Alot1z/Alot1z.github.io` (Public launcher)
@@ -51,6 +63,13 @@ Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 
 - `printer-builder/` → `https://github.com/Alot1z/printer-builder` (3D builder)
 - `game-builder/` → `https://github.com/Alot1z/game-builder` (Game builder)
 - `ai-models/` → `https://github.com/Alot1z/ai-models` (AI management)
+
+## 🔑 Token Setup
+
+Se `NETLIFY_TOKEN_SETUP.md` for detaljeret guide til:
+- Oprettelse af Netlify auth token
+- Tilføjelse af GitHub secrets
+- Site ID setup for alle projekter
 
 ## 📁 Mappestruktur
 
