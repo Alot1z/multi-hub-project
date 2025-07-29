@@ -1,0 +1,106 @@
+{
+  "version": "2.0.0",
+  "base_url": "https://mose.windsurf.build",
+  "fallback_url": "https://alo1z.github.io",
+  "subprojects": {
+    "hub-ui": {
+      "url": "PLACEHOLDER_HUB_URL",
+      "local_path": "/hub-ui",
+      "description": "Main platform interface and router"
+    },
+    "ipa-builder": {
+      "url": "PLACEHOLDER_IPA_URL",
+      "local_path": "/ipa-builder",
+      "description": "iOS IPA builder with TrollStore support",
+      "models": ["mistral-7b", "codellama"],
+      "tools": ["theos", "ldid", "dpkg"]
+    },
+    "printer-builder": {
+      "url": "PLACEHOLDER_3D_URL",
+      "local_path": "/printer-builder",
+      "description": "3D printer model generator",
+      "models": ["phi-2", "tinyllama"],
+      "tools": ["openscad", "blender"]
+    },
+    "game-builder": {
+      "url": "PLACEHOLDER_GAME_URL",
+      "local_path": "/game-builder", 
+      "description": "Game development platform",
+      "models": ["mistral-7b", "codellama"],
+      "tools": ["theos", "unity-cli"]
+    },
+    "ai-models": {
+      "url": "PLACEHOLDER_AI_URL",
+      "local_path": "/ai-models",
+      "description": "AI model router and prompt engine",
+      "models": ["all"],
+      "api_endpoints": ["/generate", "/prompt", "/status"]
+    },
+    "prompt-store": {
+      "url": "https://prompt-hub.netlify.app",
+      "local_path": "/prompt-store",
+      "description": "Prompt templates and configuration",
+      "static_files": true
+    }
+  },
+  "models": {
+    "mistral-7b": {
+      "file": "models/ai/mistral-7b.gguf",
+      "size": "4.1GB",
+      "type": "instruction",
+      "use_cases": ["general", "reasoning", "planning"]
+    },
+    "tinyllama": {
+      "file": "models/ai/tinyllama.gguf", 
+      "size": "637MB",
+      "type": "chat",
+      "use_cases": ["quick", "simple", "fallback"]
+    },
+    "phi-2": {
+      "file": "models/ai/phi-2.gguf",
+      "size": "1.6GB", 
+      "type": "reasoning",
+      "use_cases": ["math", "logic", "analysis"]
+    },
+    "codellama": {
+      "file": "models/ai/codellama.gguf",
+      "size": "3.8GB",
+      "type": "code",
+      "use_cases": ["programming", "debugging", "generation"]
+    }
+  },
+  "tools": {
+    "theos": {
+      "path": "tools/ios/theos",
+      "version": "latest",
+      "platforms": ["ios", "macos"]
+    },
+    "ldid": {
+      "path": "tools/ios/ldid",
+      "version": "2.1.5",
+      "platforms": ["linux", "macos"]
+    },
+    "openscad": {
+      "command": "openscad",
+      "install": "apt",
+      "platforms": ["linux"]
+    },
+    "blender": {
+      "path": "tools/3d/blender/blender",
+      "version": "4.0.2",
+      "platforms": ["linux"]
+    }
+  },
+  "cache_strategy": {
+    "models": "permanent_repo",
+    "tools": "permanent_repo", 
+    "builds": "github_actions_cache",
+    "artifacts": "netlify_static"
+  },
+  "optimization": {
+    "model_compression": true,
+    "tool_precompilation": true,
+    "artifact_deduplication": true,
+    "cdn_acceleration": true
+  }
+}

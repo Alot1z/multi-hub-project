@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Hub Platform</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #111827;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #9ca3af;
+        }
+        .redirect-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .redirect-btn:hover {
+            background: #2563eb;
+        }
+        .loading {
+            margin-top: 2rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏭</div>
+        <h1 class="title">Multi-Hub Platform</h1>
+        <p class="subtitle">AI-driven DevOps for iOS, 3D Printing & More</p>
+        
+        <a href="#" id="mainPlatform" class="redirect-btn">
+            🚀 Launch Platform
+        </a>
+        
+        <div class="loading" id="loading" style="display: none;">
+            Loading platform configuration...
+        </div>
+    </div>
+
+    <script>
+        async function loadPlatform() {
+            const loading = document.getElementById('loading');
+            const btn = document.getElementById('mainPlatform');
+            
+            try {
+                loading.style.display = 'block';
+                
+                // Load platform config
+                const response = await fetch('/.platform.json');
+                const config = await response.json();
+                
+                // Redirect to main hub
+                const hubUrl = config.subprojects['hub-ui']?.url || config.base_url;
+                window.location.href = hubUrl;
+                
+            } catch (error) {
+                console.error('Failed to load platform:', error);
+                // Fallback redirect
+                window.location.href = 'https://mose.windsurf.build';
+            }
+        }
+        
+        document.getElementById('mainPlatform').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadPlatform();
+        });
+        
+        // Auto-redirect after 3 seconds
+        setTimeout(loadPlatform, 3000);
+    </script>
+</body>
+</html>
