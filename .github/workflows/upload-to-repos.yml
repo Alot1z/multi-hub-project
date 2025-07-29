@@ -115,4 +115,4 @@ jobs:
             echo "----------------------------------------"
           done
           
-          echo "🏁 All uploads completed!"
+          echo "🏁 All uploads completed!" 
