@@ -1,4 +1,4 @@
-import { Handler } from '@netlify/functions'
+export const handler = async (event: any, context: any) => {
 
 export const handler: Handler = async (event, context) => {
   const headers = {

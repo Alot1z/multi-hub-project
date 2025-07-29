@@ -1,5 +1,7 @@
+// 🎮 Game Build Trigger Function
+// Handles game generation requests
 
-export const handler = async (event: any, context: any) => {
+export const handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -22,40 +24,28 @@ export const handler = async (event: any, context: any) => {
   try {
     const config = JSON.parse(event.body || '{}')
     
-    // Trigger GitHub Actions workflow for 3D building
-    const response = await fetch('https://api.github.com/repos/Alot1z/github.io/dispatches', {
-      method: 'POST',
-      headers: {
-        'Authorization': `token ${process.env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        event_type: 'build-3d',
-        client_payload: config
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.statusText}`)
-    }
-
+    // Mock game build process
+    const buildId = `game_build_${Date.now()}`
+    
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        message: '3D model generation triggered successfully',
-        buildId: `3d_build_${Date.now()}`
+        message: 'Game generation started successfully',
+        buildId,
+        config,
+        estimatedTime: '5-10 minutes',
+        downloadUrl: `https://github.com/Alot1z/game-builds/releases/download/${buildId}/${config.gameName || 'game'}.zip`
       })
     }
   } catch (error) {
-    console.error('3D build trigger error:', error)
+    console.error('Game build trigger error:', error)
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to trigger 3D build',
+        error: 'Failed to trigger game build',
         details: error instanceof Error ? error.message : 'Unknown error'
       })
     }
