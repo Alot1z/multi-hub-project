@@ -1,8 +1,8 @@
 import { PlatformConfig } from '../types/platform'
 
 const CONFIG_URLS = [
-  'https://alo1z.github.io/platform.txt',
-  'https://raw.githubusercontent.com/Alot1z/multi-hub-project/main/platform.txt',
+  'https://alo1z.github.io/.platform.txt',
+  'https://raw.githubusercontent.com/Alot1z/alo1z.github.io/main/.platform.txt',
   '/platform.txt'
 ]
 
