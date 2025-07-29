@@ -93,26 +93,4 @@ jobs:
               echo "ℹ️ No changes for $folder_name"
             else
               echo "💾 Committing..."
-              git commit -m "🚀 Auto upload from $folder_name
-
-📁 Source: $folder_name
-🤖 Bot: Ultra Simple Upload System
-⏰ Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-              
-              echo "🚀 Pushing to $owner/$repo..."
-              if git push origin main; then
-                echo "✅ SUCCESS: $folder_name → $owner/$repo"
-              else
-                echo "❌ FAILED to push to $owner/$repo"
-              fi
-            fi
-            
-            # Cleanup
-            cd "${GITHUB_WORKSPACE}"
-            rm -rf "$temp_dir"
-            
-            echo "🎉 Completed $folder_name"
-            echo "----------------------------------------"
-          done
-          
-          echo "🏁 All uploads completed!"
+              git commit -m "🚀 Auto upload from
