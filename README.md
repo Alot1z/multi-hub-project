@@ -2,6 +2,9 @@
 
 Dette er et komplet **Multi-Hub Platform** system med AI-drevet DevOps til iOS, 3D Printing, Games & More.
 
+**Visit Alot1z.github.io to launch the platform**
+
+
 ## 🚀 Komplet System Overview
 
 ### 📱 **PRIVATE REPOS (Kildekode):**
