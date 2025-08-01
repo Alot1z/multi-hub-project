@@ -135,7 +135,22 @@ jobs:
           if [[ -f "$project/package.json" ]]; then
             echo "📦 Installing dependencies for $project"
             cd "$project"
-            npm ci --prefer-offline --no-audit
+            
+            # Check if package-lock.json exists and is in sync
+            if [[ -f "package-lock.json" ]]; then
+              echo "🔍 Checking package-lock.json sync..."
+              if npm ci --dry-run 2>/dev/null; then
+                echo "✅ Using npm ci (package-lock.json is in sync)"
+                npm ci --prefer-offline --no-audit
+              else
+                echo "⚠️ package-lock.json out of sync, using npm install"
+                rm -f package-lock.json
+                npm install --prefer-offline --no-audit
+              fi
+            else
+              echo "📦 No package-lock.json found, using npm install"
+              npm install --prefer-offline --no-audit
+            fi
           else
             echo "ℹ️ No package.json found in $project, skipping dependency installation"
           fi
