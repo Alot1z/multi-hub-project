@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Detail - Multi-Hub Deploy Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4299e1;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .service-icon {
+            font-size: 4rem;
+        }
+
+        .service-info h1 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .service-info p {
+            color: #718096;
+            font-size: 1.2rem;
+        }
+
+        .status-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .status-card h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .status-value.online {
+            color: #48bb78;
+        }
+
+        .status-value.offline {
+            color: #f56565;
+        }
+
+        .status-value.warning {
+            color: #ed8936;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-container h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .response-time-chart {
+            height: 200px;
+            background: linear-gradient(to right, #e2e8f0, #cbd5e0);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logs-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logs-section h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .log-entry {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-entry.info {
+            background: #e6fffa;
+            border-left: 4px solid #48bb78;
+        }
+
+        .log-entry.warning {
+            background: #fffbeb;
+            border-left: 4px solid #ed8936;
+        }
+
+        .log-entry.error {
+            background: #fed7d7;
+            border-left: 4px solid #f56565;
+        }
+
+        .log-timestamp {
+            color: #718096;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Overview</a>
+        
+        <div class="service-header">
+            <span class="service-icon" id="serviceIcon">🔧</span>
+            <div class="service-info">
+                <h1 id="serviceName">Service Detail</h1>
+                <p id="serviceDescription">Loading service information...</p>
+            </div>
+        </div>
+
+        <div class="status-section">
+            <div class="status-card">
+                <h3>Current Status</h3>
+                <div class="status-value online" id="currentStatus">🟢 Online</div>
+                <p>Last checked: <span id="lastChecked">--</span></p>
+            </div>
+            <div class="status-card">
+                <h3>Response Time</h3>
+                <div class="status-value" id="responseTime">--ms</div>
+                <p>Average: <span id="avgResponseTime">--ms</span></p>
+            </div>
+            <div class="status-card">
+                <h3>Uptime</h3>
+                <div class="status-value online" id="uptime">99.9%</div>
+                <p>Last 30 days</p>
+            </div>
+            <div class="status-card">
+                <h3>Health Score</h3>
+                <div class="status-value online" id="healthScore">100%</div>
+                <p>Overall performance</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Response Time Trend (Last 24 Hours)</h3>
+            <div class="response-time-chart" id="responseChart">
+                <canvas id="chartCanvas" width="800" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="logs-section">
+            <h3>Recent Activity Logs</h3>
+            <div id="logEntries">
+                <!-- Logs will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const services = {
+            'launcher': {
+                name: 'Launcher',
+                description: 'Public entry point with security validation',
+                icon: '🌐',
+                url: 'https://alot1z.github.io'
+            },
+            'hub-ui': {
+                name: 'Hub UI',
+                description: 'Main interface with VSCode IDE integration',
+                icon: '🎛️',
+                url: 'https://hub-ui.netlify.app'
+            },
+            'ipa-builder': {
+                name: 'IPA Builder',
+                description: 'Real iOS app builder with Swift compilation',
+                icon: '📱',
+                url: 'https://ipa-builder.netlify.app'
+            },
+            'printer-builder': {
+                name: 'Printer Builder',
+                description: '3D model generator with STL export',
+                icon: '🖨️',
+                url: 'https://printer-builder.netlify.app'
+            },
+            'game-builder': {
+                name: 'Game Builder',
+                description: 'Unity game development environment',
+                icon: '🎮',
+                url: 'https://game-builder.netlify.app'
+            },
+            'ai-models': {
+                name: 'AI Models',
+                description: 'Cross-model AI ensemble with unlimited usage',
+                icon: '🤖',
+                url: 'https://ai-models.netlify.app'
+            }
+        };
+
+        function getServiceFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('service') || 'launcher';
+        }
+
+        function generateMockLogs(serviceId) {
+            const logTypes = ['info', 'warning', 'error'];
+            const messages = {
+                info: [
+                    'Service health check passed',
+                    'API endpoint responding normally',
+                    'Cache hit rate: 94%',
+                    'User session created successfully',
+                    'Background task completed'
+                ],
+                warning: [
+                    'Response time above threshold (2.1s)',
+                    'Memory usage at 85%',
+                    'Rate limit approaching',
+                    'SSL certificate expires in 30 days'
+                ],
+                error: [
+                    'Database connection timeout',
+                    'API rate limit exceeded',
+                    'Authentication failure',
+                    'Service temporarily unavailable'
+                ]
+            };
+
+            const logs = [];
+            for (let i = 0; i < 10; i++) {
+                const type = logTypes[Math.floor(Math.random() * logTypes.length)];
+                const message = messages[type][Math.floor(Math.random() * messages[type].length)];
+                const timestamp = new Date(Date.now() - Math.random() * 86400000).toISOString();
+                
+                logs.push({
+                    type: type,
+                    message: message,
+                    timestamp: timestamp
+                });
+            }
+            
+            return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+
+        function renderLogs(logs) {
+            const logContainer = document.getElementById('logEntries');
+            logContainer.innerHTML = logs.map(log => `
+                <div class="log-entry ${log.type}">
+                    <div class="log-timestamp">${new Date(log.timestamp).toLocaleString()}</div>
+                    <div>${log.message}</div>
+                </div>
+            `).join('');
+        }
+
+        function drawResponseChart() {
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Generate mock data for 24 hours
+            const dataPoints = [];
+            for (let i = 0; i < 24; i++) {
+                dataPoints.push(Math.random() * 1000 + 200); // 200-1200ms
+            }
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw grid
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height - 2 * padding) * i / 5;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
+            }
+            
+            // Draw line chart
+            ctx.strokeStyle = '#4299e1';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const maxValue = Math.max(...dataPoints);
+            const minValue = Math.min(...dataPoints);
+            const range = maxValue - minValue;
+            
+            dataPoints.forEach((value, index) => {
+                const x = padding + (width - 2 * padding) * index / (dataPoints.length - 1);
+                const y = height - padding - (height - 2 * padding) * (value - minValue) / range;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Draw points
+            ctx.fillStyle = '#4299e1';
+            dataPoints.forEach((value, index) => {
+                const x = padding + (width - 2 * padding) * index / (dataPoints.length - 1);
+                const y = height - padding - (height - 2 * padding) * (value - minValue) / range;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+
+        function initializeServiceDetail() {
+            const serviceId = getServiceFromURL();
+            const service = services[serviceId];
+            
+            if (!service) {
+                document.getElementById('serviceName').textContent = 'Service Not Found';
+                document.getElementById('serviceDescription').textContent = 'The requested service could not be found.';
+                return;
+            }
+            
+            // Update service info
+            document.getElementById('serviceIcon').textContent = service.icon;
+            document.getElementById('serviceName').textContent = service.name;
+            document.getElementById('serviceDescription').textContent = service.description;
+            
+            // Update status (mock data)
+            document.getElementById('lastChecked').textContent = new Date().toLocaleString();
+            document.getElementById('responseTime').textContent = Math.floor(Math.random() * 500 + 200) + 'ms';
+            document.getElementById('avgResponseTime').textContent = Math.floor(Math.random() * 300 + 150) + 'ms';
+            
+            // Generate and render logs
+            const logs = generateMockLogs(serviceId);
+            renderLogs(logs);
+            
+            // Draw response time chart
+            setTimeout(drawResponseChart, 100);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeServiceDetail);
+    </script>
+</body>
+</html>
