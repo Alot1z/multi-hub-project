@@ -427,6 +427,12 @@ app.post('/api/database/users', async (req, res) => {
   try {
     const users = req.body
     
+    if (!Array.isArray(users)) {
+      return res.status(400).json({
+        error: 'Invalid request: users must be an array'
+      })
+    }
+    
     // This would save users to Neon database
     // For now, just return success
     res.json({
