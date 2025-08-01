@@ -1,0 +1,257 @@
+name: 📊 Export All Workflow Logs to Workspace
+
+on:
+  workflow_dispatch:
+    inputs:
+      days_back:
+        description: 'Days back to fetch logs'
+        required: false
+        default: '7'
+        type: string
+      include_failed_only:
+        description: 'Only include failed workflows'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  export-logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.UPLOAD_PATH }}
+
+      - name: 🔧 Setup GitHub CLI
+        run: |
+          gh --version
+
+      - name: 📊 Fetch All Workflow Runs
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_PATH }}
+        run: |
+          echo "📊 Fetching workflow runs from last ${{ github.event.inputs.days_back || '7' }} days..."
+          
+          # Create logs directory structure
+          mkdir -p workflow-logs/runs
+          mkdir -p workflow-logs/summaries
+          mkdir -p workflow-logs/failed
+          mkdir -p workflow-logs/successful
+          
+          # Get workflow runs
+          DAYS_BACK="${{ github.event.inputs.days_back || '7' }}"
+          INCLUDE_FAILED_ONLY="${{ github.event.inputs.include_failed_only || 'false' }}"
+          
+          # Calculate date threshold
+          DATE_THRESHOLD=$(date -d "$DAYS_BACK days ago" -u '+%Y-%m-%dT%H:%M:%SZ')
+          
+          echo "🔍 Fetching runs since: $DATE_THRESHOLD"
+          
+          # Get all workflow runs
+          gh run list --limit 100 --json databaseId,status,conclusion,workflowName,createdAt,displayTitle,url > workflow-logs/all-runs.json
+          
+          # Process each run
+          cat workflow-logs/all-runs.json | jq -r '.[] | select(.createdAt >= "'$DATE_THRESHOLD'") | @base64' | while read run; do
+            RUN_DATA=$(echo $run | base64 -d)
+            RUN_ID=$(echo $RUN_DATA | jq -r '.databaseId')
+            STATUS=$(echo $RUN_DATA | jq -r '.status')
+            CONCLUSION=$(echo $RUN_DATA | jq -r '.conclusion')
+            WORKFLOW_NAME=$(echo $RUN_DATA | jq -r '.workflowName' | tr ' ' '_' | tr -cd '[:alnum:]_-')
+            CREATED_AT=$(echo $RUN_DATA | jq -r '.createdAt')
+            TITLE=$(echo $RUN_DATA | jq -r '.displayTitle')
+            
+            echo "📋 Processing: $WORKFLOW_NAME (Run $RUN_ID) - $STATUS/$CONCLUSION"
+            
+            # Skip if only failed requested and this succeeded
+            if [[ "$INCLUDE_FAILED_ONLY" == "true" && "$CONCLUSION" == "success" ]]; then
+              continue
+            fi
+            
+            # Create run directory
+            RUN_DIR="workflow-logs/runs/${WORKFLOW_NAME}_${RUN_ID}"
+            mkdir -p "$RUN_DIR"
+            
+            # Save run metadata
+            echo "$RUN_DATA" | jq '.' > "$RUN_DIR/metadata.json"
+            
+            # Get detailed run info
+            gh run view $RUN_ID --json jobs,url,status,conclusion,workflowName,displayTitle,createdAt,updatedAt > "$RUN_DIR/run-details.json"
+            
+            # Download logs
+            echo "📥 Downloading logs for run $RUN_ID..."
+            if gh run download $RUN_ID --dir "$RUN_DIR/logs" 2>/dev/null; then
+              echo "✅ Logs downloaded for run $RUN_ID"
+            else
+              echo "⚠️ Could not download logs for run $RUN_ID (may be expired)"
+              echo "Logs not available or expired" > "$RUN_DIR/logs/no-logs.txt"
+            fi
+            
+            # Create summary
+            cat > "$RUN_DIR/summary.md" << EOF
+          # Workflow Run Summary
+          
+          **Workflow:** $WORKFLOW_NAME
+          **Run ID:** $RUN_ID
+          **Status:** $STATUS
+          **Conclusion:** $CONCLUSION
+          **Created:** $CREATED_AT
+          **Title:** $TITLE
+          
+          ## Files
+          
+          - [metadata.json](./metadata.json) - Full run metadata
+          - [run-details.json](./run-details.json) - Detailed run information
+          - [logs/](./logs/) - Downloaded log files
+          
+          ## Quick Access
+          
+          [View on GitHub]($URL)
+          EOF
+            
+            # Copy to status-specific directory
+            if [[ "$CONCLUSION" == "failure" || "$CONCLUSION" == "cancelled" ]]; then
+              cp -r "$RUN_DIR" "workflow-logs/failed/"
+            elif [[ "$CONCLUSION" == "success" ]]; then
+              cp -r "$RUN_DIR" "workflow-logs/successful/"
+            fi
+            
+          done
+
+      - name: 📋 Create Master Index
+        run: |
+          echo "📋 Creating master index..."
+          
+          # Count runs
+          TOTAL_RUNS=$(find workflow-logs/runs -maxdepth 1 -type d | wc -l)
+          FAILED_RUNS=$(find workflow-logs/failed -maxdepth 1 -type d 2>/dev/null | wc -l || echo 0)
+          SUCCESS_RUNS=$(find workflow-logs/successful -maxdepth 1 -type d 2>/dev/null | wc -l || echo 0)
+          
+          # Create master README
+          cat > workflow-logs/README.md << EOF
+          # GitHub Actions Workflow Logs Export
+          
+          **Export Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          **Days Back:** ${{ github.event.inputs.days_back || '7' }}
+          **Failed Only:** ${{ github.event.inputs.include_failed_only || 'false' }}
+          
+          ## Summary
+          
+          - **Total Runs:** $TOTAL_RUNS
+          - **Failed Runs:** $FAILED_RUNS
+          - **Successful Runs:** $SUCCESS_RUNS
+          
+          ## Structure
+          
+          - \`runs/\` - All workflow runs with logs
+          - \`failed/\` - Only failed workflow runs
+          - \`successful/\` - Only successful workflow runs
+          - \`summaries/\` - Quick summaries by workflow
+          
+          ## Usage
+          
+          1. Each run directory contains:
+             - \`metadata.json\` - Full GitHub API data
+             - \`run-details.json\` - Detailed run information
+             - \`logs/\` - Downloaded log files (if available)
+             - \`summary.md\` - Human-readable summary
+          
+          2. Use GitHub Desktop to sync these files locally
+          3. All logs are ready for offline analysis
+          
+          ## Workflow Runs
+          
+          EOF
+          
+          # Add run listings
+          for run_dir in workflow-logs/runs/*/; do
+            if [[ -d "$run_dir" ]]; then
+              run_name=$(basename "$run_dir")
+              if [[ -f "$run_dir/metadata.json" ]]; then
+                status=$(jq -r '.status' "$run_dir/metadata.json")
+                conclusion=$(jq -r '.conclusion' "$run_dir/metadata.json")
+                workflow=$(jq -r '.workflowName' "$run_dir/metadata.json")
+                created=$(jq -r '.createdAt' "$run_dir/metadata.json")
+                
+                echo "- **$workflow** ($run_name) - $status/$conclusion - $created" >> workflow-logs/README.md
+              fi
+            fi
+          done
+          
+          # Create workflow summaries
+          echo "📊 Creating workflow summaries..."
+          
+          for workflow_file in .github/workflows/*.yml; do
+            if [[ -f "$workflow_file" ]]; then
+              workflow_basename=$(basename "$workflow_file" .yml)
+              
+              # Count runs for this workflow
+              workflow_runs=$(find workflow-logs/runs -name "${workflow_basename}_*" -type d | wc -l)
+              
+              if [[ $workflow_runs -gt 0 ]]; then
+                cat > "workflow-logs/summaries/${workflow_basename}.md" << EOF
+          # $workflow_basename Workflow Summary
+          
+          **Total Runs:** $workflow_runs
+          **Export Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          
+          ## Recent Runs
+          
+          EOF
+                
+                # List recent runs for this workflow
+                find workflow-logs/runs -name "${workflow_basename}_*" -type d | head -10 | while read run_dir; do
+                  if [[ -f "$run_dir/metadata.json" ]]; then
+                    status=$(jq -r '.status' "$run_dir/metadata.json")
+                    conclusion=$(jq -r '.conclusion' "$run_dir/metadata.json")
+                    created=$(jq -r '.createdAt' "$run_dir/metadata.json")
+                    run_id=$(jq -r '.databaseId' "$run_dir/metadata.json")
+                    
+                    echo "- Run $run_id - $status/$conclusion - $created" >> "workflow-logs/summaries/${workflow_basename}.md"
+                  fi
+                done
+              fi
+            fi
+          done
+
+      - name: 💾 Commit Exported Logs
+        run: |
+          git config user.name "Workflow Logs Bot"
+          git config user.email "logs-bot@alot1z.github.io"
+          
+          git add workflow-logs/
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️ No new logs to export"
+          else
+            git commit -m "📊 Export workflow logs - $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+
+          📊 Exported logs from last ${{ github.event.inputs.days_back || '7' }} days
+          🔍 Failed only: ${{ github.event.inputs.include_failed_only || 'false' }}
+          📁 Location: workflow-logs/
+          
+          Ready for GitHub Desktop sync!"
+            
+            git push origin main
+            echo "✅ Workflow logs exported and committed"
+          fi
+
+      - name: 📊 Export Summary
+        run: |
+          echo "🎉 WORKFLOW LOGS EXPORT COMPLETE!"
+          echo "=================================="
+          echo "📊 Days Back: ${{ github.event.inputs.days_back || '7' }}"
+          echo "🔍 Failed Only: ${{ github.event.inputs.include_failed_only || 'false' }}"
+          echo "📁 Location: workflow-logs/"
+          echo ""
+          echo "📋 Files Exported:"
+          find workflow-logs -type f | wc -l | xargs echo "  Total Files:"
+          find workflow-logs/runs -maxdepth 1 -type d | wc -l | xargs echo "  Workflow Runs:"
+          find workflow-logs -name "*.log" | wc -l | xargs echo "  Log Files:"
+          echo ""
+          echo "🔗 GitHub Desktop Integration:"
+          echo "  1. Pull latest changes"
+          echo "  2. Navigate to workflow-logs/ directory"
+          echo "  3. All logs ready for offline analysis"
+          echo ""
+          echo "🎯 READY FOR LOCAL COPY!"
