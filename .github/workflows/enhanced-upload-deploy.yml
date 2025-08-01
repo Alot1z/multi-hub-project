@@ -296,7 +296,7 @@ jobs:
   deploy-netlify:
     needs: [prepare, deploy-repositories]
     runs-on: ubuntu-latest
-    if: ${{ vars.NETLIFY_AUTH_TOKEN != '' }}
+    if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' }}
     strategy:
       matrix:
         project: ${{ fromJson(needs.prepare.outputs.matrix) }}
@@ -413,8 +413,8 @@ jobs:
             git commit -m "🔄 Auto-update platform.txt after deployment
 
 Projects: ${{ needs.prepare.outputs.projects }}
-Mode: $DEPLOYMENT_MODE
-Commit: $GITHUB_SHA
+Mode: ${{ env.DEPLOYMENT_MODE }}
+Commit: ${{ github.sha }}
 Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
             
             git push origin main
@@ -431,9 +431,9 @@ Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
           echo "🎉 Multi-Hub Deployment Summary"
           echo "================================"
           echo "Projects: ${{ needs.prepare.outputs.projects }}"
-          echo "Mode: $DEPLOYMENT_MODE"
-          echo "Git MCP: $ENABLE_GIT_MCP"
-          echo "Platform Update: $ENABLE_PLATFORM_UPDATE"
+          echo "Mode: ${{ env.DEPLOYMENT_MODE }}"
+          echo "Git MCP: ${{ env.ENABLE_GIT_MCP }}"
+          echo "Platform Update: ${{ env.ENABLE_PLATFORM_UPDATE }}"
           echo ""
           echo "Repository Deployment: ${{ needs.deploy-repositories.result }}"
           echo "Netlify Deployment: ${{ needs.deploy-netlify.result }}"
