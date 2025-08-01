@@ -80,8 +80,13 @@ function parseSecurePlatformTxt(publicData: string, privateData: string): Platfo
     throw new Error('Base URL mismatch - security violation')
   }
   
-  if (!publicBaseUrl?.includes('Alot1z.github.io')) {
-    throw new Error('Unauthorized access')
+  try {
+    const parsedUrl = new URL(publicBaseUrl);
+    if (parsedUrl.host !== 'alot1z.github.io') {
+      throw new Error('Unauthorized access');
+    }
+  } catch (e) {
+    throw new Error('Invalid base URL');
   }
   
   // Parse URLs from private config (lines 2-6)
