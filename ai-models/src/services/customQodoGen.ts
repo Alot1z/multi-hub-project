@@ -5,7 +5,7 @@
  */
 
 import { LocalInferenceService } from './localInference'
-import { getIframeManager } from '../../hub-ui/src/services/iframeManager'
+import { getIframeManager } from '@shared/services/iframeManager'
 
 export interface QodoGenRequest {
   id: string

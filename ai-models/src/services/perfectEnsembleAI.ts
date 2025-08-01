@@ -425,8 +425,8 @@ class PerfectEnsembleAI {
     // Extract successful results
     const votes = results
       .filter(result => result.status === 'fulfilled')
-      .map(result => result.value)
-      .filter(vote => vote.content && vote.score > 0)
+      .map(result => (result as PromiseFulfilledResult<any>).value)
+      .filter(vote => vote && vote.content && vote.score > 0)
 
     if (votes.length === 0) {
       throw new Error('All models failed to generate response')

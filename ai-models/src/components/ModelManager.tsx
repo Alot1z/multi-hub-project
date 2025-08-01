@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { LoadingSpinner } from '../../hub-ui/src/components/common/LoadingSpinner'
-import { StatusIndicator } from '../../hub-ui/src/components/common/StatusIndicator'
+import { LoadingSpinner } from '@shared/components/LoadingSpinner'
+import { StatusIndicator } from '@shared/components/StatusIndicator'
 
 interface AIModel {
   id: string
