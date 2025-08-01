@@ -1,5 +1,5 @@
 {
-  "targetRepository": "https://github.com/Alot1z/NEW.BOLT",
+  "targetRepository": "https://github.com/Alot1z/bolt.new",
   "branch": "main",
   "path": "/",
   "deploymentStrategy": "total-override",

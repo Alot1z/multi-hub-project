@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Hub API Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 16px;
+            background: linear-gradient(45deg, #06b6d4, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .api-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .api-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .api-method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .method-get { background: #10b981; }
+        .method-post { background: #3b82f6; }
+        
+        .endpoint {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #06b6d4;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #10b981;
+        }
+        
+        .try-button {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .try-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .response-area {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85em;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .docs-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .auth-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Multi-Hub API Gateway</h1>
+            <p>Enterprise-grade API for Multi-Hub Platform</p>
+            <div class="auth-info">
+                <strong>🔐 Authentication:</strong> No rate limits • 100% free forever
+            </div>
+        </div>
+        
+        <div class="api-grid">
+            <!-- Platform Management -->
+            <div class="api-card">
+                <h3>🎛️ Platform Management</h3>
+                <div class="api-method method-get">GET</div>
+                <div class="endpoint">/api/v1/platforms</div>
+                <p>Get all available platforms and their status</p>
+                <div class="status-indicator"></div>
+                <span>Online</span>
+                <button class="try-button" onclick="tryEndpoint('/api/v1/platforms', 'GET')">Try it</button>
+                <div class="response-area" id="response-platforms"></div>
+            </div>
+            
+            <!-- AI Models -->
+            <div class="api-card">
+                <h3>🤖 AI Models</h3>
+                <div class="api-method method-post">POST</div>
+                <div class="endpoint">/api/v1/ai/generate</div>
+                <p>Generate code using ensemble AI models</p>
+                <div class="status-indicator"></div>
+                <span>Online</span>
+                <button class="try-button" onclick="tryEndpoint('/api/v1/ai/generate', 'POST')">Try it</button>
+                <div class="response-area" id="response-ai-generate"></div>
+            </div>
+            
+            <!-- IPA Builder -->
+            <div class="api-card">
+                <h3>📱 IPA Builder</h3>
+                <div class="api-method method-post">POST</div>
+                <div class="endpoint">/api/v1/ipa/build</div>
+                <p>Build iOS app with TrollStore compatibility</p>
+                <div class="status-indicator"></div>
+                <span>Online</span>
+                <button class="try-button" onclick="tryEndpoint('/api/v1/ipa/build', 'POST')">Try it</button>
+                <div class="response-area" id="response-ipa-build"></div>
+            </div>
+            
+            <!-- 3D Printer -->
+            <div class="api-card">
+                <h3>🖨️ 3D Printer</h3>
+                <div class="api-method method-post">POST</div>
+                <div class="endpoint">/api/v1/3d/generate</div>
+                <p>Generate 3D models and STL files</p>
+                <div class="status-indicator"></div>
+                <span>Online</span>
+                <button class="try-button" onclick="tryEndpoint('/api/v1/3d/generate', 'POST')">Try it</button>
+                <div class="response-area" id="response-3d-generate"></div>
+            </div>
+        </div>
+        
+        <div class="docs-section">
+            <h2>📖 API Documentation</h2>
+            
+            <h3>🔑 Authentication</h3>
+            <p><strong>No authentication required!</strong> This API is 100% free with no rate limits.</p>
+            
+            <h3>📝 Request Format</h3>
+            <p>All POST requests should include Content-Type: application/json</p>
+            
+            <h3>🔄 Response Format</h3>
+            <p>All responses follow this structure:</p>
+            <div class="endpoint">{
+  "success": true,
+  "data": {...},
+  "message": "Operation completed",
+  "timestamp": "2024-01-01T00:00:00Z"
+}</div>
+            
+            <h3>⚡ Rate Limits</h3>
+            <p><strong>No rate limits!</strong> Use as much as you want - 100% free forever.</p>
+            
+            <h3>🌐 CORS</h3>
+            <p>CORS is enabled for all Multi-Hub domains and localhost for development.</p>
+        </div>
+    </div>
+
+    <script>
+        // Mock API responses for demonstration
+        const mockResponses = {
+            '/api/v1/platforms': {
+                success: true,
+                data: {
+                    platforms: [
+                        {
+                            id: 'hub-ui',
+                            name: 'Hub UI',
+                            url: 'https://hub-uii.netlify.app',
+                            status: 'online'
+                        },
+                        {
+                            id: 'ipa-builder',
+                            name: 'IPA Builder',
+                            url: 'https://ipa-builder.netlify.app',
+                            status: 'online'
+                        },
+                        {
+                            id: 'bolt-new',
+                            name: 'Bolt.new Clone',
+                            url: 'https://bolt-new-multi-hub.netlify.app',
+                            status: 'online'
+                        },
+                        {
+                            id: 'qodo-gen',
+                            name: 'Custom Qodo Gen',
+                            url: 'https://qodo-gen-multi-hub.netlify.app',
+                            status: 'online'
+                        }
+                    ]
+                },
+                message: 'Platforms retrieved successfully',
+                timestamp: new Date().toISOString()
+            },
+            
+            '/api/v1/ai/generate': {
+                success: true,
+                data: {
+                    generationId: 'gen_' + Date.now(),
+                    code: `import React from 'react'
+
+export const GeneratedComponent: React.FC = () => {
+  return (
+    <div className="generated-component">
+      <h2>AI Generated Component</h2>
+      <p>Generated using Multi-Hub ensemble AI</p>
+    </div>
+  )
+}`,
+                    language: 'typescript',
+                    qualityScore: 9.2,
+                    modelsUsed: ['codellama-34b', 'mistral-7b', 'phi-3-medium'],
+                    processingTime: 2.3
+                },
+                message: 'Code generated successfully',
+                timestamp: new Date().toISOString()
+            },
+            
+            '/api/v1/ipa/build': {
+                success: true,
+                data: {
+                    buildId: 'build_' + Date.now(),
+                    status: 'building',
+                    estimatedTime: 300,
+                    downloadUrl: null,
+                    trollstoreCompatible: true
+                },
+                message: 'iOS build started',
+                timestamp: new Date().toISOString()
+            },
+            
+            '/api/v1/3d/generate': {
+                success: true,
+                data: {
+                    modelId: 'model_' + Date.now(),
+                    stlUrl: 'https://api.alot1z.github.io/files/generated_model.stl',
+                    previewUrl: 'https://api.alot1z.github.io/preview/model.png',
+                    printTime: 120,
+                    material: 'PLA'
+                },
+                message: '3D model generated successfully',
+                timestamp: new Date().toISOString()
+            }
+        };
+        
+        // Try endpoint function
+        async function tryEndpoint(endpoint, method) {
+            const responseId = 'response-' + endpoint.split('/').pop().replace(/[^a-z]/g, '-');
+            const responseArea = document.getElementById(responseId);
+            
+            if (!responseArea) {
+                console.error('Response area not found:', responseId);
+                return;
+            }
+            
+            responseArea.style.display = 'block';
+            responseArea.innerHTML = '<div style="color: #06b6d4;">Loading...</div>';
+            
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Get mock response
+                const response = mockResponses[endpoint];
+                
+                if (response) {
+                    responseArea.innerHTML = `<div style="color: #10b981;">✅ ${method} ${endpoint}</div>
+<pre style="margin-top: 10px; color: #e5e7eb;">${JSON.stringify(response, null, 2)}</pre>`;
+                } else {
+                    responseArea.innerHTML = `<div style="color: #ef4444;">❌ Endpoint not implemented yet</div>`;
+                }
+                
+            } catch (error) {
+                responseArea.innerHTML = `<div style="color: #ef4444;">❌ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

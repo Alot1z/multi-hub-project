@@ -52,7 +52,7 @@ jobs:
           input="${{ github.event.inputs.projects }}"
           
           if [[ "$input" == "all" ]]; then
-            projects="hub-ui,ipa-builder,printer-builder,game-builder,ai-models,alo1z-github-io"
+            projects="hub-ui,ipa-builder,printer-builder,game-builder,ai-models,alo1z-github-io,bolt-new,qodo-gen,api"
           else
             projects="$input"
           fi
@@ -296,7 +296,7 @@ jobs:
   deploy-netlify:
     needs: [prepare, deploy-repositories]
     runs-on: ubuntu-latest
-    if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' }}
+    if: ${{ vars.NETLIFY_AUTH_TOKEN != '' || secrets.NETLIFY_AUTH_TOKEN != '' }}
     strategy:
       matrix:
         project: ${{ fromJson(needs.prepare.outputs.matrix) }}
@@ -419,4 +419,14 @@ jobs:
             git push origin main
             echo "✅ Platform configuration updated"
           fi
+
+  notify:
+    needs: [prepare, deploy-repositories, deploy-netlify, update-platform]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: 📊 Deployment Summary
+        run: |
+          echo "🎉 Multi-Hub Deployment Summary"
+          echo "
 
