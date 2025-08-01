@@ -1,0 +1,13 @@
+{
+  "generators": [
+    {"type": "terrain", "model": "sentence-transformer", "algorithm": "perlin-noise"},
+    {"type": "characters", "model": "codebert", "style": "pixel-art"},
+    {"type": "quests", "model": "sentence-transformer", "complexity": "medium"},
+    {"type": "dialogue", "model": "codebert", "tone": "adventure"}
+  ],
+  "gameTemplates": {
+    "2d-platformer": "Basic 2D platformer with physics",
+    "3d-adventure": "3D adventure game template",
+    "puzzle": "Puzzle game with AI hints"
+  }
+}

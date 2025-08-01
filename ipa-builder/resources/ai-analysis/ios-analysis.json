@@ -1,0 +1,12 @@
+{
+  "analysisTypes": [
+    {"type": "swift-optimization", "model": "codebert", "enabled": true},
+    {"type": "ui-generation", "model": "sentence-transformer", "enabled": true},
+    {"type": "security-scan", "model": "codebert", "enabled": true}
+  ],
+  "swiftTemplates": {
+    "viewController": "Basic UIViewController template",
+    "tableView": "UITableView with data source",
+    "customView": "Custom UIView with constraints"
+  }
+}

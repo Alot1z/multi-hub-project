@@ -1,0 +1,25 @@
+{
+  "version": "v1.2.0",
+  "models": {
+    "sentence-transformer": {
+      "name": "all-MiniLM-L6-v2",
+      "size": "90MB",
+      "cached": true,
+      "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"
+    },
+    "codebert": {
+      "name": "CodeBERT-base",
+      "size": "500MB",
+      "cached": true,
+      "url": "https://huggingface.co/microsoft/CodeBERT-base"
+    },
+    "whisper": {
+      "name": "whisper-base",
+      "size": "140MB",
+      "cached": false,
+      "url": "https://huggingface.co/openai/whisper-base"
+    }
+  },
+  "totalCacheSize": "730MB",
+  "lastUpdated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}

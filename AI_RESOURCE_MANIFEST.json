@@ -1,0 +1,38 @@
+{
+  "version": "v1.2.0",
+  "generatedAt": "2025-08-01T19:40:56Z",
+  "platforms": {
+    "ai-models": {
+      "resourceTypes": ["models", "configs", "cache"],
+      "configFiles": 3,
+      "totalSize": "28K"
+    },
+    "hub-ui": {
+      "resourceTypes": ["ai-integration"],
+      "configFiles": 1,
+      "totalSize": "12K"
+    },
+    "ipa-builder": {
+      "resourceTypes": ["ai-analysis"],
+      "configFiles": 1,
+      "totalSize": "12K"
+    },
+    "printer-builder": {
+      "resourceTypes": ["ai-generation"],
+      "configFiles": 1,
+      "totalSize": "12K"
+    },
+    "game-builder": {
+      "resourceTypes": ["ai-procedural"],
+      "configFiles": 1,
+      "totalSize": "12K"
+    }
+  },
+  "summary": {
+    "totalPlatforms": 5,
+    "totalConfigFiles": 7,
+    "totalResourceSize": "28K",
+    "gitLfsEnabled": true,
+    "unlimitedSupport": true
+  }
+}

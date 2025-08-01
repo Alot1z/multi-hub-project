@@ -1,0 +1,11 @@
+{
+  "actions": [
+    {"id": "generate", "name": "Generate Code", "shortcut": "Ctrl+G", "model": "codebert"},
+    {"id": "optimize", "name": "Optimize Code", "shortcut": "Ctrl+O", "model": "codebert"},
+    {"id": "comment", "name": "Add Comments", "shortcut": "Ctrl+/", "model": "sentence-transformer"},
+    {"id": "fix", "name": "Fix Issues", "shortcut": "Ctrl+F", "model": "codebert"},
+    {"id": "refactor", "name": "Refactor", "shortcut": "Ctrl+R", "model": "codebert"}
+  ],
+  "defaultModel": "codebert",
+  "fallbackModel": "sentence-transformer"
+}

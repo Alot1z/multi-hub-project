@@ -1,0 +1,8 @@
+# AI Resource Cache - Temporary Files
+*/resources/temp/
+*/resources/**/*.tmp
+*/resources/download-cache/
+
+# Large model files (use external cache)
+*/resources/models/large/
+*/resources/unlimited-cache/

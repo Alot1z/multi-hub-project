@@ -1,0 +1,12 @@
+{
+  "generationModes": [
+    {"mode": "parametric", "model": "codebert", "language": "openscad"},
+    {"mode": "mesh-optimization", "model": "sentence-transformer", "format": "stl"},
+    {"mode": "support-generation", "model": "codebert", "algorithm": "tree"}
+  ],
+  "materials": {
+    "pla": {"temp": "200C", "bed": "60C", "speed": "50mm/s"},
+    "abs": {"temp": "240C", "bed": "80C", "speed": "40mm/s"},
+    "petg": {"temp": "230C", "bed": "70C", "speed": "45mm/s"}
+  }
+}
