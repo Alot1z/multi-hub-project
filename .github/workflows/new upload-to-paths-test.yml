@@ -1,5 +1,4 @@
-name: 🚀 Ultra Simple Upload System
-
+name: 🚀 New upload-to-paths-complex
 on:
   workflow_dispatch:
     inputs:
