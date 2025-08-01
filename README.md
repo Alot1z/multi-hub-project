@@ -15,6 +15,43 @@
 
 ---
 
+## 📊 **Live System Status**
+
+<!-- Embedded Status Widget with Refresh Button -->
+<div align="center">
+  <iframe 
+    src="https://alot1z.github.io/status-widget/readme-status.html" 
+    width="100%" 
+    height="400" 
+    frameborder="0" 
+    style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  </iframe>
+</div>
+
+### 🛡️ **Zero-Drain Status System**
+
+- **🔄 Manual Refresh Only** - Click refresh button to update status
+- **🚫 No Auto-Polling** - Never drains your Netlify services
+- **⚡ Zero Rate Limits** - No risk of hitting bandwidth/API limits
+- **📊 Consistent Data** - Same status across README and dashboard
+
+**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)** | **🛡️ [Zero-Drain Technical Details →](https://alot1z.github.io/status-api/status.html)**
+
+---
+
+## 🎯 **Compact Status Overview**
+
+🌐 **Launcher** • Public entry point with security • [alot1z.github.io](https://alot1z.github.io) • 🟢 Live  
+🎛️ **Hub UI** • Main interface with VSCode IDE • [hub-uii.netlify.app](https://hub-uii.netlify.app) • 🟢 Live  
+📱 **IPA Builder** • Real iOS app builder • [ipa-builder.netlify.app](https://ipa-builder.netlify.app) • 🟢 Live  
+🖨️ **Printer Builder** • 3D model generator • [printer-builder.netlify.app](https://printer-builder.netlify.app) • 🟢 Live  
+🎮 **Game Builder** • Unity game development • [game-build.netlify.app](https://game-build.netlify.app) • 🟢 Live  
+🤖 **AI Models** • Cross-model AI ensemble • [ai-modelss.netlify.app](https://ai-modelss.netlify.app) • 🟢 Live
+
+**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)**
+
+---
+
 ## 🌟 **What is Multi-Hub Platform?**
 
 Multi-Hub is a **revolutionary AI-powered development ecosystem** that lets you build **real applications** across multiple platforms - all **100% free** with **no rate limits**. Unlike other platforms that just generate code, Multi-Hub actually **builds and deploys real apps**.
@@ -62,30 +99,6 @@ graph TB
 
 ---
 
-## 📊 **Live System Status**
-
-<!-- Embedded Status Widget with Refresh Button -->
-<div align="center">
-  <iframe 
-    src="https://alot1z.github.io/status-widget/readme-status.html" 
-    width="100%" 
-    height="400" 
-    frameborder="0" 
-    style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-  </iframe>
-</div>
-
-### 🛡️ **Zero-Drain Status System**
-
-- **🔄 Manual Refresh Only** - Click refresh button to update status
-- **🚫 No Auto-Polling** - Never drains your Netlify services
-- **⚡ Zero Rate Limits** - No risk of hitting bandwidth/API limits
-- **📊 Consistent Data** - Same status across README and dashboard
-
-**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)** | **🛡️ [Zero-Drain Technical Details →](https://alot1z.github.io/status-api/status.html)**
-
----
-
 ## 🚀 **Live Platforms**
 
 ### 🎛️ **Core Platforms**
@@ -105,17 +118,6 @@ graph TB
 | **🔧 Custom Qodo Gen** | 20x better code generation | [qodo-gen-custom](https://github.com/Alot1z/qodo-gen-custom) | [qodo-gen-multi-hub.netlify.app](https://qodo-gen-multi-hub.netlify.app) | 🟢 Live |
 | **🔗 API Gateway** | Enterprise API for all platforms | [api-alot1z-github-io](https://github.com/Alot1z/api-alot1z-github-io) | [api-alot1z-github-io.netlify.app](https://api-alot1z-github-io.netlify.app) | 🟢 Live |
 | **📊 Deploy Status** | Real-time monitoring dashboard | [multi-hub-deploy-status](https://github.com/Alot1z/multi-hub-deploy-status) | [multi-hub-deploy-status.netlify.app](https://multi-hub-deploy-status.netlify.app) | 🟢 Live |
-
-### 🎯 **Compact Status Overview:**
-
-🌐 **Launcher** • Public entry point with security • [alot1z.github.io](https://alot1z.github.io) • 🟢 Live  
-🎛️ **Hub UI** • Main interface with VSCode IDE • [hub-uii.netlify.app](https://hub-uii.netlify.app) • 🟢 Live  
-📱 **IPA Builder** • Real iOS app builder • [ipa-builder.netlify.app](https://ipa-builder.netlify.app) • 🟢 Live  
-🖨️ **Printer Builder** • 3D model generator • [printer-builder.netlify.app](https://printer-builder.netlify.app) • 🟢 Live  
-🎮 **Game Builder** • Unity game development • [game-build.netlify.app](https://game-build.netlify.app) • 🟢 Live  
-🤖 **AI Models** • Cross-model AI ensemble • [ai-modelss.netlify.app](https://ai-modelss.netlify.app) • 🟢 Live  
-
-**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)**
 
 ---
 
