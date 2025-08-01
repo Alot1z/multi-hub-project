@@ -18,4 +18,5 @@ https://ai-modelss.netlify.app
 # Enhanced Platforms
 https://bolt-new-multi-hub.netlify.app
 https://qodo-gen-multi-hub.netlify.app
+https://api-alot1z-github-io.netlify.app
 https://api.alot1z.github.io

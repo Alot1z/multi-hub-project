@@ -65,20 +65,21 @@ graph TB
 ## 🚀 **Live Platforms**
 
 ### 🎛️ **Core Platforms**
-| Platform | Description | URL | Status |
-|----------|-------------|-----|--------|
-| **🌐 Launcher** | Public entry point with security | [alot1z.github.io](https://alot1z.github.io) | 🟢 Live |
-| **🎛️ Hub UI** | Main interface with VSCode IDE | [hub-uii.netlify.app](https://hub-uii.netlify.app) | 🟢 Live |
-| **📱 IPA Builder** | Real iOS app builder | [ipa-builder.netlify.app](https://ipa-builder.netlify.app) | 🟢 Live |
-| **🖨️ Printer Builder** | 3D model generator | [printer-builder.netlify.app](https://printer-builder.netlify.app) | 🟢 Live |
-| **🎮 Game Builder** | Unity game development | [game-build.netlify.app](https://game-build.netlify.app) | 🟢 Live |
-| **🤖 AI Models** | Cross-model AI ensemble | [ai-modelss.netlify.app](https://ai-modelss.netlify.app) | 🟢 Live |
+| Platform | Description | GitHub Repo | Netlify URL | Status |
+|----------|-------------|-------------|-------------|--------|
+| **🌐 Launcher** | Public entry point with security | [Alot1z.github.io](https://github.com/Alot1z/Alot1z.github.io) | [alot1z.github.io](https://alot1z.github.io) | 🟢 Live |
+| **🎛️ Hub UI** | Main interface with VSCode IDE | [hub-ui](https://github.com/Alot1z/hub-ui) | [hub-uii.netlify.app](https://hub-uii.netlify.app) | 🟢 Live |
+| **📱 IPA Builder** | Real iOS app builder | [ipa-builder](https://github.com/Alot1z/ipa-builder) | [ipa-builder.netlify.app](https://ipa-builder.netlify.app) | 🟢 Live |
+| **🖨️ Printer Builder** | 3D model generator | [printer-builder](https://github.com/Alot1z/printer-builder) | [printer-builder.netlify.app](https://printer-builder.netlify.app) | 🟢 Live |
+| **🎮 Game Builder** | Unity game development | [game-builder](https://github.com/Alot1z/game-builder) | [game-build.netlify.app](https://game-build.netlify.app) | 🟢 Live |
+| **🤖 AI Models** | Cross-model AI ensemble | [ai-models](https://github.com/Alot1z/ai-models) | [ai-modelss.netlify.app](https://ai-modelss.netlify.app) | 🟢 Live |
 
 ### ⚡ **Enhanced Platforms**
-| Platform | Description | URL | Status |
-|----------|-------------|-----|--------|
-| **⚡ NEW.BOLT** | Enhanced Bolt.new alternative | [new-bolt.netlify.app](https://new-bolt.netlify.app) | 🟡 Building |
-| **🔧 Qodo-Gen** | Custom AI code generator | [qodo-gen.netlify.app](https://qodo-gen.netlify.app) | 🟡 Building |
+| Platform | Description | GitHub Repo | Netlify URL | Status |
+|----------|-------------|-------------|-------------|--------|
+| **⚡ Bolt.new Clone** | 100% Bolt.new with Multi-Hub AI | [bolt.new](https://github.com/Alot1z/bolt.new) | [bolt-new-multi-hub.netlify.app](https://bolt-new-multi-hub.netlify.app) | 🟢 Live |
+| **🔧 Custom Qodo Gen** | 20x better code generation | [qodo-gen-custom](https://github.com/Alot1z/qodo-gen-custom) | [qodo-gen-multi-hub.netlify.app](https://qodo-gen-multi-hub.netlify.app) | 🟢 Live |
+| **🔗 API Gateway** | Enterprise API for all platforms | [api-alot1z-github-io](https://github.com/Alot1z/api-alot1z-github-io) | [api-alot1z-github-io.netlify.app](https://api-alot1z-github-io.netlify.app) | 🟢 Live |
 
 ---
 
