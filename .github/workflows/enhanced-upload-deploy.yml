@@ -296,7 +296,7 @@ jobs:
   deploy-netlify:
     needs: [prepare, deploy-repositories]
     runs-on: ubuntu-latest
-    if: ${{ vars.NETLIFY_AUTH_TOKEN != '' || secrets.NETLIFY_AUTH_TOKEN != '' }}
+    if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' }}
     strategy:
       matrix:
         project: ${{ fromJson(needs.prepare.outputs.matrix) }}
