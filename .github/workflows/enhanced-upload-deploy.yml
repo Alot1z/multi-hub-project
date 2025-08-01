@@ -410,12 +410,11 @@ jobs:
           if git diff --staged --quiet; then
             echo "ℹ️ No platform.txt changes to commit"
           else
-            git commit -m "🔄 Auto-update platform.txt after deployment
-
-Projects: ${{ needs.prepare.outputs.projects }}
-Mode: ${{ env.DEPLOYMENT_MODE }}
-Commit: ${{ github.sha }}
-Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "🔄 Auto-update platform.txt after deployment" \
+                       -m "Projects: ${{ needs.prepare.outputs.projects }}" \
+                       -m "Mode: ${{ env.DEPLOYMENT_MODE }}" \
+                       -m "Commit: ${{ github.sha }}" \
+                       -m "Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
             
             git push origin main
             echo "✅ Platform configuration updated"
