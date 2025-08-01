@@ -277,7 +277,11 @@ export class SecurityValidator {
 
   private performPermissiveValidation(iframe: HTMLIFrameElement): boolean {
     // Permissive validation: Minimal checks
-    return iframe.src.length > 0 && !iframe.src.startsWith('javascript:')
+    const src = iframe.src.trim().toLowerCase();
+    return src.length > 0 &&
+           !src.startsWith('javascript:') &&
+           !src.startsWith('data:') &&
+           !src.startsWith('vbscript:');
   }
 
   private getCachedValidation(url: string): SecurityValidationResult | null {
