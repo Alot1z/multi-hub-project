@@ -1,9 +1,13 @@
 [build]
   publish = "."
   command = "echo 'Static site - no build required'"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
+
+[functions]
+  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/deploy-status/:service"

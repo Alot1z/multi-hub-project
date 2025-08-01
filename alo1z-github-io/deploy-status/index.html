@@ -43,6 +43,20 @@
             font-size: 1.1rem;
         }
 
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4299e1;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
         .status-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -239,6 +253,8 @@
 </head>
 <body>
     <div class="container">
+        <a href="/" class="back-link">← Back to Multi-Hub Platform</a>
+        
         <div class="header">
             <h1>🚀 Multi-Hub Deploy Status</h1>
             <p>Real-time monitoring of all Multi-Hub platform services</p>
@@ -289,15 +305,15 @@
                 description: 'Public entry point with security',
                 icon: '🌐',
                 url: 'https://alot1z.github.io',
-                statusUrl: 'https://alot1z.github.io'
+                programUrl: '/programs/launcher'
             },
             {
                 id: 'hub-ui',
                 name: 'Hub UI',
                 description: 'Main interface with VSCode IDE',
                 icon: '🎛️',
-                url: 'https://hub-ui.netlify.app',
-                statusUrl: 'https://hub-ui.netlify.app'
+                url: 'https://hub-uii.netlify.app',
+                programUrl: '/programs/hub-ui'
             },
             {
                 id: 'ipa-builder',
@@ -305,7 +321,7 @@
                 description: 'Real iOS app builder',
                 icon: '📱',
                 url: 'https://ipa-builder.netlify.app',
-                statusUrl: 'https://ipa-builder.netlify.app'
+                programUrl: '/programs/ipa-builder'
             },
             {
                 id: 'printer-builder',
@@ -313,95 +329,51 @@
                 description: '3D model generator',
                 icon: '🖨️',
                 url: 'https://printer-builder.netlify.app',
-                statusUrl: 'https://printer-builder.netlify.app'
+                programUrl: '/programs/printer-builder'
             },
             {
                 id: 'game-builder',
                 name: 'Game Builder',
                 description: 'Unity game development',
                 icon: '🎮',
-                url: 'https://game-builder.netlify.app',
-                statusUrl: 'https://game-builder.netlify.app'
+                url: 'https://game-build.netlify.app',
+                programUrl: '/programs/game-builder'
             },
             {
                 id: 'ai-models',
                 name: 'AI Models',
                 description: 'Cross-model AI ensemble',
                 icon: '🤖',
-                url: 'https://ai-models.netlify.app',
-                statusUrl: 'https://ai-models.netlify.app'
+                url: 'https://ai-modelss.netlify.app',
+                programUrl: '/programs/ai-models'
             }
         ];
 
         let serviceStatuses = {};
 
-        async function fetchRealTimeStatus() {
+        async function checkServiceStatus(service) {
             try {
-                const response = await fetch('/api/status', {
-                    method: 'GET',
+                const startTime = Date.now();
+                const response = await fetch(service.url, { 
+                    method: 'HEAD',
+                    mode: 'no-cors',
                     cache: 'no-cache'
                 });
+                const responseTime = Date.now() - startTime;
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-                const data = await response.json();
-                return data;
+                return {
+                    status: 'online',
+                    responseTime: responseTime,
+                    lastChecked: new Date()
+                };
             } catch (error) {
-                console.warn('Failed to fetch real-time status, using fallback:', error);
-                // Fallback to basic status check
-                return await fallbackStatusCheck();
+                return {
+                    status: 'offline',
+                    responseTime: 0,
+                    lastChecked: new Date(),
+                    error: error.message
+                };
             }
-        }
-
-        async function fallbackStatusCheck() {
-            const statusResults = {};
-            
-            for (const service of services) {
-                try {
-                    const startTime = Date.now();
-                    const response = await fetch(service.statusUrl, { 
-                        method: 'HEAD',
-                        mode: 'no-cors',
-                        cache: 'no-cache'
-                    });
-                    const responseTime = Date.now() - startTime;
-                    
-                    statusResults[service.id] = {
-                        status: 'online',
-                        responseTime: responseTime,
-                        lastChecked: new Date().toISOString()
-                    };
-                } catch (error) {
-                    statusResults[service.id] = {
-                        status: 'offline',
-                        responseTime: 0,
-                        lastChecked: new Date().toISOString(),
-                        error: error.message
-                    };
-                }
-            }
-            
-            const onlineCount = Object.values(statusResults).filter(s => s.status === 'online').length;
-            const avgResponseTime = Math.round(
-                Object.values(statusResults)
-                    .filter(s => s.responseTime > 0)
-                    .reduce((sum, s) => sum + s.responseTime, 0) / 
-                Object.values(statusResults).filter(s => s.responseTime > 0).length
-            );
-            
-            return {
-                timestamp: new Date().toISOString(),
-                services: statusResults,
-                summary: {
-                    total: services.length,
-                    online: onlineCount,
-                    offline: services.length - onlineCount,
-                    avgResponseTime: isNaN(avgResponseTime) ? 0 : avgResponseTime,
-                    uptime: ((onlineCount / services.length) * 100).toFixed(1)
-                }
-            };
         }
 
         function createServiceCard(service, status) {
@@ -412,7 +384,7 @@
                               status.status === 'warning' ? '🟡 Warning' : '🔴 Offline';
 
             return `
-                <div class="service-card ${statusClass}" onclick="openServiceDetails('${service.id}')">
+                <div class="service-card ${statusClass}" onclick="openService('${service.programUrl}')">
                     <div class="service-header">
                         <div style="display: flex; align-items: center;">
                             <span class="service-icon">${service.icon}</span>
@@ -427,7 +399,7 @@
                         <span class="status-text ${statusClass}">${statusText}</span>
                         ${status.responseTime > 0 ? `<span style="margin-left: auto; color: #718096;">${status.responseTime}ms</span>` : ''}
                     </div>
-                    <a href="${service.url}" class="service-url" target="_blank" onclick="event.stopPropagation()">
+                    <a href="${service.programUrl}" class="service-url" onclick="event.stopPropagation()">
                         ${service.url}
                     </a>
                 </div>
@@ -478,65 +450,8 @@
             const refreshBtn = document.querySelector('.refresh-btn');
             refreshBtn.style.transform = 'rotate(360deg)';
             
-            try {
-                // Fetch real-time status data
-                const statusData = await fetchRealTimeStatus();
-                
-                // Update service statuses
-                if (statusData.services) {
-                    // If we got array format from API
-                    if (Array.isArray(statusData.services)) {
-                        statusData.services.forEach(service => {
-                            serviceStatuses[service.id] = {
-                                status: service.status,
-                                responseTime: service.responseTime,
-                                lastChecked: service.lastChecked,
-                                github: service.github,
-                                netlify: service.netlify,
-                                error: service.error
-                            };
-                        });
-                    } else {
-                        // If we got object format from fallback
-                        serviceStatuses = statusData.services;
-                    }
-                }
-                
-                // Update summary stats if available
-                if (statusData.summary) {
-                    document.getElementById('totalServices').textContent = statusData.summary.total;
-                    document.getElementById('onlineServices').textContent = statusData.summary.online;
-                    document.getElementById('avgResponseTime').textContent = statusData.summary.avgResponseTime + 'ms';
-                    document.getElementById('uptime').textContent = statusData.summary.uptime + '%';
-                }
-                
-            } catch (error) {
-                console.error('Failed to refresh status:', error);
-                // Fallback to individual service checks
-                for (const service of services) {
-                    try {
-                        const startTime = Date.now();
-                        const response = await fetch(service.statusUrl, { 
-                            method: 'HEAD',
-                            mode: 'no-cors',
-                            cache: 'no-cache'
-                        });
-                        const responseTime = Date.now() - startTime;
-                        
-                        serviceStatuses[service.id] = {
-                            status: 'online',
-                            responseTime: responseTime,
-                            lastChecked: new Date().toISOString()
-                        };
-                    } catch (serviceError) {
-                        serviceStatuses[service.id] = {
-                            status: 'offline',
-                            responseTime: 0,
-                            lastChecked: new Date().toISOString(),
-                            error: serviceError.message
-                        };
-                    }
-                }
+            for (const service of services) {
+                serviceStatuses[service.id] = await checkServiceStatus(service);
             }
 
             renderServices();
@@ -557,11 +472,8 @@
             ).join('');
         }
 
-        function openServiceDetails(serviceId) {
-            const service = services.find(s => s.id === serviceId);
-            if (service) {
-                window.open(`/deploy-status/${serviceId}`, '_blank');
-            }
+        function openService(programUrl) {
+            window.location.href = programUrl;
         }
 
         // Initialize

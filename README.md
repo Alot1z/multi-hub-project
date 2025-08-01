@@ -91,7 +91,7 @@ graph TB
 🎮 **Game Builder** • Unity game development • [game-build.netlify.app](https://game-build.netlify.app) • 🟢 Live  
 🤖 **AI Models** • Cross-model AI ensemble • [ai-modelss.netlify.app](https://ai-modelss.netlify.app) • 🟢 Live  
 
-**📊 [View Full Status Dashboard →](https://multi-hub-deploy-status.netlify.app)**
+**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)**
 
 ---
 
