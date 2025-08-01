@@ -420,28 +420,3 @@ jobs:
             echo "✅ Platform configuration updated"
           fi
 
-  notify:
-    needs: [prepare, deploy-repositories, deploy-netlify, update-platform]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: 📊 Deployment Summary
-        run: |
-          echo "🎉 Multi-Hub Deployment Summary"
-          echo "================================"
-          echo "Projects: ${{ needs.prepare.outputs.projects }}"
-          echo "Mode: ${{ env.DEPLOYMENT_MODE }}"
-          echo "Git MCP: ${{ env.ENABLE_GIT_MCP }}"
-          echo "Platform Update: ${{ env.ENABLE_PLATFORM_UPDATE }}"
-          echo ""
-          echo "Repository Deployment: ${{ needs.deploy-repositories.result }}"
-          echo "Netlify Deployment: ${{ needs.deploy-netlify.result }}"
-          echo "Platform Update: ${{ needs.update-platform.result }}"
-          echo ""
-          echo "🔗 Access your deployed applications:"
-          echo "- Hub UI: https://alot1z-hub-ui.netlify.app"
-          echo "- IPA Builder: https://alot1z-ipa-builder.netlify.app"
-          echo "- Printer Builder: https://alot1z-printer-builder.netlify.app"
-          echo "- Game Builder: https://alot1z-game-builder.netlify.app"
-          echo "- AI Models: https://alot1z-ai-models.netlify.app"
-          echo "- Platform Launcher: https://alot1z.github.io"
