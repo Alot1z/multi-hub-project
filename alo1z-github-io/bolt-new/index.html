@@ -100,8 +100,16 @@
         validateAndRedirect();
         
         // Prevent direct access attempts
-        if (document.referrer && !document.referrer.includes('alot1z.github.io')) {
-            document.body.innerHTML = '<div class="security-check error"><h2>🚫 Access Denied</h2><p>Direct access not permitted</p></div>';
+        if (document.referrer) {
+            try {
+                const refHost = new URL(document.referrer).host;
+                if (refHost !== 'alot1z.github.io') {
+                    document.body.innerHTML = '<div class="security-check error"><h2>🚫 Access Denied</h2><p>Direct access not permitted</p></div>';
+                }
+            } catch (e) {
+                // If referrer is not a valid URL, deny access
+                document.body.innerHTML = '<div class="security-check error"><h2>🚫 Access Denied</h2><p>Direct access not permitted</p></div>';
+            }
         }
     </script>
 </body>
