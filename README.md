@@ -64,23 +64,25 @@ graph TB
 
 ## 📊 **Live System Status**
 
-![System Status](https://img.shields.io/badge/System%20Status-22%25%20Online-red?style=for-the-badge)
+<!-- Embedded Status Widget with Refresh Button -->
+<div align="center">
+  <iframe 
+    src="https://alot1z.github.io/status-widget/readme-status.html" 
+    width="100%" 
+    height="400" 
+    frameborder="0" 
+    style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  </iframe>
+</div>
 
-**🔴 Major Outage** • 2/9 services online (22%) • *Last updated: 08/01/2025, 02:25 PM UTC*
+### 🛡️ **Zero-Drain Status System**
 
-### 🎯 **Service Status:**
+- **🔄 Manual Refresh Only** - Click refresh button to update status
+- **🚫 No Auto-Polling** - Never drains your Netlify services
+- **⚡ Zero Rate Limits** - No risk of hitting bandwidth/API limits
+- **📊 Consistent Data** - Same status across README and dashboard
 
-🌐 **Launcher** • 🟢 Live (297ms) • [https://alot1z.github.io](https://alot1z.github.io)  
-🎛️ **Hub UI** • 🔴 Offline (237ms) • [https://hub-uii.netlify.app](https://hub-uii.netlify.app)  
-📱 **IPA Builder** • 🔴 Offline (208ms) • [https://ipa-builder.netlify.app](https://ipa-builder.netlify.app)  
-🖨️ **Printer Builder** • 🔴 Offline (207ms) • [https://printer-builder.netlify.app](https://printer-builder.netlify.app)  
-🎮 **Game Builder** • 🔴 Offline (247ms) • [https://game-build.netlify.app](https://game-build.netlify.app)  
-🤖 **AI Models** • 🔴 Offline (292ms) • [https://ai-modelss.netlify.app](https://ai-modelss.netlify.app)  
-⚡ **Bolt.new Clone** • 🟢 Live (568ms) • [https://bolt-new-multi-hub.netlify.app](https://bolt-new-multi-hub.netlify.app)  
-🔧 **Qodo Gen** • 🔴 Offline (459ms) • [https://qodo-gen-multi-hub.netlify.app](https://qodo-gen-multi-hub.netlify.app)  
-🔗 **API Gateway** • 🔴 Offline (348ms) • [https://api-alot1z-github-io.netlify.app](https://api-alot1z-github-io.netlify.app)
-
-**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)**
+**📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)** | **🛡️ [Zero-Drain Technical Details →](https://alot1z.github.io/status-api/status.html)**
 
 ---
 

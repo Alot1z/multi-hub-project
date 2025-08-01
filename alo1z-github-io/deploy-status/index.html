@@ -293,9 +293,15 @@
         </div>
     </div>
 
-    <button class="refresh-btn" onclick="refreshStatus()" title="Refresh Status">
-        🔄
+    <button class="refresh-btn" onclick="refreshStatus()" title="Zero-Drain Refresh - Never polls your services!" id="mainRefreshBtn">
+        🛡️ 🔄 Zero-Drain Refresh
     </button>
+    
+    <div style="position: fixed; bottom: 80px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 10px 15px; border-radius: 8px; font-size: 12px; max-width: 200px; z-index: 999;" id="drainInfo">
+        🛡️ <strong>Zero-Drain Mode:</strong><br>
+        No requests to your services!<br>
+        Click refresh to update manually.
+    </div>
 
     <script>
         // 🛡️ ZERO-DRAIN STATUS SYSTEM - NEVER polls your services!
@@ -434,7 +440,16 @@
                 
                 document.getElementById('updateTime').textContent = new Date(currentStatusData.overall.lastUpdated).toLocaleString();
                 
-                console.log('✅ Status updated from unified API:', currentStatusData.overall);
+                console.log('✅ Status updated (zero-drain mode):', currentStatusData.overall);
+                
+                // Update refresh button text
+                const btn = document.getElementById('mainRefreshBtn');
+                if (btn) {
+                    btn.innerHTML = '🛡️ ✅ Refreshed!';
+                    setTimeout(() => {
+                        btn.innerHTML = '🛡️ 🔄 Zero-Drain Refresh';
+                    }, 2000);
+                }
             } catch (error) {
                 console.error('❌ Failed to refresh status:', error);
                 document.getElementById('overallStatus').innerHTML = `
