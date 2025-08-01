@@ -11,12 +11,12 @@ on:
       auto_fix_issues:
         description: 'Automatically fix all found issues'
         required: false
-        default: 'true'
+        default: true
         type: boolean
       deploy_to_netlify:
         description: 'Deploy to Netlify after GitHub'
         required: false
-        default: 'true'
+        default: true
         type: boolean
 
 env:
