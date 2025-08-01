@@ -1,0 +1,118 @@
+5:54:12 PM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+5:55:05 PM: Build ready to start
+5:55:05 PM: build-image version: c440bb785c036c7461456dcbf56442db2c6157c7 (noble)
+5:55:05 PM: buildbot version: c440bb785c036c7461456dcbf56442db2c6157c7
+5:55:05 PM: Fetching cached dependencies
+5:55:06 PM: Starting to download cache of 283.4MB (Last modified: 2025-07-30 15:54:39 +0000 UTC)
+5:55:06 PM: Finished downloading cache in 574ms
+5:55:06 PM: Starting to extract cache
+5:55:12 PM: Finished extracting cache in 5.905s
+5:55:12 PM: Finished fetching cache in 6.548s
+5:55:12 PM: Starting to prepare the repo for build
+5:55:12 PM: Preparing Git Reference refs/heads/main
+5:55:14 PM: Starting to install dependencies
+5:55:14 PM: Started restoring cached python cache
+5:55:14 PM: Finished restoring cached python cache
+5:55:14 PM: Started restoring cached ruby cache
+5:55:14 PM: Finished restoring cached ruby cache
+5:55:14 PM: Started restoring cached go cache
+5:55:15 PM: Finished restoring cached go cache
+5:55:15 PM: v22.17.1 is already installed.
+5:55:15 PM: Now using node v22.17.1 (npm v10.9.2)
+5:55:15 PM: Enabling Node.js Corepack
+5:55:16 PM: Started restoring cached build plugins
+5:55:16 PM: Finished restoring cached build plugins
+5:55:16 PM: Successfully installed dependencies
+5:55:16 PM: Starting build script
+5:55:16 PM: Detected 0 framework(s)
+5:55:16 PM: Section completed: initializing
+5:55:18 PM: ​
+5:55:18 PM: Netlify Build                                                 
+5:55:18 PM: ────────────────────────────────────────────────────────────────
+5:55:18 PM: ​
+5:55:18 PM: ❯ Version
+5:55:18 PM:   @netlify/build 35.0.0
+5:55:18 PM: ​
+5:55:18 PM: ❯ Flags
+5:55:18 PM:   accountId: 627e5bff8a2ec70c878169b5
+5:55:18 PM:   baseRelDir: true
+5:55:18 PM:   buildId: 688a402415086e0008942835
+5:55:18 PM:   deployId: 688a402415086e0008942837
+5:55:18 PM: ​
+5:55:18 PM: ❯ Current directory
+5:55:18 PM:   /opt/build/repo
+5:55:18 PM: ​
+5:55:18 PM: ❯ Config file
+5:55:18 PM:   /opt/build/repo/netlify.toml
+5:55:18 PM: ​
+5:55:18 PM: ❯ Context
+5:55:18 PM:   production
+5:55:18 PM: ​
+5:55:18 PM: ❯ Installing extensions
+5:55:18 PM:    - neon
+5:55:19 PM: ​
+5:55:19 PM: ❯ Loading extensions
+5:55:19 PM:    - neon
+5:55:20 PM: ​
+5:55:20 PM: build.command from netlify.toml                               
+5:55:20 PM: ────────────────────────────────────────────────────────────────
+5:55:20 PM: ​
+5:55:20 PM: $ echo 'TrollStore Factory deployed successfully'
+5:55:20 PM: TrollStore Factory deployed successfully
+5:55:20 PM: ​
+5:55:20 PM: (build.command completed in 6ms)
+5:55:20 PM: ​
+5:55:20 PM: Functions bundling                                            
+5:55:20 PM: ────────────────────────────────────────────────────────────────
+5:55:20 PM: ​
+5:55:20 PM: The Netlify Functions setting targets a non-existing directory: netlify/functions
+5:55:20 PM: ​
+5:55:20 PM: (Functions bundling completed in 1ms)
+5:55:20 PM: ​
+5:55:20 PM: Deploy site                                                   
+5:55:20 PM: ────────────────────────────────────────────────────────────────
+5:55:20 PM: ​
+5:55:21 PM: Skipping form detection
+5:55:21 PM: Post processing - header rules
+5:55:21 PM: Post processing - redirect rules
+5:55:21 PM: Post processing done
+5:55:21 PM: Section completed: postprocessing
+5:55:21 PM: Starting post processing
+5:55:21 PM: Starting to deploy site from '.'
+5:55:21 PM: Calculating files to upload
+5:55:21 PM: 0 new file(s) to upload
+5:55:21 PM: 0 new function(s) to upload
+5:55:21 PM: Section completed: deploying
+5:55:21 PM: Site deploy was successfully initiated
+5:55:21 PM: ​
+5:55:21 PM: (Deploy site completed in 482ms)
+5:55:21 PM: ​
+5:55:21 PM: Netlify Build Complete                                        
+5:55:21 PM: ────────────────────────────────────────────────────────────────
+5:55:21 PM: ​
+5:55:21 PM: (Netlify Build completed in 3.5s)
+5:55:22 PM: Site is live ✨
+5:55:27 PM: Caching artifacts
+5:55:27 PM: Started saving build plugins
+5:55:27 PM: Finished saving build plugins
+5:55:27 PM: Started saving bun cache
+5:55:27 PM: Finished saving bun cache
+5:55:27 PM: Started saving go cache
+5:55:27 PM: Finished saving go cache
+5:55:27 PM: Started saving python cache
+5:55:27 PM: Finished saving python cache
+5:55:27 PM: Started saving ruby cache
+5:55:27 PM: Finished saving ruby cache
+5:55:27 PM: Started saving emacs cask dependencies
+5:55:27 PM: Finished saving emacs cask dependencies
+5:55:27 PM: Started saving maven dependencies
+5:55:28 PM: Finished saving maven dependencies
+5:55:28 PM: Started saving boot dependencies
+5:55:28 PM: Finished saving boot dependencies
+5:55:28 PM: Started saving rust rustup cache
+5:55:28 PM: Finished saving rust rustup cache
+5:55:28 PM: Build script success
+5:55:28 PM: Section completed: building
+5:56:25 PM: Uploading Cache of size 283.4MB
+5:56:26 PM: Section completed: cleanup
+5:56:26 PM: Finished processing build request in 1m20.732s

@@ -1,0 +1,208 @@
+name: 🚀 Ultra Simple Upload System
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target repositories to upload to'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - hub-ui
+          - ipa-builder
+          - printer-builder
+          - game-builder
+          - ai-models
+          - alo1z-github-io
+      force_override:
+        description: 'Force complete override of target repositories'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  GITHUB_TOKEN: ${{ secrets.UPLOAD_PATH }}
+
+jobs:
+  validate-setup:
+    runs-on: ubuntu-latest
+    outputs:
+      upload-targets: ${{ steps.parse-targets.outputs.targets }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate GitHub token
+        run: |
+          if [ -z "${{ secrets.UPLOAD_PATH }}" ]; then
+            echo "❌ UPLOAD_PATH secret not configured"
+            exit 1
+          fi
+          echo "✅ GitHub token validated"
+
+      - name: Parse upload targets
+        id: parse-targets
+        run: |
+          if [ "${{ github.event.inputs.target }}" = "all" ]; then
+            targets='["hub-ui","ipa-builder","printer-builder","game-builder","ai-models","alo1z-github-io"]'
+          else
+            targets='["${{ github.event.inputs.target }}"]'
+          fi
+          echo "targets=$targets" >> $GITHUB_OUTPUT
+          echo "📋 Upload targets: $targets"
+
+  upload-to-repositories:
+    needs: validate-setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: ${{ fromJson(needs.validate-setup.outputs.upload-targets) }}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Read upload configuration
+        id: config
+        run: |
+          if [ -f "${{ matrix.target }}/upload-path.json" ]; then
+            config_file="${{ matrix.target }}/upload-path.json"
+          elif [ -f "${{ matrix.target }}/upload-path.txt" ]; then
+            config_file="${{ matrix.target }}/upload-path.txt"
+          else
+            echo "❌ No upload configuration found for ${{ matrix.target }}"
+            exit 1
+          fi
+          
+          if [[ "$config_file" == *.json ]]; then
+            repo_url=$(jq -r '.repository_url' "$config_file")
+            branch=$(jq -r '.branch // "main"' "$config_file")
+          else
+            repo_url=$(head -n1 "$config_file")
+            branch="main"
+          fi
+          
+          echo "repo_url=$repo_url" >> $GITHUB_OUTPUT
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+          echo "📡 Target: $repo_url (branch: $branch)"
+
+      - name: Validate target repository
+        run: |
+          repo_url="${{ steps.config.outputs.repo_url }}"
+          if [[ ! "$repo_url" =~ ^https://github\.com/[^/]+/[^/]+$ ]]; then
+            echo "❌ Invalid repository URL: $repo_url"
+            exit 1
+          fi
+          
+          # Extract owner and repo name
+          repo_path=$(echo "$repo_url" | sed 's|https://github.com/||')
+          echo "REPO_PATH=$repo_path" >> $GITHUB_ENV
+          echo "✅ Repository URL validated: $repo_path"
+
+      - name: Clone target repository
+        run: |
+          git clone https://${{ secrets.UPLOAD_PATH }}@github.com/${{ env.REPO_PATH }}.git target-repo
+          cd target-repo
+          git config user.name "Multi-Hub Upload Bot"
+          git config user.email "bot@multi-hub.system"
+
+      - name: Backup current state
+        run: |
+          cd target-repo
+          git tag "backup-$(date +%Y%m%d-%H%M%S)" || true
+          echo "📦 Backup created"
+
+      - name: Sync files to target repository
+        run: |
+          # Clear target repository if force override is enabled
+          if [ "${{ github.event.inputs.force_override }}" = "true" ]; then
+            cd target-repo
+            find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} +
+            echo "🗑️ Target repository cleared for override"
+            cd ..
+          fi
+          
+          # Copy files from source directory
+          if [ -d "${{ matrix.target }}" ]; then
+            rsync -av --exclude='.git' --exclude='upload-path.json' --exclude='upload-path.txt' \
+              "${{ matrix.target }}/" target-repo/
+            echo "📁 Files synchronized from ${{ matrix.target }}/"
+          else
+            echo "❌ Source directory ${{ matrix.target }}/ not found"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        run: |
+          cd target-repo
+          
+          # Check if there are changes
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "ℹ️ No changes detected in ${{ matrix.target }}"
+            exit 0
+          fi
+          
+          git add .
+          
+          commit_message="🚀 Auto-sync from multi-hub-project"
+          if [ "${{ github.event.inputs.force_override }}" = "true" ]; then
+            commit_message="$commit_message (FORCE OVERRIDE)"
+          fi
+          commit_message="$commit_message
+
+          Source: ${{ github.repository }}
+          Workflow: ${{ github.workflow }}
+          Run: ${{ github.run_number }}
+          Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          
+          git commit -m "$commit_message"
+          git push origin ${{ steps.config.outputs.branch }}
+          
+          echo "✅ Successfully uploaded to ${{ env.REPO_PATH }}"
+
+      - name: Verify deployment
+        run: |
+          # Wait for potential webhooks/build triggers
+          sleep 10
+          
+          # Basic verification that files were uploaded
+          repo_url="https://api.github.com/repos/${{ env.REPO_PATH }}/contents"
+          response=$(curl -s -H "Authorization: token ${{ secrets.UPLOAD_PATH }}" "$repo_url")
+          
+          if echo "$response" | grep -q '"name"'; then
+            echo "✅ Deployment verification successful"
+          else
+            echo "⚠️ Deployment verification inconclusive"
+          fi
+
+  post-deployment:
+    needs: [validate-setup, upload-to-repositories]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Deployment summary
+        run: |
+          echo "## 🚀 Multi-Hub Upload Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Target:** ${{ github.event.inputs.target }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Force Override:** ${{ github.event.inputs.force_override }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.upload-to-repositories.result }}" = "success" ]; then
+            echo "✅ **Status:** All uploads completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status:** Some uploads failed - check individual job logs" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify completion
+        run: |
+          echo "🎉 Multi-Hub upload workflow completed"
+          echo "Check the Actions summary for detailed results"

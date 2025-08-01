@@ -1,0 +1,119 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis:**
+The build failure is caused by TypeScript configuration errors identified in the `tsconfig.json` file.
+
+**Solution:**
+1. In the `tsconfig.json` file, update the following options:
+   - Line 8: Change `--moduleResolution` option to `'node'` or other valid values like `'classic'`, `'node16'`, `'nodenext'`.
+   - Line 9: Remove the compiler option `allowImportingTsExtensions`.
+   - Line 10: Add the module resolution strategy `'node'` for the `--resolveJsonModule` option.
+
+2. After making these changes, commit the updated `tsconfig.json` to the repository and trigger a new build to verify the issue is resolved.
+
+3. If the issue persists, ensure that the correct TypeScript compiler version is being used based on the project requirements.
+
+4. Verify the package is in the `package.json` and committed to the repository as required by the build process.
+
+5. If there are Node or Node.js version mismatches, refer to the documentation for [changing Node versions](https://docs.netlify.com/configure-builds/manage-dependencies/#node-js-and-javascript) to ensure compatibility.
+
+The relevant error logs are:
+
+Line 0: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+Line 1: Build ready to start
+Line 2: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+Line 3: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+Line 4: Fetching cached dependencies
+Line 5: Failed to fetch cache, continuing with build
+Line 6: Starting to prepare the repo for build
+Line 7: No cached dependencies found. Cloning fresh repo
+Line 8: git clone --filter=blob:none https://github.com/Alot1z/ai-models
+Line 9: Preparing Git Reference refs/heads/main
+
+12:11:21 AM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+12:15:15 AM: Build ready to start
+12:15:16 AM: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+12:15:16 AM: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+12:15:16 AM: Fetching cached dependencies
+12:15:16 AM: Failed to fetch cache, continuing with build
+12:15:16 AM: Starting to prepare the repo for build
+12:15:17 AM: No cached dependencies found. Cloning fresh repo
+12:15:17 AM: git clone --filter=blob:none https://github.com/Alot1z/ai-models
+12:15:17 AM: Preparing Git Reference refs/heads/main
+12:15:19 AM: Starting to install dependencies
+12:15:20 AM: v22.17.1 is already installed.
+12:15:20 AM: Now using node v22.17.1 (npm v10.9.2)
+12:15:20 AM: Enabling Node.js Corepack
+12:15:20 AM: Started restoring cached build plugins
+12:15:20 AM: Finished restoring cached build plugins
+12:15:20 AM: Started restoring cached corepack dependencies
+12:15:20 AM: Finished restoring cached corepack dependencies
+12:15:20 AM: No npm workspaces detected
+12:15:20 AM: Started restoring cached node modules
+12:15:20 AM: Finished restoring cached node modules
+12:15:20 AM: Installing npm packages using npm version 10.9.2
+12:15:27 AM: added 166 packages in 7s
+12:15:27 AM: npm packages installed
+12:15:27 AM: Successfully installed dependencies
+12:15:27 AM: Starting build script
+12:15:28 AM: Detected 1 framework(s)
+12:15:28 AM: "vite" at version "4.5.14"
+12:15:28 AM: Section completed: initializing
+12:15:29 AM: ​
+12:15:29 AM: Netlify Build                                                 
+12:15:29 AM: ────────────────────────────────────────────────────────────────
+12:15:29 AM: ​
+12:15:29 AM: ❯ Version
+12:15:29 AM:   @netlify/build 34.3.0
+12:15:29 AM: ​
+12:15:29 AM: ❯ Flags
+12:15:29 AM:   accountId: 627e5bff8a2ec70c878169b5
+12:15:29 AM:   baseRelDir: true
+12:15:29 AM:   buildId: 688947099b0ec20008b76b54
+12:15:29 AM:   deployId: 688947099b0ec20008b76b56
+12:15:30 AM: ​
+12:15:30 AM: ❯ Current directory
+12:15:30 AM:   /opt/build/repo
+12:15:30 AM: ​
+12:15:30 AM: ❯ Config file
+12:15:30 AM:   No config file was defined: using default values.
+12:15:30 AM: ​
+12:15:30 AM: ❯ Context
+12:15:30 AM:   production
+12:15:30 AM: ​
+12:15:30 AM: ❯ Installing extensions
+12:15:30 AM:    - neon
+12:15:50 AM: ​
+12:15:50 AM: ❯ Loading extensions
+12:15:50 AM:    - neon
+12:15:51 AM: ​
+12:15:51 AM: Build command from Netlify app                                
+12:15:51 AM: ────────────────────────────────────────────────────────────────
+12:15:51 AM: ​
+12:15:51 AM: $ npm run build
+12:15:51 AM: > ai-models@1.0.0 build
+12:15:51 AM: > tsc && vite build
+12:15:52 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+12:15:52 AM: tsconfig.json(8,25): error TS6046: Argument for '--moduleResolution' option must be: 'node', 'classic', 'node16', 'nodenext'.
+12:15:52 AM: tsconfig.json(9,5): error TS5023: Unknown compiler option 'allowImportingTsExtensions'.
+12:15:52 AM: tsconfig.json(10,5): error TS5070: Option '--resolveJsonModule' cannot be specified without 'node' module resolution strategy.
+12:15:52 AM: ​
+12:15:52 AM: "build.command" failed                                        
+12:15:52 AM: ────────────────────────────────────────────────────────────────
+12:15:52 AM: ​
+12:15:52 AM:   Error message
+12:15:52 AM:   Command failed with exit code 2: npm run build (https://ntl.fyi/exit-code-2)
+12:15:52 AM: ​
+12:15:52 AM:   Error location
+12:15:52 AM:   In Build command from Netlify app:
+12:15:52 AM:   npm run build
+12:15:52 AM: ​
+12:15:52 AM:   Resolved config
+12:15:52 AM:   build:
+12:15:52 AM:     command: npm run build
+12:15:52 AM:     commandOrigin: ui
+12:15:52 AM:     publish: /opt/build/repo/dist
+12:15:52 AM:     publishOrigin: ui
+12:15:52 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+12:15:52 AM: Failing build: Failed to build site
+12:15:53 AM: Finished processing build request in 36.473s

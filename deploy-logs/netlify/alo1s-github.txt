@@ -1,0 +1,103 @@
+12:19:27 AM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+12:20:19 AM: Build ready to start
+12:20:25 AM: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+12:20:25 AM: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+12:20:25 AM: Fetching cached dependencies
+12:20:25 AM: Starting to download cache of 249.2MB (Last modified: 2025-07-29 22:18:43 +0000 UTC)
+12:20:26 AM: Finished downloading cache in 832ms
+12:20:26 AM: Starting to extract cache
+12:20:35 AM: Finished extracting cache in 8.664s
+12:20:35 AM: Finished fetching cache in 9.617s
+12:20:35 AM: Starting to prepare the repo for build
+12:20:35 AM: Preparing Git Reference refs/heads/main
+12:20:37 AM: Starting to install dependencies
+12:20:37 AM: Started restoring cached python cache
+12:20:38 AM: Finished restoring cached python cache
+12:20:38 AM: Started restoring cached ruby cache
+12:20:39 AM: Finished restoring cached ruby cache
+12:20:39 AM: Started restoring cached go cache
+12:20:39 AM: Finished restoring cached go cache
+12:20:40 AM: v22.17.1 is already installed.
+12:20:40 AM: Now using node v22.17.1 (npm v10.9.2)
+12:20:40 AM: Enabling Node.js Corepack
+12:20:40 AM: Started restoring cached build plugins
+12:20:40 AM: Finished restoring cached build plugins
+12:20:40 AM: Successfully installed dependencies
+12:20:40 AM: Starting build script
+12:20:41 AM: Detected 0 framework(s)
+12:20:41 AM: Section completed: initializing
+12:20:43 AM: ​
+12:20:43 AM: Netlify Build                                                 
+12:20:43 AM: ────────────────────────────────────────────────────────────────
+12:20:43 AM: ​
+12:20:43 AM: ❯ Version
+12:20:43 AM:   @netlify/build 34.3.0
+12:20:43 AM: ​
+12:20:43 AM: ❯ Flags
+12:20:43 AM:   accountId: 627e5bff8a2ec70c878169b5
+12:20:43 AM:   baseRelDir: true
+12:20:43 AM:   buildId: 688948ef85a20a00084f328b
+12:20:43 AM:   deployId: 688948ef85a20a00084f328d
+12:20:43 AM: ​
+12:20:43 AM: ❯ Current directory
+12:20:43 AM:   /opt/build/repo
+12:20:43 AM: ​
+12:20:43 AM: ❯ Config file
+12:20:43 AM:   No config file was defined: using default values.
+12:20:43 AM: ​
+12:20:43 AM: ❯ Context
+12:20:43 AM:   production
+12:20:43 AM: ​
+12:20:43 AM: ❯ Installing extensions
+12:20:43 AM:    - neon
+12:20:44 AM: ​
+12:20:44 AM: ❯ Loading extensions
+12:20:44 AM:    - neon
+12:20:45 AM: ​
+12:20:45 AM: Deploy site                                                   
+12:20:45 AM: ────────────────────────────────────────────────────────────────
+12:20:45 AM: ​
+12:20:45 AM: Starting to deploy site from '/'
+12:20:45 AM: Calculating files to upload
+12:20:46 AM: Post processing done
+12:20:46 AM: Section completed: postprocessing
+12:20:46 AM: Post processing - header rules
+12:20:46 AM: Post processing - redirect rules
+12:20:46 AM: Starting post processing
+12:20:46 AM: Skipping form detection
+12:20:46 AM: 1 new file(s) to upload
+12:20:46 AM: 0 new function(s) to upload
+12:20:46 AM: Section completed: deploying
+12:20:46 AM: Site deploy was successfully initiated
+12:20:46 AM: ​
+12:20:46 AM: (Deploy site completed in 806ms)
+12:20:46 AM: ​
+12:20:46 AM: Netlify Build Complete                                        
+12:20:46 AM: ────────────────────────────────────────────────────────────────
+12:20:46 AM: ​
+12:20:46 AM: (Netlify Build completed in 3.4s)
+12:20:46 AM: Caching artifacts
+12:20:46 AM: Started saving build plugins
+12:20:46 AM: Finished saving build plugins
+12:20:46 AM: Started saving bun cache
+12:20:47 AM: Site is live ✨
+12:20:47 AM: Finished saving bun cache
+12:20:47 AM: Started saving go cache
+12:20:47 AM: Finished saving go cache
+12:20:47 AM: Started saving python cache
+12:20:47 AM: Finished saving python cache
+12:20:47 AM: Started saving ruby cache
+12:20:47 AM: Finished saving ruby cache
+12:20:47 AM: Started saving emacs cask dependencies
+12:20:47 AM: Finished saving emacs cask dependencies
+12:20:47 AM: Started saving maven dependencies
+12:20:47 AM: Finished saving maven dependencies
+12:20:47 AM: Started saving boot dependencies
+12:20:47 AM: Finished saving boot dependencies
+12:20:47 AM: Started saving rust rustup cache
+12:20:47 AM: Finished saving rust rustup cache
+12:20:48 AM: Build script success
+12:20:48 AM: Section completed: building
+12:20:58 AM: Uploading Cache of size 249.1MB
+12:20:59 AM: Section completed: cleanup
+12:20:59 AM: Finished processing build request in 33.657s

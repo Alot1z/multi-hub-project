@@ -1,0 +1,168 @@
+The Netlify deploy errored, with the following guidance provided:
+
+### Diagnosis:
+The build failed with the following error:
+```
+Deploy did not succeed: Deploy directory 'dist' does not exist
+```
+
+### Solution:
+1. The error indicates that the deploy directory 'dist' is missing.
+2. Check if your build process generates the 'dist' directory with the output files.
+3. Update the publish directory in your Netlify configuration to point to the correct directory. 
+4. Make sure the 'dist' directory is correctly defined in your build settings, or update the publish directory in your Netlify configuration to match the directory where your build process outputs the static files.
+
+The relevant error logs are:
+
+Line 0: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+Line 1: Build ready to start
+Line 2: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+Line 3: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+Line 4: Fetching cached dependencies
+Line 5: Failed to fetch cache, continuing with build
+Line 6: Starting to prepare the repo for build
+Line 7: No cached dependencies found. Cloning fresh repo
+Line 8: git clone --filter=blob:none https://github.com/Alot1z/printer-builder
+Line 9: Preparing Git Reference refs/heads/main
+Line 10: Custom build command detected. Proceeding with the specified command: 'echo 'Static HTML deployment''
+Line 11: Starting to install dependencies
+Line 12: v22.17.1 is already installed.
+Line 13: Now using node v22.17.1 (npm v10.9.2)
+Line 14: Enabling Node.js Corepack
+Line 15: Started restoring cached build plugins
+Line 68: ​
+Line 69: The Netlify Functions setting targets a non-existing directory: netlify/functions
+Line 70: ​
+Line 71: [90m(Functions bundling completed in 2ms)[39m
+Line 72: [96m[1m​[22m[39m
+Line 73: [96m[1mDeploy site                                                   [22m[39m
+Line 74: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 75: ​
+Line 76: Section completed: deploying
+Line 77: [91m[1m​[22m[39m
+Line 78: [91m[1mConfiguration error                                           [22m[39m
+Line 79: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 80: ​
+Line 81:   [31m[1mError message[22m[39m
+Line 82:   Deploy did not succeed: Deploy directory 'dist' does not exist
+Line 83: ​
+Line 84:   [31m[1mResolved config[22m[39m
+Line 85:   build:
+Line 86:     command: echo 'Static HTML deployment'
+Line 87:     commandOrigin: config
+Line 88:     publish: /opt/build/repo
+Line 89:     publishOrigin: config
+Line 90:   functionsDirectory: /opt/build/repo/netlify/functions
+Line 91:   headers:
+Line 92:     - for: /*
+      values:
+        Access-Control-Allow-Headers: Content-Type
+        Access-Control-Allow-Methods: GET, POST, 
+Line 93: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 94: Failing build: Failed to build site
+Line 95: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 96: Finished processing build request in 36.514s
+
+12:40:56 AM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+12:42:38 AM: Build ready to start
+12:42:39 AM: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+12:42:39 AM: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+12:42:39 AM: Fetching cached dependencies
+12:42:39 AM: Failed to fetch cache, continuing with build
+12:42:39 AM: Starting to prepare the repo for build
+12:42:40 AM: No cached dependencies found. Cloning fresh repo
+12:42:40 AM: git clone --filter=blob:none https://github.com/Alot1z/printer-builder
+12:42:40 AM: Preparing Git Reference refs/heads/main
+12:42:41 AM: Custom build command detected. Proceeding with the specified command: 'echo 'Static HTML deployment''
+12:42:42 AM: Starting to install dependencies
+12:42:43 AM: v22.17.1 is already installed.
+12:42:43 AM: Now using node v22.17.1 (npm v10.9.2)
+12:42:43 AM: Enabling Node.js Corepack
+12:42:43 AM: Started restoring cached build plugins
+12:42:43 AM: Finished restoring cached build plugins
+12:42:43 AM: Started restoring cached corepack dependencies
+12:42:43 AM: Finished restoring cached corepack dependencies
+12:42:43 AM: No npm workspaces detected
+12:42:43 AM: Started restoring cached node modules
+12:42:43 AM: Finished restoring cached node modules
+12:42:43 AM: Installing npm packages using npm version 10.9.2
+12:42:51 AM: added 170 packages in 7s
+12:42:51 AM: npm packages installed
+12:42:51 AM: Successfully installed dependencies
+12:42:51 AM: Starting build script
+12:42:52 AM: Detected 1 framework(s)
+12:42:52 AM: "vite" at version "4.5.14"
+12:42:52 AM: Section completed: initializing
+12:42:53 AM: ​
+12:42:53 AM: Netlify Build                                                 
+12:42:53 AM: ────────────────────────────────────────────────────────────────
+12:42:53 AM: ​
+12:42:53 AM: ❯ Version
+12:42:53 AM:   @netlify/build 34.3.0
+12:42:53 AM: ​
+12:42:53 AM: ❯ Flags
+12:42:53 AM:   accountId: 627e5bff8a2ec70c878169b5
+12:42:53 AM:   baseRelDir: true
+12:42:53 AM:   buildId: 68894df84f112f00088240d2
+12:42:53 AM:   deployId: 68894df84f112f00088240d4
+12:42:53 AM: ​
+12:42:53 AM: ❯ Current directory
+12:42:53 AM:   /opt/build/repo
+12:42:53 AM: ​
+12:42:53 AM: ❯ Config file
+12:42:53 AM:   /opt/build/repo/netlify.toml
+12:42:53 AM: ​
+12:42:53 AM: ❯ Context
+12:42:53 AM:   production
+12:42:53 AM: ​
+12:42:53 AM: ❯ Installing extensions
+12:42:53 AM:    - neon
+12:43:14 AM: ​
+12:43:14 AM: ❯ Loading extensions
+12:43:14 AM:    - neon
+12:43:15 AM: ​
+12:43:15 AM: build.command from netlify.toml                               
+12:43:15 AM: ────────────────────────────────────────────────────────────────
+12:43:15 AM: ​
+12:43:15 AM: $ echo 'Static HTML deployment'
+12:43:15 AM: Static HTML deployment
+12:43:15 AM: ​
+12:43:15 AM: (build.command completed in 7ms)
+12:43:15 AM: ​
+12:43:15 AM: Functions bundling                                            
+12:43:15 AM: ────────────────────────────────────────────────────────────────
+12:43:15 AM: ​
+12:43:15 AM: The Netlify Functions setting targets a non-existing directory: netlify/functions
+12:43:15 AM: ​
+12:43:15 AM: (Functions bundling completed in 2ms)
+12:43:15 AM: ​
+12:43:15 AM: Deploy site                                                   
+12:43:15 AM: ────────────────────────────────────────────────────────────────
+12:43:15 AM: ​
+12:43:15 AM: Section completed: deploying
+12:43:15 AM: ​
+12:43:15 AM: Configuration error                                           
+12:43:15 AM: ────────────────────────────────────────────────────────────────
+12:43:15 AM: ​
+12:43:15 AM:   Error message
+12:43:15 AM:   Deploy did not succeed: Deploy directory 'dist' does not exist
+12:43:15 AM: ​
+12:43:15 AM:   Resolved config
+12:43:15 AM:   build:
+12:43:15 AM:     command: echo 'Static HTML deployment'
+12:43:15 AM:     commandOrigin: config
+12:43:15 AM:     publish: /opt/build/repo
+12:43:15 AM:     publishOrigin: config
+12:43:15 AM:   functionsDirectory: /opt/build/repo/netlify/functions
+12:43:15 AM:   headers:
+12:43:15 AM:     - for: /*
+      values:
+        Access-Control-Allow-Headers: Content-Type
+        Access-Control-Allow-Methods: GET, POST, OPTIONS
+        Access-Control-Allow-Origin: "*"
+        X-Frame-Options: ALLOWALL
+  headersOrigin: config
+12:43:15 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+12:43:15 AM: Failing build: Failed to build site
+12:43:16 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+12:43:16 AM: Finished processing build request in 36.514s

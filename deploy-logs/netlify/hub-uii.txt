@@ -1,0 +1,144 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis:**
+The build failure is due to TypeScript configuration errors. The TypeScript compiler is throwing errors related to `--moduleResolution`, `allowImportingTsExtensions`, and `--resolveJsonModule` options in the `tsconfig.json` file.
+
+**Solution:**
+To resolve the TypeScript configuration errors:
+1. In the `tsconfig.json` file, make the following changes:
+   - Replace `'moduleResolution': 'classic'` with `'moduleResolution': 'node'` at line 8.
+   - Remove the `allowImportingTsExtensions` option at line 9.
+   - Make sure to remove the `--resolveJsonModule` option or add `'module': 'node'` before it.
+
+Make these adjustments to the `tsconfig.json` file, commit the changes to your repository, and trigger a new build.
+
+The relevant error logs are:
+
+Line 0: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+Line 1: Build ready to start
+Line 2: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+Line 3: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+Line 4: Fetching cached dependencies
+Line 5: Failed to fetch cache, continuing with build
+Line 6: Starting to prepare the repo for build
+Line 7: No cached dependencies found. Cloning fresh repo
+Line 8: git clone --filter=blob:none https://github.com/Alot1z/hub-ui
+Line 9: Preparing Git Reference refs/heads/main
+
+12:11:18 AM: Waiting for other deploys from your team to complete. Check the queue: https://app.netlify.com/teams/cubpuyi/builds
+12:12:56 AM: Build ready to start
+12:12:56 AM: build-image version: 5868f12b6a471c2a851a30e8ba1fb45822457287 (noble)
+12:12:56 AM: buildbot version: 76bec402a7c9574a91cb1119e87c006e176e8932
+12:12:57 AM: Fetching cached dependencies
+12:12:57 AM: Failed to fetch cache, continuing with build
+12:12:57 AM: Starting to prepare the repo for build
+12:12:57 AM: No cached dependencies found. Cloning fresh repo
+12:12:57 AM: git clone --filter=blob:none https://github.com/Alot1z/hub-ui
+12:12:57 AM: Preparing Git Reference refs/heads/main
+12:12:59 AM: Starting to install dependencies
+12:13:00 AM: Downloading and installing node v18.20.8...
+12:13:00 AM: Downloading https://nodejs.org/dist/v18.20.8/node-v18.20.8-linux-x64.tar.xz...
+12:13:01 AM: Computing checksum with sha256sum
+12:13:01 AM: Checksums matched!
+12:13:03 AM: Now using node v18.20.8 (npm v10.8.2)
+12:13:03 AM: Enabling Node.js Corepack
+12:13:03 AM: Started restoring cached build plugins
+12:13:03 AM: Finished restoring cached build plugins
+12:13:03 AM: Started restoring cached corepack dependencies
+12:13:03 AM: Finished restoring cached corepack dependencies
+12:13:03 AM: No npm workspaces detected
+12:13:03 AM: Started restoring cached node modules
+12:13:03 AM: Finished restoring cached node modules
+12:13:03 AM: Installing npm packages using npm version 10.8.2
+12:13:12 AM: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+12:13:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+12:13:12 AM: npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+12:13:12 AM: npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+12:13:12 AM: npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+12:13:13 AM: npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+12:13:13 AM: added 269 packages in 10s
+12:13:13 AM: npm packages installed
+12:13:13 AM: Successfully installed dependencies
+12:13:13 AM: Starting build script
+12:13:14 AM: Detected 1 framework(s)
+12:13:14 AM: "vite" at version "4.5.14"
+12:13:14 AM: Section completed: initializing
+12:13:16 AM: ​
+12:13:16 AM: Netlify Build                                                 
+12:13:16 AM: ────────────────────────────────────────────────────────────────
+12:13:16 AM: ​
+12:13:16 AM: ❯ Version
+12:13:16 AM:   @netlify/build 34.3.0
+12:13:16 AM: ​
+12:13:16 AM: ❯ Flags
+12:13:16 AM:   accountId: 627e5bff8a2ec70c878169b5
+12:13:16 AM:   baseRelDir: true
+12:13:16 AM:   buildId: 68894706bce38500087fe502
+12:13:16 AM:   deployId: 68894706bce38500087fe504
+12:13:16 AM: ​
+12:13:16 AM: ❯ Current directory
+12:13:16 AM:   /opt/build/repo
+12:13:16 AM: ​
+12:13:16 AM: ❯ Config file
+12:13:16 AM:   /opt/build/repo/netlify.toml
+12:13:16 AM: ​
+12:13:16 AM: ❯ Context
+12:13:16 AM:   production
+12:13:16 AM: ​
+12:13:16 AM: ❯ Installing extensions
+12:13:16 AM:    - neon
+12:13:35 AM: ​
+12:13:35 AM: ❯ Loading extensions
+12:13:35 AM:    - neon
+12:13:36 AM: ​
+12:13:36 AM: build.command from netlify.toml                               
+12:13:36 AM: ────────────────────────────────────────────────────────────────
+12:13:36 AM: ​
+12:13:36 AM: $ npm run build
+12:13:37 AM: > multi-hub-platform@1.0.0 build
+12:13:37 AM: > tsc && vite build
+12:13:37 AM: tsconfig.json(8,25): error TS6046: Argument for '--moduleResolution' option must be: 'node', 'classic', 'node16', 'nodenext'.
+12:13:37 AM: tsconfig.json(9,5): error TS5023: Unknown compiler option 'allowImportingTsExtensions'.
+12:13:37 AM: tsconfig.json(10,5): error TS5070: Option '--resolveJsonModule' cannot be specified without 'node' module resolution strategy.
+12:13:38 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+12:13:38 AM: ​
+12:13:38 AM: "build.command" failed                                        
+12:13:38 AM: ────────────────────────────────────────────────────────────────
+12:13:38 AM: ​
+12:13:38 AM:   Error message
+12:13:38 AM:   Command failed with exit code 2: npm run build (https://ntl.fyi/exit-code-2)
+12:13:38 AM: ​
+12:13:38 AM:   Error location
+12:13:38 AM:   In build.command from netlify.toml:
+12:13:38 AM:   npm run build
+12:13:38 AM: ​
+12:13:38 AM:   Resolved config
+12:13:38 AM:   build:
+12:13:38 AM:     command: npm run build
+12:13:38 AM:     commandOrigin: config
+12:13:38 AM:     environment:
+12:13:38 AM:       - NODE_VERSION
+12:13:38 AM:     publish: /opt/build/repo/dist
+12:13:38 AM:     publishOrigin: config
+12:13:38 AM:   functionsDirectory: /opt/build/repo/netlify/functions
+12:13:38 AM:   headers:
+12:13:38 AM:     - for: /*
+      values:
+        Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline';
+          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src
+          'self' https://fonts.gstatic.com; img-src 'self' data: https:;
+          connect-src 'self' https://alo1z.github.io
+          https://raw.githubusercontent.com; frame-src 'self'
+          https://*.netlify.app https://*.windsurf.build;"
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Frame-Options: SAMEORIGIN
+  headersOrigin: config
+  redirects:
+    - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+12:13:38 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+12:13:38 AM: Failing build: Failed to build site
+12:13:38 AM: Finished processing build request in 41.783s
