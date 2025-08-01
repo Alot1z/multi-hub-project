@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "git-mcp-readonly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "git-mcp"
+      ],
+      "env": {
+        "GIT_MCP_MODE": "readonly",
+        "GIT_MCP_REPO_ACCESS": "read-only",
+        "GIT_MCP_NO_PUSH": "true",
+        "GIT_MCP_NO_ADMIN": "true"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}

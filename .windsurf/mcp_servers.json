@@ -1,0 +1,71 @@
+{
+  "mcpServers": {
+    "git-mcp": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "cwd": "g:\\GITHUB REPOs\\multi-hub-project",
+      "env": {
+        "GIT_AUTHOR_NAME": "Multi-Hub AI Bot",
+        "GIT_AUTHOR_EMAIL": "ai-bot@alot1z.github.io",
+        "GIT_COMMITTER_NAME": "Multi-Hub AI Bot", 
+        "GIT_COMMITTER_EMAIL": "ai-bot@alot1z.github.io",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+        "PROJECT_ROOT": "g:\\GITHUB REPOs\\multi-hub-project",
+        "ALOT1Z_BASE_URL": "https://alot1z.github.io"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "g:\\GITHUB REPOs\\multi-hub-project"],
+      "cwd": "g:\\GITHUB REPOs\\multi-hub-project",
+      "env": {
+        "ALLOWED_DIRS": "g:\\GITHUB REPOs\\multi-hub-project"
+      }
+    },
+    "memory": {
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_NAMESPACE": "multi-hub-platform"
+      }
+    },
+    "multi-hub-ai": {
+      "command": "node",
+      "args": ["./ai-models/mcp-server.js"],
+      "cwd": "g:\\GITHUB REPOs\\multi-hub-project",
+      "env": {
+        "AI_MODE": "offline",
+        "PROJECT_ROOT": "g:\\GITHUB REPOs\\multi-hub-project",
+        "MODELS_PATH": "./ai-models/models",
+        "PROMPT_STORE_PATH": "./ai-models/prompts",
+        "ENABLE_LOCAL_INFERENCE": "true",
+        "ENABLE_QODO_GEN": "true",
+        "FREE_TIER_OPTIMIZED": "true",
+        "NO_RATE_LIMITS": "true"
+      }
+    },
+    "prompt-engine": {
+      "command": "node",
+      "args": ["./ai-models/prompt-engine-server.js"],
+      "cwd": "g:\\GITHUB REPOs\\multi-hub-project",
+      "env": {
+        "PROMPT_MODE": "advanced",
+        "TEMPLATE_PATH": "./ai-models/prompt-templates",
+        "CONTEXT_MEMORY": "persistent",
+        "MULTI_HUB_INTEGRATION": "true"
+      }
+    },
+    "deployment-automation": {
+      "command": "node",
+      "args": ["./deployment/mcp-deployment-server.js"],
+      "cwd": "g:\\GITHUB REPOs\\multi-hub-project",
+      "env": {
+        "NETLIFY_AUTH_TOKEN": "${NETLIFY_AUTH_TOKEN}",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+        "FREE_TIER_MODE": "true",
+        "AUTO_DEPLOY": "true",
+        "ATOMIC_OPERATIONS": "true"
+      }
+    }
+  }
+}

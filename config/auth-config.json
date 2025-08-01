@@ -1,0 +1,59 @@
+{
+  "authSystem": {
+    "enabled": false,
+    "enableUserLogin": false,
+    "enableAddUser": false,
+    "require2FA": true,
+    "adminOnly": true
+  },
+  "features": {
+    "enableGuestAccess": true,
+    "enableUnlimitedUsage": true,
+    "enableCrossModelAI": true,
+    "maxProgramsPerMonth": 50,
+    "enableRealTimeSync": true
+  },
+  "security": {
+    "enable2FAForAdmin": true,
+    "enableDatabaseAuth": true,
+    "enablePrivateRepoAuth": true,
+    "requireSecretKey": true,
+    "enableSessionTimeout": true,
+    "sessionTimeoutMinutes": 60
+  },
+  "adminRoutes": {
+    "addUser": "/add-user",
+    "manageUsers": "/admin/users",
+    "systemSettings": "/admin/settings",
+    "analytics": "/admin/analytics"
+  },
+  "database": {
+    "provider": "neon",
+    "enableUserTable": true,
+    "enableSessionTable": true,
+    "enableAuditLog": true,
+    "enableEncryption": true
+  },
+  "aiModels": {
+    "enableCrossWork": true,
+    "alwaysTopNotch": true,
+    "noUserSelection": true,
+    "autoOptimize": true,
+    "models": [
+      "codellama-34b",
+      "mistral-7b-instruct",
+      "phi-3-medium",
+      "deepseek-coder",
+      "qwen2.5-coder",
+      "claude-3-haiku",
+      "gpt-4o-mini",
+      "gemini-1.5-flash"
+    ]
+  },
+  "deployment": {
+    "enableAutoDeployment": true,
+    "enableRollback": true,
+    "enableAtomicOperations": true,
+    "enableHealthChecks": true
+  }
+}

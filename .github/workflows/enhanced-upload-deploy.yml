@@ -1,0 +1,449 @@
+name: 🚀 Enhanced Multi-Hub Upload & Deploy System
+
+on:
+  workflow_dispatch:
+    inputs:
+      projects:
+        description: 'Projects to deploy (comma-separated or "all")'
+        required: true
+        default: 'all'
+        type: string
+      enable_git_mcp:
+        description: 'Enable git-mcp auto-updates'
+        required: false
+        default: 'true'
+        type: boolean
+      enable_platform_update:
+        description: 'Auto-update platform.txt'
+        required: false
+        default: 'true'
+        type: boolean
+      deployment_mode:
+        description: 'Deployment mode'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+
+env:
+  NODE_VERSION: '18'
+  DEPLOYMENT_MODE: ${{ github.event.inputs.deployment_mode || 'production' }}
+  ENABLE_GIT_MCP: ${{ github.event.inputs.enable_git_mcp || 'true' }}
+  ENABLE_PLATFORM_UPDATE: ${{ github.event.inputs.enable_platform_update || 'true' }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.parse.outputs.projects }}
+      matrix: ${{ steps.parse.outputs.matrix }}
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Parse Project Input
+        id: parse
+        run: |
+          input="${{ github.event.inputs.projects }}"
+          
+          if [[ "$input" == "all" ]]; then
+            projects="hub-ui,ipa-builder,printer-builder,game-builder,ai-models,alo1z-github-io"
+          else
+            projects="$input"
+          fi
+          
+          # Convert to JSON array for matrix
+          matrix_json=$(echo "$projects" | tr ',' '\n' | jq -R . | jq -s .)
+          
+          echo "projects=$projects" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
+          
+          echo "📋 Projects to deploy: $projects"
+
+  validate:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Validate Project Configuration
+        run: |
+          project="${{ matrix.project }}"
+          echo "🔍 Validating project: $project"
+          
+          # Check if project directory exists
+          if [[ ! -d "$project" ]]; then
+            echo "❌ Project directory not found: $project"
+            exit 1
+          fi
+          
+          # Check for upload-path.json
+          if [[ ! -f "$project/upload-path.json" ]]; then
+            echo "❌ upload-path.json not found in $project"
+            exit 1
+          fi
+          
+          # Validate upload-path.json structure
+          if ! jq empty "$project/upload-path.json" 2>/dev/null; then
+            echo "❌ Invalid JSON in $project/upload-path.json"
+            exit 1
+          fi
+          
+          # Check required fields
+          required_fields=("targetRepository" "branch" "netlifyConfig.siteId")
+          for field in "${required_fields[@]}"; do
+            if [[ $(jq -r ".$field // empty" "$project/upload-path.json") == "" ]]; then
+              echo "❌ Missing required field: $field in $project/upload-path.json"
+              exit 1
+            fi
+          done
+          
+          echo "✅ Project validation passed: $project"
+
+  build:
+    needs: [prepare, validate]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ matrix.project }}/package-lock.json'
+
+      - name: 🔧 Install Dependencies
+        run: |
+          project="${{ matrix.project }}"
+          
+          if [[ -f "$project/package.json" ]]; then
+            echo "📦 Installing dependencies for $project"
+            cd "$project"
+            npm ci --prefer-offline --no-audit
+          else
+            echo "ℹ️ No package.json found in $project, skipping dependency installation"
+          fi
+
+      - name: 🏗️ Build Project
+        run: |
+          project="${{ matrix.project }}"
+          
+          if [[ -f "$project/package.json" ]]; then
+            cd "$project"
+            
+            # Check if build script exists
+            if npm run | grep -q "build"; then
+              echo "🏗️ Building $project"
+              npm run build
+              
+              # Verify build output
+              build_dir=$(jq -r '.netlifyConfig.publishDirectory // "dist"' upload-path.json)
+              if [[ ! -d "$build_dir" ]]; then
+                echo "❌ Build output directory not found: $build_dir"
+                exit 1
+              fi
+              
+              echo "✅ Build completed for $project"
+            else
+              echo "ℹ️ No build script found for $project"
+            fi
+          fi
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.project }}
+          path: ${{ matrix.project }}/
+          retention-days: 1
+
+  deploy-repositories:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.project }}
+          path: ${{ matrix.project }}/
+
+      - name: 🔧 Setup Git
+        run: |
+          git config --global user.name "Multi-Hub Deploy Bot"
+          git config --global user.email "deploy-bot@alot1z.github.io"
+
+      - name: 🚀 Deploy to Target Repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_PATH }}
+        run: |
+          project="${{ matrix.project }}"
+          echo "🚀 Deploying $project to target repository"
+          
+          # Read configuration
+          target_repo=$(jq -r '.targetRepository' "$project/upload-path.json")
+          branch=$(jq -r '.branch // "main"' "$project/upload-path.json")
+          
+          if [[ "$target_repo" == *"USERNAME"* ]] || [[ "$target_repo" == *"REPO-NAME"* ]]; then
+            echo "⚠️ Skipping $project - URL template not replaced"
+            exit 0
+          fi
+          
+          # Extract owner and repo name
+          if [[ "$target_repo" =~ github\.com/([^/]+)/([^/]+) ]]; then
+            owner="${BASH_REMATCH[1]}"
+            repo="${BASH_REMATCH[2]}"
+            echo "🎯 Target: $owner/$repo (branch: $branch)"
+          else
+            echo "❌ Invalid repository URL: $target_repo"
+            exit 1
+          fi
+          
+          # Clone target repository
+          temp_dir="/tmp/${repo}_$$"
+          echo "📥 Cloning $owner/$repo..."
+          
+          if ! git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${owner}/${repo}.git" "$temp_dir"; then
+            echo "❌ Failed to clone repository. Check UPLOAD_PATH token permissions!"
+            exit 1
+          fi
+          
+          cd "$temp_dir"
+          
+          # Switch to target branch
+          if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+            git checkout "$branch"
+          else
+            git checkout -b "$branch"
+          fi
+          
+          # Clear existing files (total override)
+          echo "🧹 Clearing existing files..."
+          find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} + 2>/dev/null || true
+          
+          # Copy new files
+          echo "📤 Copying files from $project..."
+          cp -r "${GITHUB_WORKSPACE}/${project}"/* . 2>/dev/null || true
+          cp -r "${GITHUB_WORKSPACE}/${project}"/.[^.]* . 2>/dev/null || true
+          
+          # Remove upload-path.json from target (security)
+          rm -f upload-path.json 2>/dev/null || true
+          
+          # Add deployment metadata
+          cat > .deployment-info.json << EOF
+          {
+            "deployedAt": "$(date -u '+%Y-%m-%dT%H:%M:%SZ')",
+            "sourceRepo": "multi-hub-project",
+            "project": "$project",
+            "deploymentMode": "$DEPLOYMENT_MODE",
+            "gitCommit": "$GITHUB_SHA",
+            "workflowRun": "$GITHUB_RUN_ID"
+          }
+          EOF
+          
+          echo "📊 Files to deploy:"
+          ls -la
+          
+          # Commit and push changes
+          git add .
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️ No changes detected for $project"
+          else
+            echo "💾 Committing changes..."
+            commit_msg="🚀 Auto-deploy $project from multi-hub-project"
+            commit_msg="$commit_msg\n\nDeployment Info:"
+            commit_msg="$commit_msg\n- Mode: $DEPLOYMENT_MODE"
+            commit_msg="$commit_msg\n- Source: $GITHUB_SHA"
+            commit_msg="$commit_msg\n- Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            
+            git commit -m "$commit_msg"
+            
+            echo "🚀 Pushing to $target_repo..."
+            if git push origin "$branch"; then
+              echo "✅ Successfully deployed $project to $target_repo"
+            else
+              echo "❌ Failed to push to $target_repo"
+              exit 1
+            fi
+          fi
+          
+          # Cleanup
+          cd "${GITHUB_WORKSPACE}"
+          rm -rf "$temp_dir"
+
+  deploy-netlify:
+    needs: [prepare, deploy-repositories]
+    runs-on: ubuntu-latest
+    if: ${{ vars.NETLIFY_AUTH_TOKEN != '' }}
+    strategy:
+      matrix:
+        project: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.project }}
+          path: ${{ matrix.project }}/
+
+      - name: 🚀 Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          project="${{ matrix.project }}"
+          
+          # Skip if no package.json (static projects)
+          if [[ ! -f "$project/package.json" ]]; then
+            echo "ℹ️ Skipping Netlify deployment for static project: $project"
+            exit 0
+          fi
+          
+          echo "🚀 Deploying $project to Netlify"
+          
+          # Read Netlify configuration
+          site_id=$(jq -r '.netlifyConfig.siteId' "$project/upload-path.json")
+          publish_dir=$(jq -r '.netlifyConfig.publishDirectory // "dist"' "$project/upload-path.json")
+          
+          if [[ "$site_id" == "null" ]] || [[ "$site_id" == "" ]]; then
+            echo "⚠️ No Netlify site ID configured for $project"
+            exit 0
+          fi
+          
+          # Install Netlify CLI
+          npm install -g netlify-cli
+          
+          # Deploy to Netlify
+          cd "$project"
+          
+          if [[ -d "$publish_dir" ]]; then
+            echo "📤 Deploying $publish_dir to Netlify site: $site_id"
+            
+            netlify deploy \
+              --prod \
+              --site="$site_id" \
+              --dir="$publish_dir" \
+              --message="Auto-deploy from multi-hub-project ($DEPLOYMENT_MODE)"
+            
+            echo "✅ Successfully deployed $project to Netlify"
+          else
+            echo "❌ Publish directory not found: $publish_dir"
+            exit 1
+          fi
+
+  update-platform:
+    needs: [prepare, deploy-repositories, deploy-netlify]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.enable_platform_update == 'true' }}
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.UPLOAD_PATH }}
+
+      - name: 🔄 Update Platform Configuration
+        run: |
+          echo "🔄 Updating platform.txt with deployment information"
+          
+          # Update platform.txt with timestamp
+          echo "# Multi-Hub Platform Configuration" > platform.txt
+          echo "# Last Updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> platform.txt
+          echo "# Deployment Mode: $DEPLOYMENT_MODE" >> platform.txt
+          echo "# Git Commit: $GITHUB_SHA" >> platform.txt
+          echo "" >> platform.txt
+          
+          # Add base URLs
+          echo "BASE_URL=https://mose.windsurf.build" >> platform.txt
+          echo "FALLBACK_URL=https://alot1z.github.io" >> platform.txt
+          echo "" >> platform.txt
+          
+          # Add project URLs
+          projects="${{ needs.prepare.outputs.projects }}"
+          IFS=',' read -ra PROJECT_ARRAY <<< "$projects"
+          
+          for project in "${PROJECT_ARRAY[@]}"; do
+            if [[ -f "$project/upload-path.json" ]]; then
+              site_id=$(jq -r '.netlifyConfig.siteId // empty' "$project/upload-path.json")
+              if [[ -n "$site_id" ]]; then
+                echo "# $project" >> platform.txt
+                echo "${project^^}_URL=https://${site_id}.netlify.app" >> platform.txt
+                echo "${project^^}_STATUS=active" >> platform.txt
+                echo "" >> platform.txt
+              fi
+            fi
+          done
+          
+          echo "📄 Updated platform.txt:"
+          cat platform.txt
+
+      - name: 💾 Commit Platform Updates
+        run: |
+          git config user.name "Multi-Hub Deploy Bot"
+          git config user.email "deploy-bot@alot1z.github.io"
+          
+          git add platform.txt
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️ No platform.txt changes to commit"
+          else
+            git commit -m "🔄 Auto-update platform.txt after deployment
+
+Deployment Details:
+- Projects: ${{ needs.prepare.outputs.projects }}
+- Mode: $DEPLOYMENT_MODE
+- Commit: $GITHUB_SHA
+- Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            
+            git push origin main
+            echo "✅ Platform configuration updated"
+          fi
+
+  notify:
+    needs: [prepare, deploy-repositories, deploy-netlify, update-platform]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: 📊 Deployment Summary
+        run: |
+          echo "🎉 Multi-Hub Deployment Summary"
+          echo "================================"
+          echo "Projects: ${{ needs.prepare.outputs.projects }}"
+          echo "Mode: $DEPLOYMENT_MODE"
+          echo "Git MCP: $ENABLE_GIT_MCP"
+          echo "Platform Update: $ENABLE_PLATFORM_UPDATE"
+          echo ""
+          echo "Repository Deployment: ${{ needs.deploy-repositories.result }}"
+          echo "Netlify Deployment: ${{ needs.deploy-netlify.result }}"
+          echo "Platform Update: ${{ needs.update-platform.result }}"
+          echo ""
+          echo "🔗 Access your deployed applications:"
+          echo "- Hub UI: https://alot1z-hub-ui.netlify.app"
+          echo "- IPA Builder: https://alot1z-ipa-builder.netlify.app"
+          echo "- Printer Builder: https://alot1z-printer-builder.netlify.app"
+          echo "- Game Builder: https://alot1z-game-builder.netlify.app"
+          echo "- AI Models: https://alot1z-ai-models.netlify.app"
+          echo "- Platform Launcher: https://alot1z.github.io"

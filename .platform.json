@@ -4,33 +4,33 @@
   "fallback_url": "https://alo1z.github.io",
   "subprojects": {
     "hub-ui": {
-      "url": "PLACEHOLDER_HUB_URL",
+      "url": "https://alot1z-hub-ui.netlify.app",
       "local_path": "/hub-ui",
       "description": "Main platform interface and router"
     },
     "ipa-builder": {
-      "url": "PLACEHOLDER_IPA_URL",
+      "url": "https://alot1z-ipa-builder.netlify.app",
       "local_path": "/ipa-builder",
       "description": "iOS IPA builder with TrollStore support",
       "models": ["mistral-7b", "codellama"],
       "tools": ["theos", "ldid", "dpkg"]
     },
     "printer-builder": {
-      "url": "PLACEHOLDER_3D_URL",
+      "url": "https://alot1z-printer-builder.netlify.app",
       "local_path": "/printer-builder",
       "description": "3D printer model generator",
       "models": ["phi-2", "tinyllama"],
       "tools": ["openscad", "blender"]
     },
     "game-builder": {
-      "url": "PLACEHOLDER_GAME_URL",
+      "url": "https://alot1z-game-builder.netlify.app",
       "local_path": "/game-builder", 
       "description": "Game development platform",
       "models": ["mistral-7b", "codellama"],
       "tools": ["theos", "unity-cli"]
     },
     "ai-models": {
-      "url": "PLACEHOLDER_AI_URL",
+      "url": "https://alot1z-ai-models.netlify.app",
       "local_path": "/ai-models",
       "description": "AI model router and prompt engine",
       "models": ["all"],

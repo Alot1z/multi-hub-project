@@ -1,24 +1,49 @@
-// Qodo Gen API Integration for Multi-Hub Platform
+// Qodo Gen API Integration for Multi-Hub Platform with Git-MCP Support
 export interface QodoGenConfig {
   apiKey: string;
   endpoint: string;
   model: 'qodo-gen-pro' | 'qodo-gen-standard';
   maxTokens: number;
+  gitMcpEnabled: boolean;
+  repositoryPath: string;
+}
+
+export interface GitMcpIntegration {
+  commitChanges: boolean;
+  branchStrategy: 'feature' | 'main' | 'auto';
+  commitMessage: string;
+  pushToRemote: boolean;
 }
 
 export interface CodeGenerationRequest {
   prompt: string;
-  language: 'typescript' | 'swift' | 'javascript' | 'python';
-  framework?: 'react' | 'vue' | 'angular' | 'unity';
+  language: 'typescript' | 'swift' | 'javascript' | 'python' | 'openscad' | 'csharp';
+  framework?: 'react' | 'vue' | 'angular' | 'unity' | 'trollstore' | 'openscad';
   projectContext: ProjectContext;
-  outputFormat: 'file' | 'component' | 'full-project';
+  outputFormat: 'file' | 'component' | 'full-project' | 'ipa-package' | 'stl-model' | 'unity-game';
+  gitIntegration?: GitMcpIntegration;
+  aiEnsemble?: {
+    useOfflineModels: boolean;
+    fallbackToWeb: boolean;
+    preferredModels: string[];
+  };
 }
 
 export interface ProjectContext {
-  projectType: 'ipa-builder' | 'printer-builder' | 'game-builder' | 'ai-models';
+  projectType: 'ipa-builder' | 'printer-builder' | 'game-builder' | 'ai-models' | 'hub-ui';
   existingFiles: string[];
   dependencies: string[];
-  targetPlatform: 'ios' | 'web' | 'desktop';
+  targetPlatform: 'ios' | 'web' | 'desktop' | '3d-printer' | 'trollstore';
+  gitRepository?: {
+    currentBranch: string;
+    uncommittedChanges: boolean;
+    remoteUrl: string;
+  };
+  netlifyDeployment?: {
+    siteId: string;
+    deployUrl: string;
+    buildStatus: 'success' | 'building' | 'failed';
+  };
 }
 
 export interface QodoGenResponse {
@@ -198,7 +223,9 @@ export class MultiHubQodoIntegration {
       apiKey,
       endpoint: 'https://api.qodo.ai/v1',
       model: 'qodo-gen-pro',
-      maxTokens: 8192
+      maxTokens: 8192,
+      gitMcpEnabled: true,
+      repositoryPath: 'g:\\GITHUB REPOs\\multi-hub-project'
     });
   }
 
