@@ -37,6 +37,13 @@ if (Test-Path "$PROJECT_ROOT\scripts") {
     Copy-Item "$PROJECT_ROOT\scripts\*" "$WORKSPACE_DIR\scripts\" -Force -Recurse
 }
 
+# Sync workflow logs
+Write-Host "📊 Syncing workflow logs..." -ForegroundColor Yellow
+if (Test-Path "$PROJECT_ROOT\workflow-logs") {
+    New-Item -ItemType Directory -Path "$WORKSPACE_DIR\workflow-logs" -Force | Out-Null
+    Copy-Item "$PROJECT_ROOT\workflow-logs\*" "$WORKSPACE_DIR\workflow-logs\" -Force -Recurse
+}
+
 # Create index files
 Write-Host "📋 Creating index files..." -ForegroundColor Yellow
 
