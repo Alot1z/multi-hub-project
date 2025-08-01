@@ -9,10 +9,13 @@ export interface UnlimitedConfig {
   enableLocalCaching: boolean       // Permanent cache uden repo bloat
   enableOfflineMode: boolean        // Local models som backup
   enableSmartDistribution: boolean  // Smart load balancing
+  enableRequestRotation: boolean    // Request rotation for load balancing
   maxCacheSize: number             // Cache størrelse
   ensembleModels: AIModelConfig[]  // Alle AI models
   votingStrategy: 'best' | 'majority' | 'weighted'
   localModelPath: string           // Path til cached models
+  rotationEndpoints: string[]      // Endpoints for rotation
+  fallbackStrategies: string[]     // Fallback strategies
 }
 
 export interface AIModelConfig {
@@ -67,11 +70,15 @@ export class UnlimitedFreeService {
 
   constructor(config: Partial<UnlimitedConfig> = {}) {
     this.config = {
+      enableEnsembleVoting: true,
       enableRequestRotation: true,
       enableLocalCaching: true,
       enableOfflineMode: true,
       enableSmartDistribution: true,
       maxCacheSize: 10000, // Cache 10k requests
+      ensembleModels: [],
+      votingStrategy: 'best' as const,
+      localModelPath: './models',
       rotationEndpoints: [
         'https://api1.netlify.app',
         'https://api2.netlify.app',

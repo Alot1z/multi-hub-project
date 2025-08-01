@@ -412,11 +412,10 @@ jobs:
           else
             git commit -m "🔄 Auto-update platform.txt after deployment
 
-Deployment Details:
-- Projects: ${{ needs.prepare.outputs.projects }}
-- Mode: $DEPLOYMENT_MODE
-- Commit: $GITHUB_SHA
-- Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+Projects: ${{ needs.prepare.outputs.projects }}
+Mode: $DEPLOYMENT_MODE
+Commit: $GITHUB_SHA
+Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
             
             git push origin main
             echo "✅ Platform configuration updated"

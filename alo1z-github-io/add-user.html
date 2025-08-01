@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User - Multi-Hub Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #4a5568;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1rem;
+        }
+        
+        .auth-check {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .auth-disabled {
+            background: #fed7d7;
+            border-color: #fc8181;
+            color: #c53030;
+        }
+        
+        .auth-enabled {
+            background: #c6f6d5;
+            border-color: #68d391;
+            color: #2f855a;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #c6f6d5;
+            border: 1px solid #68d391;
+            color: #2f855a;
+        }
+        
+        .result.error {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #c53030;
+        }
+        
+        .qr-code {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        
+        .secret-display {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            font-size: 14px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Add User</h1>
+            <p>Multi-Hub Platform Admin Panel</p>
+        </div>
+        
+        <div id="authStatus" class="auth-check">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Checking authentication status...</p>
+            </div>
+        </div>
+        
+        <form id="addUserForm" style="display: none;">
+            <div class="form-group">
+                <label for="adminCode">🔑 Admin 2FA Code</label>
+                <input type="text" id="adminCode" placeholder="Enter your 2FA code" maxlength="6" pattern="[0-9]{6}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">👤 Username</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">📧 Email</label>
+                <input type="email" id="email" placeholder="Enter email address" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isAdmin">
+                    <label for="isAdmin">👑 Admin privileges</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="permissions">🛡️ Permissions</label>
+                <select id="permissions" multiple>
+                    <option value="use-platform">Use Platform</option>
+                    <option value="ipa-builder">IPA Builder</option>
+                    <option value="printer-builder">3D Printer Builder</option>
+                    <option value="game-builder">Game Builder</option>
+                    <option value="ai-models">AI Models</option>
+                    <option value="admin">Admin Access</option>
+                    <option value="add-user">Add Users</option>
+                    <option value="manage-users">Manage Users</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn" id="submitBtn">
+                ➕ Add User
+            </button>
+            
+            <div class="loading" id="formLoading">
+                <div class="spinner"></div>
+                <p>Creating user...</p>
+            </div>
+        </form>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="back-link">
+            <a href="/">← Back to Multi-Hub Platform</a>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication status and configuration
+        async function checkAuthStatus() {
+            const statusDiv = document.getElementById('authStatus');
+            const form = document.getElementById('addUserForm');
+            
+            try {
+                // Check if auth system is enabled
+                const configResponse = await fetch('/api/auth/status');
+                const config = await configResponse.json();
+                
+                if (!config.authEnabled) {
+                    statusDiv.className = 'auth-check auth-disabled';
+                    statusDiv.innerHTML = `
+                        <h3>🔓 Authentication Disabled</h3>
+                        <p>The authentication system is currently disabled in auth-config.json</p>
+                        <p>Enable it by setting "authSystem.enabled" to true</p>
+                    `;
+                    return;
+                }
+                
+                if (!config.addUserEnabled) {
+                    statusDiv.className = 'auth-check auth-disabled';
+                    statusDiv.innerHTML = `
+                        <h3>⚠️ Add User Disabled</h3>
+                        <p>User creation is currently disabled in auth-config.json</p>
+                        <p>Enable it by setting "authSystem.enableAddUser" to true</p>
+                    `;
+                    return;
+                }
+                
+                // Check if user is authenticated admin
+                const sessionId = localStorage.getItem('sessionId');
+                if (!sessionId) {
+                    statusDiv.className = 'auth-check auth-disabled';
+                    statusDiv.innerHTML = `
+                        <h3>🔐 Authentication Required</h3>
+                        <p>You must be logged in as an admin to add users</p>
+                        <p><a href="/login">Login here</a></p>
+                    `;
+                    return;
+                }
+                
+                const authResponse = await fetch('/api/auth/validate', {
+                    headers: { 'Authorization': `Bearer ${sessionId}` }
+                });
+                
+                if (!authResponse.ok) {
+                    statusDiv.className = 'auth-check auth-disabled';
+                    statusDiv.innerHTML = `
+                        <h3>🔐 Session Expired</h3>
+                        <p>Your session has expired. Please login again.</p>
+                        <p><a href="/login">Login here</a></p>
+                    `;
+                    return;
+                }
+                
+                const user = await authResponse.json();
+                if (!user.isAdmin || !user.permissions.includes('add-user')) {
+                    statusDiv.className = 'auth-check auth-disabled';
+                    statusDiv.innerHTML = `
+                        <h3>⛔ Insufficient Permissions</h3>
+                        <p>You don't have permission to add users</p>
+                        <p>Contact an administrator for access</p>
+                    `;
+                    return;
+                }
+                
+                // All checks passed
+                statusDiv.className = 'auth-check auth-enabled';
+                statusDiv.innerHTML = `
+                    <h3>✅ Authentication Verified</h3>
+                    <p>Welcome, ${user.username}! You can add new users.</p>
+                `;
+                form.style.display = 'block';
+                
+            } catch (error) {
+                statusDiv.className = 'auth-check auth-disabled';
+                statusDiv.innerHTML = `
+                    <h3>❌ System Error</h3>
+                    <p>Failed to check authentication status</p>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('formLoading');
+            const result = document.getElementById('result');
+            
+            // Show loading
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            try {
+                const formData = {
+                    adminCode: document.getElementById('adminCode').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    isAdmin: document.getElementById('isAdmin').checked,
+                    permissions: Array.from(document.getElementById('permissions').selectedOptions)
+                        .map(option => option.value)
+                };
+                
+                const sessionId = localStorage.getItem('sessionId');
+                const response = await fetch('/api/auth/add-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionId}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    let resultHTML = `
+                        <h3>✅ User Created Successfully!</h3>
+                        <p><strong>Username:</strong> ${formData.username}</p>
+                        <p><strong>Email:</strong> ${formData.email}</p>
+                    `;
+                    
+                    if (data.twoFactorSecret) {
+                        resultHTML += `
+                            <p><strong>2FA Secret:</strong></p>
+                            <div class="secret-display">${data.twoFactorSecret}</div>
+                            <div class="qr-code">
+                                <p>Scan this QR code with Google Authenticator:</p>
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qrCodeUrl)}" alt="2FA QR Code">
+                            </div>
+                        `;
+                    }
+                    
+                    result.innerHTML = resultHTML;
+                    
+                    // Reset form
+                    document.getElementById('addUserForm').reset();
+                    
+                } else {
+                    result.className = 'result error';
+                    result.innerHTML = `
+                        <h3>❌ Failed to Create User</h3>
+                        <p>${data.error}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                result.className = 'result error';
+                result.innerHTML = `
+                    <h3>❌ System Error</h3>
+                    <p>Failed to create user: ${error.message}</p>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+                result.style.display = 'block';
+            }
+        });
+        
+        // Auto-select default permissions when admin is checked
+        document.getElementById('isAdmin').addEventListener('change', (e) => {
+            const permissions = document.getElementById('permissions');
+            if (e.target.checked) {
+                // Select admin permissions
+                ['admin', 'add-user', 'manage-users'].forEach(perm => {
+                    const option = permissions.querySelector(`option[value="${perm}"]`);
+                    if (option) option.selected = true;
+                });
+            }
+        });
+        
+        // Initialize
+        checkAuthStatus();
+    </script>
+</body>
+</html>

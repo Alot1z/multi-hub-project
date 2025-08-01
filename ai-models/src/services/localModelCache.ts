@@ -532,6 +532,29 @@ ${this.config.localCachePath}/
       console.error(`Failed to remove model ${modelName}:`, error)
     }
   }
+
+  // Get cache status and statistics
+  getStatus() {
+    const totalSize = Array.from(this.cacheEntries.values())
+      .reduce((sum, entry) => sum + entry.size, 0)
+    
+    const modelCount = this.cacheEntries.size
+    const memoryUsage = this.memoryCache.size
+    
+    return {
+      totalSize,
+      modelCount,
+      memoryUsage,
+      maxCacheSize: this.config.maxCacheSize * 1024 * 1024, // Convert MB to bytes
+      usagePercentage: (totalSize / (this.config.maxCacheSize * 1024 * 1024)) * 100,
+      models: Array.from(this.cacheEntries.entries()).map(([name, entry]) => ({
+        name,
+        size: entry.size,
+        lastUsed: entry.lastUsed,
+        storageLocation: entry.storageLocation
+      }))
+    }
+  }
 }
 
 // Export singleton instance
