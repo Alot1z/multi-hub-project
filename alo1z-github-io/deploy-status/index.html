@@ -313,7 +313,7 @@
                 description: 'Main interface with VSCode IDE',
                 icon: '🎛️',
                 url: 'https://hub-uii.netlify.app',
-                programUrl: '/programs/hub-ui'
+                path: '/hub-ui'
             },
             {
                 id: 'ipa-builder',
@@ -321,7 +321,7 @@
                 description: 'Real iOS app builder',
                 icon: '📱',
                 url: 'https://ipa-builder.netlify.app',
-                programUrl: '/programs/ipa-builder'
+                path: '/ipa-builder'
             },
             {
                 id: 'printer-builder',
@@ -329,7 +329,7 @@
                 description: '3D model generator',
                 icon: '🖨️',
                 url: 'https://printer-builder.netlify.app',
-                programUrl: '/programs/printer-builder'
+                path: '/printer-builder'
             },
             {
                 id: 'game-builder',
@@ -337,7 +337,7 @@
                 description: 'Unity game development',
                 icon: '🎮',
                 url: 'https://game-build.netlify.app',
-                programUrl: '/programs/game-builder'
+                path: '/game-builder'
             },
             {
                 id: 'ai-models',
@@ -345,7 +345,7 @@
                 description: 'Cross-model AI ensemble',
                 icon: '🤖',
                 url: 'https://ai-modelss.netlify.app',
-                programUrl: '/programs/ai-models'
+                path: '/ai-models'
             }
         ];
 
@@ -384,7 +384,7 @@
                               status.status === 'warning' ? '🟡 Warning' : '🔴 Offline';
 
             return `
-                <div class="service-card ${statusClass}" onclick="openService('${service.programUrl}')">
+                <div class="service-card ${statusClass}" onclick="openService('${service.path}')">
                     <div class="service-header">
                         <div style="display: flex; align-items: center;">
                             <span class="service-icon">${service.icon}</span>
@@ -399,7 +399,7 @@
                         <span class="status-text ${statusClass}">${statusText}</span>
                         ${status.responseTime > 0 ? `<span style="margin-left: auto; color: #718096;">${status.responseTime}ms</span>` : ''}
                     </div>
-                    <a href="${service.programUrl}" class="service-url" onclick="event.stopPropagation()">
+                    <a href="${service.url}" class="service-url" onclick="event.stopPropagation()">
                         ${service.url}
                     </a>
                 </div>
