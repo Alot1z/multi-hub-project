@@ -1,0 +1,99 @@
+name: 🚀 Ultra Simple Upload System
+
+on:
+  workflow_dispatch:
+    inputs:
+      folders:
+        description: 'Folders to upload (or "all")'
+        required: true
+        default: 'all'
+        type: string
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup
+        run: sudo apt-get install -y git
+        
+      - name: 🚀 Upload folders with upload-path.txt
+        env:
+          UPLOAD_PATH: ${{ secrets.UPLOAD_PATH }}
+        run: |
+          find . -name "upload-path.txt" -type f | while read config_file; do
+            folder=$(dirname "$config_file")
+            folder_name=$(basename "$folder")
+            
+            echo "📁 Processing: $folder_name"
+            
+            if [[ "${{ github.event.inputs.folders }}" != "all" ]] && [[ "${{ github.event.inputs.folders }}" != *"$folder_name"* ]]; then
+              echo "⏭️ Skipping $folder_name"
+              continue
+            fi
+            
+            url=$(cat "$config_file" | tr -d '\n\r')
+            
+            if [[ "$url" == *"USERNAME"* ]] || [[ "$url" == *"REPO-NAME"* ]]; then
+              echo "⚠️ Skipping $folder_name - URL template not replaced"
+              continue
+            fi
+            
+            if [[ "$url" =~ github\.com/([^/]+)/([^/]+) ]]; then
+              owner="${BASH_REMATCH[1]}"
+              repo="${BASH_REMATCH[2]}"
+              echo "🎯 Target: $owner/$repo"
+            else
+              echo "❌ Invalid URL: $url"
+              continue
+            fi
+            
+            temp_dir="/tmp/${repo}_$$"
+            echo "📥 Cloning $owner/$repo..."
+            
+            if ! git clone "https://x-access-token:${UPLOAD_PATH}@github.com/${owner}/${repo}.git" "$temp_dir"; then
+              echo "❌ Failed to clone. Check your UPLOAD_PATH token!"
+              continue
+            fi
+            
+            cd "$temp_dir"
+            
+            git config user.name "Upload Bot"
+            git config user.email "bot@github.com"
+            
+            echo "🧹 Clearing existing files..."
+            find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} + 2>/dev/null || true
+            
+            echo "📤 Copying all files from $folder..."
+            cp -r "${GITHUB_WORKSPACE}/${folder}"/* . 2>/dev/null || true
+            cp -r "${GITHUB_WORKSPACE}/${folder}"/.[^.]* . 2>/dev/null || true
+            
+            echo "📊 Files to upload:"
+            ls -la
+            
+            git add .
+            
+            if git diff --staged --quiet; then
+              echo "ℹ️ No changes for $folder_name"
+            else
+              echo "💾 Committing..."
+              git commit -m "Auto upload from multi-hub-project - Source: $folder_name - Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+              
+              echo "🚀 Pushing to $url..."
+              if git push origin main; then
+                echo "✅ Successfully uploaded $folder_name to $url"
+              else
+                echo "❌ Failed to push to $url"
+              fi
+            fi
+            
+            cd "${GITHUB_WORKSPACE}"
+            rm -rf "$temp_dir"
+            
+            echo "🎉 Completed processing $folder_name"
+            echo "----------------------------------------"
+          done
+          
+          echo "🏁 All uploads completed!"

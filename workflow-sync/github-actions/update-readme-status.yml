@@ -1,0 +1,181 @@
+name: 📊 Update README Status
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force status update'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.UPLOAD_PATH }}
+
+      - name: 🔍 Check Service Status
+        id: check_status
+        run: |
+          echo "🔍 Checking all Multi-Hub services..."
+          
+          # Services to check
+          declare -A services=(
+            ["launcher"]="https://alot1z.github.io"
+            ["hub-ui"]="https://hub-uii.netlify.app"
+            ["ipa-builder"]="https://ipa-builder.netlify.app"
+            ["printer-builder"]="https://printer-builder.netlify.app"
+            ["game-builder"]="https://game-build.netlify.app"
+            ["ai-models"]="https://ai-modelss.netlify.app"
+            ["bolt-new"]="https://bolt-new-multi-hub.netlify.app"
+            ["qodo-gen"]="https://qodo-gen-multi-hub.netlify.app"
+            ["api-gateway"]="https://api-alot1z-github-io.netlify.app"
+          )
+          
+          online_count=0
+          total_count=${#services[@]}
+          status_lines=""
+          
+          for service in "${!services[@]}"; do
+            url="${services[$service]}"
+            echo "Checking $service at $url..."
+            
+            # Check service status with timeout
+            if curl -s --max-time 10 --head "$url" | head -n 1 | grep -q "200\|301\|302"; then
+              status="🟢 Live"
+              ((online_count++))
+            else
+              status="🔴 Offline"
+            fi
+            
+            # Format service name
+            case $service in
+              "launcher") icon="🌐"; name="Launcher" ;;
+              "hub-ui") icon="🎛️"; name="Hub UI" ;;
+              "ipa-builder") icon="📱"; name="IPA Builder" ;;
+              "printer-builder") icon="🖨️"; name="Printer Builder" ;;
+              "game-builder") icon="🎮"; name="Game Builder" ;;
+              "ai-models") icon="🤖"; name="AI Models" ;;
+              "bolt-new") icon="⚡"; name="Bolt.new Clone" ;;
+              "qodo-gen") icon="🔧"; name="Qodo Gen" ;;
+              "api-gateway") icon="🔗"; name="API Gateway" ;;
+            esac
+            
+            status_lines+="$icon **$name** • $status • [$url]($url)  "$'\n'
+          done
+          
+          # Calculate percentage
+          percentage=$(( (online_count * 100) / total_count ))
+          
+          # Set outputs
+          echo "online_count=$online_count" >> $GITHUB_OUTPUT
+          echo "total_count=$total_count" >> $GITHUB_OUTPUT
+          echo "percentage=$percentage" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+          
+          # Save status lines to file
+          echo "$status_lines" > /tmp/status_lines.txt
+          
+          echo "📊 Status Check Complete:"
+          echo "Online: $online_count/$total_count ($percentage%)"
+
+      - name: 📝 Update README Status
+        run: |
+          online_count="${{ steps.check_status.outputs.online_count }}"
+          total_count="${{ steps.check_status.outputs.total_count }}"
+          percentage="${{ steps.check_status.outputs.percentage }}"
+          timestamp="${{ steps.check_status.outputs.timestamp }}"
+          
+          # Read status lines
+          status_lines=$(cat /tmp/status_lines.txt)
+          
+          # Determine overall status
+          if [ "$percentage" -eq 100 ]; then
+            overall_status="🟢 All Systems Operational"
+            status_color="green"
+          elif [ "$percentage" -ge 70 ]; then
+            overall_status="🟡 Partial Outage"
+            status_color="yellow"
+          else
+            overall_status="🔴 Major Outage"
+            status_color="red"
+          fi
+          
+          # Create status badge URL
+          badge_url="https://img.shields.io/badge/System%20Status-${percentage}%25%20Online-${status_color}?style=for-the-badge"
+          
+          # Create new status section
+          cat > /tmp/new_status.md << EOF
+          ## 📊 **Live System Status**
+          
+          ![System Status](${badge_url})
+          
+          **${overall_status}** • ${online_count}/${total_count} services online (${percentage}%) • *Last updated: ${timestamp}*
+          
+          ### 🎯 **Service Status:**
+          
+          ${status_lines}
+          
+          **📊 [View Full Status Dashboard →](https://alot1z.github.io/deploy-status)**
+          
+          ---
+          EOF
+          
+          # Backup original README
+          cp README.md README.md.backup
+          
+          # Remove old status section if exists
+          sed -i '/## 📊 \*\*Live System Status\*\*/,/^---$/d' README.md
+          
+          # Find insertion point (after the platform architecture section)
+          if grep -q "## 🚀 \*\*Live Platforms\*\*" README.md; then
+            # Insert before Live Platforms section
+            sed -i '/## 🚀 \*\*Live Platforms\*\*/i\
+          '"$(cat /tmp/new_status.md)"'' README.md
+          else
+            # Insert after header if Live Platforms not found
+            sed -i '/^---$/a\
+          '"$(cat /tmp/new_status.md)"'' README.md
+          fi
+          
+          echo "✅ README.md updated with live status"
+
+      - name: 💾 Commit Status Update
+        run: |
+          git config user.name "Multi-Hub Status Bot"
+          git config user.email "status-bot@alot1z.github.io"
+          
+          git add README.md
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️ No status changes to commit"
+          else
+            online_count="${{ steps.check_status.outputs.online_count }}"
+            total_count="${{ steps.check_status.outputs.total_count }}"
+            percentage="${{ steps.check_status.outputs.percentage }}"
+            
+            git commit -m "📊 Auto-update system status: ${online_count}/${total_count} online (${percentage}%)" \
+                       -m "Timestamp: ${{ steps.check_status.outputs.timestamp }}" \
+                       -m "Automated status check via GitHub Actions"
+            
+            git push origin main
+            echo "✅ Status update committed and pushed"
+          fi
+
+      - name: 🔔 Status Summary
+        run: |
+          echo "🎉 README Status Update Complete"
+          echo "================================"
+          echo "Online Services: ${{ steps.check_status.outputs.online_count }}/${{ steps.check_status.outputs.total_count }}"
+          echo "System Health: ${{ steps.check_status.outputs.percentage }}%"
+          echo "Last Updated: ${{ steps.check_status.outputs.timestamp }}"
+          echo ""
+          echo "📊 View live status: https://alot1z.github.io/deploy-status"
+          echo "📚 View README: https://github.com/Alot1z/multi-hub-project/blob/main/README.md"
