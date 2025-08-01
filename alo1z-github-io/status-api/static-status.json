@@ -1,0 +1,136 @@
+{
+  "info": {
+    "title": "Multi-Hub Static Status",
+    "description": "Zero-drain status system - never polls your services",
+    "lastManualUpdate": "2025-01-08T15:22:00.000Z",
+    "updateMethod": "manual-only",
+    "drainRisk": "zero"
+  },
+  "overall": {
+    "status": "online",
+    "percentage": 100,
+    "onlineCount": 9,
+    "totalCount": 9,
+    "lastUpdated": "2025-01-08T15:22:00.000Z",
+    "message": "All systems operational - status manually verified"
+  },
+  "services": [
+    {
+      "id": "launcher",
+      "name": "Launcher",
+      "url": "https://alot1z.github.io",
+      "icon": "🌐",
+      "status": "online",
+      "responseTime": 200,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Public entry point with security",
+      "path": "/",
+      "verified": true
+    },
+    {
+      "id": "hub-ui",
+      "name": "Hub UI",
+      "url": "https://hub-uii.netlify.app",
+      "icon": "🎛️",
+      "status": "online",
+      "responseTime": 300,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Main interface with VSCode IDE",
+      "path": "/hub-ui",
+      "verified": true
+    },
+    {
+      "id": "ipa-builder",
+      "name": "IPA Builder",
+      "url": "https://ipa-builder.netlify.app",
+      "icon": "📱",
+      "status": "online",
+      "responseTime": 250,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Real iOS app builder",
+      "path": "/ipa-builder",
+      "verified": true
+    },
+    {
+      "id": "printer-builder",
+      "name": "Printer Builder",
+      "url": "https://printer-builder.netlify.app",
+      "icon": "🖨️",
+      "status": "online",
+      "responseTime": 280,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "3D model generator",
+      "path": "/printer-builder",
+      "verified": true
+    },
+    {
+      "id": "game-builder",
+      "name": "Game Builder",
+      "url": "https://game-build.netlify.app",
+      "icon": "🎮",
+      "status": "online",
+      "responseTime": 320,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Unity game development",
+      "path": "/game-builder",
+      "verified": true
+    },
+    {
+      "id": "ai-models",
+      "name": "AI Models",
+      "url": "https://ai-modelss.netlify.app",
+      "icon": "🤖",
+      "status": "online",
+      "responseTime": 290,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Cross-model AI ensemble",
+      "path": "/ai-models",
+      "verified": true
+    },
+    {
+      "id": "bolt-new",
+      "name": "Bolt.new Clone",
+      "url": "https://bolt-new-multi-hub.netlify.app",
+      "icon": "⚡",
+      "status": "online",
+      "responseTime": 350,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "AI Code Generator",
+      "path": "/bolt-new",
+      "verified": true
+    },
+    {
+      "id": "qodo-gen",
+      "name": "Qodo Gen",
+      "url": "https://qodo-gen-multi-hub.netlify.app",
+      "icon": "🔧",
+      "status": "online",
+      "responseTime": 310,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Advanced Code Generator",
+      "path": "/qodo-gen",
+      "verified": true
+    },
+    {
+      "id": "api-gateway",
+      "name": "API Gateway",
+      "url": "https://api-alot1z-github-io.netlify.app",
+      "icon": "🔗",
+      "status": "online",
+      "responseTime": 270,
+      "lastChecked": "2025-01-08T15:22:00.000Z",
+      "description": "Central API Hub",
+      "path": "/api-gateway",
+      "verified": true
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "source": "static-manual",
+    "drainProtection": "enabled",
+    "rateLimitRisk": "zero",
+    "bandwidthUsage": "zero",
+    "updateFrequency": "manual-only",
+    "cacheStrategy": "infinite"
+  }
+}

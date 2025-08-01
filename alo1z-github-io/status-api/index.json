@@ -1,0 +1,98 @@
+{
+  "overall": {
+    "status": "checking",
+    "percentage": 0,
+    "onlineCount": 0,
+    "totalCount": 9,
+    "lastUpdated": "2025-01-08T15:12:00.000Z"
+  },
+  "services": [
+    {
+      "id": "launcher",
+      "name": "Launcher",
+      "url": "https://alot1z.github.io",
+      "icon": "🌐",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "hub-ui",
+      "name": "Hub UI",
+      "url": "https://hub-uii.netlify.app",
+      "icon": "🎛️",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "ipa-builder",
+      "name": "IPA Builder",
+      "url": "https://ipa-builder.netlify.app",
+      "icon": "📱",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "printer-builder",
+      "name": "Printer Builder",
+      "url": "https://printer-builder.netlify.app",
+      "icon": "🖨️",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "game-builder",
+      "name": "Game Builder",
+      "url": "https://game-build.netlify.app",
+      "icon": "🎮",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "ai-models",
+      "name": "AI Models",
+      "url": "https://ai-modelss.netlify.app",
+      "icon": "🤖",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "bolt-new",
+      "name": "Bolt.new Clone",
+      "url": "https://bolt-new-multi-hub.netlify.app",
+      "icon": "⚡",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "qodo-gen",
+      "name": "Qodo Gen",
+      "url": "https://qodo-gen-multi-hub.netlify.app",
+      "icon": "🔧",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    },
+    {
+      "id": "api-gateway",
+      "name": "API Gateway",
+      "url": "https://api-alot1z-github-io.netlify.app",
+      "icon": "🔗",
+      "status": "checking",
+      "responseTime": 0,
+      "lastChecked": "2025-01-08T15:12:00.000Z"
+    }
+  ],
+  "metadata": {
+    "checkDuration": 120000,
+    "nextCheck": "2025-01-08T15:14:00.000Z",
+    "source": "unified-status-api",
+    "version": "1.0.0"
+  }
+}
