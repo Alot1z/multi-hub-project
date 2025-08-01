@@ -4,12 +4,12 @@
   "path": "/",
   "deploymentStrategy": "total-override",
   "netlifyConfig": {
-    "siteId": "alot1z-hub-ui",
+    "siteId": "hub-uii",
     "buildCommand": "npm run build",
     "publishDirectory": "dist",
     "environmentVariables": {
       "NODE_ENV": "production",
-      "VITE_API_BASE_URL": "https://alot1z-hub-ui.netlify.app",
+      "VITE_API_BASE_URL": "https://hub-uii.netlify.app",
       "VITE_PLATFORM_BASE_URL": "https://alot1z.github.io",
       "VITE_ENABLE_ANALYTICS": "false",
       "VITE_FREE_TIER_OPTIMIZED": "true"

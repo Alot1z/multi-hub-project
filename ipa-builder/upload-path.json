@@ -4,12 +4,12 @@
   "path": "/",
   "deploymentStrategy": "total-override",
   "netlifyConfig": {
-    "siteId": "alot1z-ipa-builder",
+    "siteId": "ipa-builder",
     "buildCommand": "npm run build",
     "publishDirectory": "dist",
     "environmentVariables": {
       "NODE_ENV": "production",
-      "VITE_API_BASE_URL": "https://alot1z-ipa-builder.netlify.app",
+      "VITE_API_BASE_URL": "https://ipa-builder.netlify.app",
       "VITE_PLATFORM_BASE_URL": "https://alot1z.github.io",
       "VITE_ENABLE_TROLLSTORE": "true",
       "VITE_ENABLE_CODE_SIGNING": "true",
