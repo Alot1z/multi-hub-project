@@ -79,7 +79,7 @@ graph TB
     B --> C[📱 IPA Builder<br/>iOS Apps]
     B --> D[🖨️ Printer Builder<br/>3D Models]
     B --> E[🎮 Game Builder<br/>Unity Games]
-    B --> F[🤖 AI Models<br/>8+ Models]
+    B --> F[🤖 AI Models • Cross-platform AI ensemble with offline resources • 🟢 Live + 📦 Cached
     B --> G[⚡ NEW.BOLT<br/>Enhanced Builder]
     B --> H[🔧 Qodo-Gen<br/>Custom AI]
     
@@ -109,7 +109,7 @@ graph TB
 | **📱 IPA Builder** | Real iOS app builder | [ipa-builder](https://github.com/Alot1z/ipa-builder) | [ipa-builder.netlify.app](https://ipa-builder.netlify.app) | 🟢 Live |
 | **🖨️ Printer Builder** | 3D model generator | [printer-builder](https://github.com/Alot1z/printer-builder) | [printer-builder.netlify.app](https://printer-builder.netlify.app) | 🟢 Live |
 | **🎮 Game Builder** | Unity game development | [game-builder](https://github.com/Alot1z/game-builder) | [game-build.netlify.app](https://game-build.netlify.app) | 🟢 Live |
-| **🤖 AI Models** | Cross-model AI ensemble | [ai-models](https://github.com/Alot1z/ai-models) | [ai-modelss.netlify.app](https://ai-modelss.netlify.app) | 🟢 Live |
+| **🤖 AI Models • Cross-platform AI ensemble with offline resources • 🟢 Live + 📦 Cached
 
 ### ⚡ **Enhanced Platforms**
 | Platform | Description | GitHub Repo | Netlify URL | Status |
@@ -277,7 +277,7 @@ graph LR
 | Metric | Value | Description |
 |--------|-------|-------------|
 | **🚀 Programs/Month** | 50+ | No rate limits |
-| **🤖 AI Models** | 8+ | Cross-model ensemble |
+| **🤖 AI Models • Cross-platform AI ensemble with offline resources • 🟢 Live + 📦 Cached
 | **⚡ Uptime** | 99.9% | High availability |
 | **💰 Cost** | $0 | 100% free forever |
 | **🔄 Rate Limits** | 0 | Unlimited usage |
@@ -360,7 +360,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🙏 **Acknowledgments**
 
-- **🤖 AI Models**: CodeLlama, Mistral, Phi-3, DeepSeek, Qwen, Claude, GPT-4o, Gemini
+- **🤖 AI Models • Cross-platform AI ensemble with offline resources • 🟢 Live + 📦 Cached
 - **☁️ Infrastructure**: GitHub, Netlify, Neon Database
 - **🛠️ Tools**: React, TypeScript, Tailwind CSS, Monaco Editor
 - **🔧 Automation**: GitHub Actions, Git-MCP
@@ -376,3 +376,18 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ![100% Free](https://img.shields.io/badge/100%25-Free%20Forever-green?style=for-the-badge)
 
 </div>
+## 🤖 AI Resource Status
+
+**📦 Offline AI Resources Available:**
+- ✅ AI Models • Core model configs and registry
+- ✅ Hub-UI • AI code actions and integration
+- ✅ IPA Builder • iOS analysis and Swift templates
+- ✅ Printer Builder • 3D generation and materials
+- ✅ Game Builder • Procedural generation and templates
+
+**🔄 Last Updated:** 2025-08-01T19:40:58Z
+**📊 Total Resources:** 7 config files
+**💾 Total Cache:** 28K
+
+**🛡️ Zero External Dependencies:** All AI resources cached locally for offline usage.
+**♾️ Unlimited Support:** External cache configured for unlimited model downloads.
