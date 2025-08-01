@@ -1,0 +1,172 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\Mose\\.codeium\\windsurf-next\\MCP-Servers\\mcp-sequentialthinking-tools\\dist\\index.js"
+      ],
+      "disabled": false
+    },
+    "playwright-cdp": {
+      "command": "node", 
+      "args": [
+        "C:\\Users\\Mose\\.codeium\\windsurf-next\\MCP-Servers\\mcp-playwright-cdp\\dist\\index.js",
+        "--remote-debugging-port=9222",
+        "--headless=true"
+      ],
+      "disabled": false,
+      "disabledTools": [
+        "playwright_put",
+        "playwright_patch", 
+        "playwright_delete"
+      ]
+    },
+    "mcp-filesystem-python": {
+      "command": "python",
+      "args": [
+        "-m",
+        "filesystem.server",
+        "g:\\GITHUB REPOs\\multi-hub-project"
+      ],
+      "disabled": false
+    },
+    "desktop-commander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\Mose\\.codeium\\windsurf-next\\MCP-Servers\\ClaudeComputerCommander\\dist\\index.js"
+      ],
+      "disabled": false,
+      "disabledTools": [
+        "block_command"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {},
+      "disabled": false,
+      "disabledTools": []
+    },
+    "windsurf-commander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\Mose\\.codeium\\windsurf-next\\MCP-Servers\\mcp-windsurf-commander\\dist\\index.js"
+      ],
+      "disabled": false
+    },
+    "qodo-gen-enterprise": {
+      "command": "node",
+      "args": [
+        "node",
+        "C:\\Users\\Mose\\.codeium\\windsurf-next\\MCP-Servers\\qodo-gen-enterprise\\dist\\index.js",
+        "--project-root=g:\\GITHUB REPOs\\multi-hub-project",
+        "--enable-typescript-patterns=true",
+        "--enable-react-enterprise=true",
+        "--enable-github-actions=true",
+        "--enable-netlify-optimization=true",
+        "--enable-security-first=true",
+        "--enable-atomic-deployments=true"
+      ],
+      "disabled": false,
+      "env": {
+        "QODO_GEN_MODE": "enterprise",
+        "MULTI_HUB_PROJECT_ROOT": "g:\\GITHUB REPOs\\multi-hub-project",
+        "ENABLE_TYPESCRIPT_PATTERNS": "true",
+        "ENABLE_REACT_ENTERPRISE": "true",
+        "ENABLE_GITHUB_ACTIONS": "true",
+        "ENABLE_NETLIFY_OPTIMIZATION": "true",
+        "ENABLE_SECURITY_FIRST": "true",
+        "ENABLE_ATOMIC_DEPLOYMENTS": "true"
+      }
+    }
+  },
+  "globalSettings": {
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "enableLogging
+        "g:\\GITHUB REPOs\\multi-hub-project\\shared\\services\\qodoGenMcpServer.js"
+      ],
+      "disabled": false,
+      "env": {
+        "QODO_GEN_MODE": "enterprise",
+        "MULTI_HUB_PROJECT_ROOT": "g:\\GITHUB REPOs\\multi-hub-project",
+        "ENABLE_TYPESCRIPT_PATTERNS": "true",
+        "ENABLE_REACT_ENTERPRISE": "true",
+        "ENABLE_GITHUB_ACTIONS": "true",
+        "ENABLE_NETLIFY_OPTIMIZATION": "true",
+        "ENABLE_SECURITY_FIRST": "true",
+        "ENABLE_ATOMIC_DEPLOYMENTS": "true"
+      }
+    }
+  },
+  "globalSettings": {
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "enableLogging": true,
+    "logLevel": "info",
+    "enableMetrics": true,
+    "securityMode": "strict"
+  },
+  "multiHubConfig": {
+    "projectRoot": "g:\\GITHUB REPOs\\multi-hub-project",
+    "platforms": [
+      "ai-models",
+      "bolt-new", 
+      "qodo-gen",
+      "hub-ui",
+      "game-builder",
+      "printer-builder",
+      "ipa-builder",
+      "api"
+    ],
+    "deploymentTargets": {
+      "netlify": {
+        "enabled": true,
+        "autoDeployment": true,
+        "atomicOperations": true
+      },
+      "githubPages": {
+        "enabled": true,
+        "repository": "alo1z-github-io",
+        "branch": "main"
+      }
+    },
+    "enterprisePatterns": {
+      "typescript": {
+        "strict": true,
+        "decorators": true,
+        "experimentalDecorators": true
+      },
+      "react": {
+        "version": "18+",
+        "patterns": ["hooks", "context", "suspense", "concurrent"],
+        "testing": "jest + testing-library"
+      },
+      "security": {
+        "iframeSandboxing": true,
+        "cspHeaders": true,
+        "xssProtection": true,
+        "corsPolicy": "strict"
+      }
+    },
+    "automation": {
+      "githubActions": {
+        "enabled": true,
+        "workflows": [
+          "auto-fix-and-deploy",
+          "enhanced-upload-deploy-fixed", 
+          "universal-resource-manager",
+          "update-readme-status"
+        ]
+      },
+      "errorHandling": {
+        "rollbackMechanism": true,
+        "healthChecks": true,
+        "alerting": true
+      }
+    }
+  }
+}
