@@ -80,6 +80,7 @@ jobs:
             
             # Download logs
             echo "📥 Downloading logs for run $RUN_ID..."
+            mkdir -p "$RUN_DIR/logs"
             if gh run download $RUN_ID --dir "$RUN_DIR/logs" 2>/dev/null; then
               echo "✅ Logs downloaded for run $RUN_ID"
             else
