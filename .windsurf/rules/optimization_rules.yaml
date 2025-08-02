@@ -1,0 +1,109 @@
+# Optimering af regler for Windsurf
+# Version: 1.0.0
+
+rules:
+  # Regel til optimering af SWE-1 kompatibilitet
+  - id: swe1_compatibility
+    name: SWE-1 Kompatibilitetsoptimering
+    description: Anvend optimerede indstillinger for bedre SWE-1 kompatibilitet
+    enabled: true
+    priority: 100
+    tags: 
+      - swe1
+      - optimization
+      - compatibility
+    conditions:
+      environment: development
+      model: swe1
+    actions:
+      - type: set_config
+        params:
+          key: performance.max_parallel_ops
+          value: 2
+      - type: set_config
+        params:
+          key: compatibility.swe1.enabled
+          value: true
+      - type: set_config
+        params:
+          key: compatibility.swe1.max_thought_depth
+          value: 2
+      - type: log
+        params:
+          message: "SWE-1 optimeringer anvendt"
+          level: info
+
+  # Regel til optimering af hukommelsesforbrug
+  - id: memory_optimization
+    name: Hukommelsesoptimering
+    description: Reducer hukommelsesforbrug for bedre ydeevne
+    enabled: true
+    priority: 90
+    tags:
+      - memory
+      - optimization
+      - performance
+    conditions:
+      memory_usage: high
+    actions:
+      - type: set_config
+        params:
+          key: performance.max_memory_mb
+          value: 4096
+      - type: set_config
+        params:
+          key: performance.cache_size_mb
+          value: 512
+      - type: log
+        params:
+          message: "Hukommelsesoptimeringer anvendt"
+          level: info
+
+  # Regel til deaktivering af unødvendige funktioner
+  - id: disable_unused_features
+    name: Deaktiver ubrugte funktioner
+    description: Slå unødvendige funktioner fra for bedre ydeevne
+    enabled: true
+    priority: 80
+    tags:
+      - optimization
+      - performance
+    actions:
+      - type: set_config
+        params:
+          key: ui.animations
+          value: false
+      - type: set_config
+        params:
+          key: ui.tooltips
+          value: false
+      - type: log
+        params:
+          message: "Ubrugte funktioner deaktiveret"
+          level: info
+
+  # Regel til batch-processing optimering
+  - id: batch_processing
+    name: Batch-processing optimering
+    description: Aktiver batch-processing for bedre ydeevne
+    enabled: true
+    priority: 70
+    tags:
+      - optimization
+      - performance
+      - deepseek
+    conditions:
+      model: deepseek
+    actions:
+      - type: set_config
+        params:
+          key: performance.batch_processing
+          value: true
+      - type: set_config
+        params:
+          key: performance.max_batch_size
+          value: 8
+      - type: log
+        params:
+          message: "Batch-processing aktiveret"
+          level: info

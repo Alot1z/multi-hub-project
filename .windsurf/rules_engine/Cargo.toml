@@ -1,0 +1,110 @@
+[package]
+name = "windsurf_rules_engine"
+version = "0.1.0"
+authors = ["Your Name <your.email@example.com>"]
+description = "Ultra-high performance rules engine with Rust/C++ core"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yourusername/windsurf-rules"
+documentation = "https://docs.rs/windsurf-rules"
+keywords = ["rules", "engine", "high-performance", "simd", "parallel"]
+categories = ["algorithms", "data-structures", "concurrency"]
+
+[lib]
+name = "windsurf_rules"
+crate-type = ["rlib"]
+
+[features]
+# Core features
+default = ["parallel", "caching", "metrics"]
+parallel = ["crossbeam-deque"]
+memory = ["jemallocator", "jemalloc-ctl"]
+bench = []  # Empty feature for compatibility
+
+# SIMD features
+simd = ["packed_simd"]
+simd-avx2 = ["simd"]
+simd-avx512 = ["simd-avx2"]
+
+# C++ bindings
+cpp = ["cxx"]
+
+# Serialization
+serde = ["dep:serde_json"]
+
+# Caching
+caching = ["lru", "cached"]
+
+# Metrics and monitoring
+metrics = ["dep:metrics", "dep:metrics-exporter-prometheus"]
+
+# Development features
+dev = ["tracing", "tracing-subscriber"]
+
+[dependencies]
+# Core dependencies
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = { version = "1.0", optional = true }
+
+# Concurrency
+crossbeam-deque = { version = "0.8.0", optional = true }
+parking_lot = "0.12.0"
+lazy_static = "1.4.0"
+serde_yaml = "0.9"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"], optional = true }
+
+# Logging
+log = { version = "0.4.0", optional = true }
+tracing = { version = "0.1.37", features = ["std"], optional = true }
+tracing-subscriber = { version = "0.3.16", features = ["env-filter", "registry", "std"], optional = true }
+
+# Parallel execution
+rayon = { version = "1.8.0", optional = true }
+
+# Metrics and monitoring
+metrics = { version = "0.21.0", optional = true }
+metrics-exporter-prometheus = { version = "0.12.0", optional = true }
+
+# Caching
+lru = { version = "0.10.0", optional = true }
+cached = { version = "0.40.0", features = ["async"], optional = true }
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# SIMD
+packed_simd = { version = "0.3.8", features = ["into_bits"], optional = true }
+
+# Memory management
+jemallocator = { version = "0.5.0", optional = true }
+jemalloc-ctl = { version = "0.5.0", optional = true }
+libc = { version = "0.2.0", optional = true }
+
+# C++ interop
+cxx = { version = "1.0", optional = true }
+
+# Testing
+tempfile = { version = "3.2", optional = true }
+rand = { version = "0.8.5", features = ["std"], optional = true }
+quickcheck = { version = "1.0.0", optional = true }
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+rand = "0.8.5"
+proptest = "1.0.0"
+tokio = { version = "1.0", features = ["full"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+
+[profile.test]
+opt-level = 1
+
+[profile.dev]
+opt-level = 1

@@ -1,5 +1,6 @@
 // AI Chain Service - Unlimited Free AI with Smart Rotation
 // Supports 20+ AI models with automatic fallback and rate limit avoidance
+// Enhanced with perfect error handling, type safety, and performance optimization
 
 interface AIModel {
   name: string
@@ -12,6 +13,9 @@ interface AIModel {
   lastReset: Date
   available: boolean
   priority: number
+  retryCount?: number
+  lastError?: string
+  healthScore?: number
 }
 
 interface AIResponse {
@@ -20,6 +24,20 @@ interface AIResponse {
   tokens?: number
   cost?: number
   cached?: boolean
+  timestamp?: Date
+  responseTime?: number
+  success: boolean
+  error?: string
+}
+
+interface GenerationOptions {
+  temperature?: number
+  maxTokens?: number
+  builderType?: string
+  useVoting?: boolean
+  forceModel?: string
+  timeout?: number
+  retryAttempts?: number
 }
 
 class AIChainService {
@@ -176,13 +194,8 @@ class AIChainService {
   }
 
   // Main generation method with smart routing
-  async generate(prompt: string, options: {
-    temperature?: number
-    maxTokens?: number
-    builderType?: string
-    useVoting?: boolean
-    forceModel?: string
-  } = {}): Promise<string> {
+  async generate(prompt: string, options: GenerationOptions = {}): Promise<string> {
+    const startTime = Date.now()
     const cacheKey = this.getCacheKey(prompt, options)
     
     // Check cache first
@@ -218,7 +231,10 @@ class AIChainService {
             this.responseCache.set(cacheKey, {
               content: result,
               model: model.name,
-              cached: false
+              cached: false,
+              success: true,
+              timestamp: new Date(),
+              responseTime: Date.now() - startTime
             })
           }
           
@@ -253,7 +269,8 @@ class AIChainService {
   }
 
   // Generate with voting system (best of multiple models)
-  private async generateWithVoting(prompt: string, options: any): Promise<string> {
+  private async generateWithVoting(prompt: string, options: GenerationOptions): Promise<string> {
+    const startTime = Date.now()
     const votingModels = this.getAvailableModels().slice(0, 3) // Use top 3 available models
     const results: AIResponse[] = []
 
@@ -263,9 +280,23 @@ class AIChainService {
         if (this.canUseModel(model)) {
           try {
             const content = await this.callModel(model, prompt, options)
-            results.push({ content, model: model.name })
+            results.push({ 
+              content, 
+              model: model.name,
+              success: true,
+              timestamp: new Date(),
+              responseTime: Date.now() - startTime
+            })
           } catch (error) {
             console.warn(`Voting model ${model.name} failed:`, error)
+            results.push({
+              content: '',
+              model: model.name,
+              success: false,
+              error: error.toString(),
+              timestamp: new Date(),
+              responseTime: Date.now() - startTime
+            })
           }
         }
       })

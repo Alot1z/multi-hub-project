@@ -1,0 +1,215 @@
+# Avanceret Konfiguration for Windsurf Optimeringer
+# Version: 2.0.0
+
+# Systeminformation
+system:
+  version: "2.0.0"
+  last_updated: "2023-11-14"
+  environment: "production"
+
+# Kompatibilitetsindstillinger
+compatibility:
+  # SWE-1 specifikke optimeringer
+  swe1:
+    enabled: true
+    max_thought_depth: 2
+    disable_mcp_extensions: true
+    lightweight_mode: true
+    
+  # DeepSeek specifikke optimeringer
+  deepseek:
+    enabled: true
+    batch_processing: true
+    enable_streaming: true
+    max_batch_size: 8
+    
+  # Generelle kompatibilitetsindstillinger
+  general:
+    strict_validation: true
+    enable_fallback: true
+    log_level: "INFO"
+
+# Ydelsesoptimeringer
+performance:
+  # Hukommelsesstyring
+  memory:
+    max_memory_mb: 8192
+    cache_size_mb: 1024
+    garbage_collection: true
+    leak_detection: true
+    
+  # CPU-optimeringer
+  cpu:
+    max_parallel_ops: 4
+    background_processing: true
+    thread_pool_size: 8
+    
+  # Batch-processing
+  batch_processing:
+    enabled: true
+    max_batch_size: 8
+    timeout_seconds: 30
+    
+  # Caching
+  cache:
+    enabled: true
+    ttl_seconds: 3600
+    max_size_mb: 512
+
+# Brugergrænseflade
+ui:
+  animations: false
+  tooltips: true
+  dark_mode: true
+  responsive: true
+  
+  # Notifikationer
+  notifications:
+    enabled: true
+    timeout_seconds: 10
+    max_visible: 3
+
+# Logning og fejlhåndtering
+logging:
+  level: "INFO"
+  file: "windsurf_optimization.log"
+  max_size_mb: 10
+  backup_count: 5
+  
+  # Fejlhåndtering
+  error_handling:
+    max_retries: 3
+    retry_delay_seconds: 5
+    log_errors: true
+    notify_on_error: true
+
+# Netværksindstillinger
+network:
+  timeout_seconds: 30
+  max_retries: 3
+  enable_compression: true
+  
+  # Proxysupport
+  proxy:
+    enabled: false
+    url: ""
+    port: 8080
+    auth_required: false
+    username: ""
+    password: ""  # Brug miljøvariabel i produktion
+
+# Sikkerhedsindstillinger
+security:
+  # Inputvalidering
+  input_validation:
+    enabled: true
+    max_length: 10000
+    allowed_chars: "a-zA-Z0-9æøåÆØÅ .,:;!?(){}[]<>@#$%^&*+\-=_|/\\\"'`~"
+    
+  # Output encoding
+  output_encoding:
+    enabled: true
+    html_entities: true
+    
+  # Sikkerhedsheadere
+  headers:
+    xss_protection: true
+    content_security_policy: "default-src 'self'"
+    strict_transport_security: true
+    
+  # Adgangskontrol
+  access_control:
+    enabled: true
+    require_authentication: false
+    allowed_ips: []
+
+# Avancerede indstillinger
+advanced:
+  # Debugging
+  debug:
+    enabled: false
+    log_level: "DEBUG"
+    profile_performance: false
+    
+  # Machine Learning
+  machine_learning:
+    enabled: true
+    model_path: "models/optimizer"
+    batch_size: 32
+    
+  # Eksperimentelle funktioner
+  experimental:
+    enabled: false
+    features: []
+
+# Tilpasningsmuligheder
+custom:
+  # Brugerdefinerede regler
+  rules: []
+  
+  # Tilføj brugerdefinerede indstillinger her
+  # eksempel:
+  # custom_setting: value
+
+# Tredjepartsintegrationer
+integrations:
+  # Logging og overvågning
+  sentry:
+    enabled: false
+    dsn: ""
+    environment: "production"
+    
+  # Analytics
+  google_analytics:
+    enabled: false
+    tracking_id: ""
+    
+  # Cloud Services
+  aws:
+    enabled: false
+    region: "eu-north-1"
+    access_key_id: ""  # Brug miljøvariabel
+    secret_access_key: ""  # Brug miljøvariabel
+
+# Backup og genoprettelse
+backup:
+  enabled: true
+  directory: "./backups"
+  max_backups: 7
+  schedule: "0 2 * * *"  # Hver dag kl. 02:00
+  
+  # Auto-save konfiguration
+  auto_save:
+    enabled: true
+    interval_minutes: 15
+
+# Opdateringsindstillinger
+updates:
+  auto_check: true
+  check_interval_hours: 24
+  channel: "stable"  # eller 'beta', 'alpha'
+  
+  # Notifikationer om opdateringer
+  notifications:
+    enabled: true
+    show_pre_release: false
+
+# Eksempel på brug af miljøvariabler
+# Disse vil blive erstattet med faktiske miljøvariabelværdier
+environment:
+  # Eksempel: DATABASE_URL=postgres://user:password@localhost:5432/db
+  database_url: "${DATABASE_URL}"
+  
+  # Eksempel: API_KEY=your_api_key_here
+  api_key: "${API_KEY}"
+
+# Eksempel på brug af betingede indstillinger baseret på miljø
+# Dette er pseudokode og vil blive behandlet af konfigurationssystemet
+#conditions:
+#  - if: ${ENVIRONMENT} == 'production'
+#    then:
+#      logging.level: "WARNING"
+#      performance.max_memory_mb: 16384
+#    else:
+#      logging.level: "DEBUG"
+#      performance.max_memory_mb: 4096

@@ -1,0 +1,137 @@
+# Optimized Configuration for Windsurf Rules
+# Version: 2.0.0 - SWE-1 & DeepSeek Optimized
+
+# Performance Settings
+performance:
+  enabled: true
+  max_memory_mb: 4096          # Reduced from default for better stability
+  max_parallel_ops: 2          # Reduced for SWE-1 compatibility
+  enable_caching: true
+  cache_size_mb: 512           # Reduced cache size
+  background_processing: false # Disabled for SWE-1
+  max_background_threads: 1    # Single background thread
+  
+  # New: Performance optimizations
+  batch_processing: true
+  max_batch_size: 4
+  memory_optimization: true
+  disable_animations: true
+  
+  # Resource limits
+  max_cpu_percent: 80
+  max_ram_percent: 75
+
+# Compatibility Settings
+compatibility:
+  # SWE-1 specific optimizations
+  swe1:
+    enabled: true
+    max_thought_depth: 2        # Reduced from 3
+    disable_complex_chains: true
+    lightweight_mode: true
+    disable_mcp_extensions: true # Critical for SWE-1
+    
+  # DeepSeek specific optimizations  
+  deepseek:
+    enabled: true
+    batch_processing: true
+    max_batch_size: 8
+    memory_optimization: true
+    enable_streaming: true
+
+# UI Settings (Optimized for performance)
+ui:
+  animations: false
+  update_frequency: 2000       # Reduced updates
+  tooltips: false              # Disabled for performance
+  syntax_highlighting: true
+  minimal_ui: true
+  disable_previews: true
+
+# Logging Settings (Optimized)
+logging:
+  level: warning              # Reduced logging
+  file_logging: true
+  max_log_size_mb: 5          # Smaller log files
+  max_log_files: 3            # Fewer log files kept
+  disable_debug_logs: true
+  
+# Tool Settings (Optimized)
+tools:
+  max_tools_per_operation: 3   # Reduced from 5
+  operation_timeout: 20        # Reduced timeout
+  tool_chaining: false         # Disabled for stability
+  
+  # Tool-specific optimizations
+  disable_unused_tools: true
+  lazy_loading: true
+  
+# Network Settings (Optimized)
+network:
+  enabled: true
+  max_connections: 3           # Reduced connections
+  connection_timeout: 5        # Shorter timeout
+  verify_ssl: true
+  disable_keepalive: true
+  
+# Security Settings (Optimized)
+security:
+  enabled: true
+  max_request_size_mb: 5       # Reduced from 10MB
+  input_validation: true
+  output_sanitization: true
+  disable_dangerous_operations: true
+
+# Advanced Settings
+advanced:
+  experimental_features: false
+  debug_mode: false
+  verbose_logging: false
+  telemetry: false
+  
+  # New: Performance tuning
+  enable_gc: true
+  gc_threshold: 0.7
+  disable_complex_queries: true
+  
+  # Memory management
+  memory:
+    leak_detection: true
+    auto_cleanup: true
+    max_object_size_mb: 10
+
+# SWE-1 Specific Optimizations
+swe1_optimizations:
+  disable_heavy_analysis: true
+  limit_context_window: true
+  max_tokens_per_minute: 1000
+  enable_memory_optimizations: true
+  disable_unused_features: true
+  
+# DeepSeek Specific Optimizations
+deepseek_optimizations:
+  enable_stream_processing: true
+  batch_api_calls: true
+  optimize_token_usage: true
+  cache_responses: true
+  
+# Monitoring
+monitoring:
+  enabled: true
+  interval_seconds: 60
+  log_metrics: true
+  alert_on_high_usage: true
+  
+  # Resource thresholds
+  cpu_threshold: 80%
+  memory_threshold: 85%
+  disk_threshold: 90%
+  
+  # Parallelle operationer
+  parallelism:
+    max_threads: 4
+    
+  # Cache-rensning
+  cache_cleanup:
+    enabled: true
+    interval_minutes: 15

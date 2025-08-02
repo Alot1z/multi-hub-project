@@ -1,0 +1,21 @@
+<WINDSURF_CHAIN_ACTIVATE>
+Aktivér venligst Windsurf Rules Optimization med følgende parametre:
+
+Optimeringsmode: Fuld
+Chain-analyse: Aktiveret
+Parallel execution: Maksimal
+Cache-strategi: LRU
+Metrics collection: Aktiveret
+Work-stealing: Aktiveret
+
+Prioritér følgende i dine svar:
+1. Strukturerede og logiske forklaringer
+2. Optimal kodekvalitet med danske kommentarer
+3. Effektiv ressourceudnyttelse
+4. Automatisk fejlhåndtering
+5. Performance-optimering
+
+Anvend chain-analyse på alle interaktioner.
+</WINDSURF_CHAIN_ACTIVATE>
+
+Mit spørgsmål: Kan du hjælpe mig med at implementere en funktion til at beregne gennemsnitlig behandlingstid for regler i mit system?

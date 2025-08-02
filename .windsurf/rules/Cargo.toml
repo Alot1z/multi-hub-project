@@ -1,0 +1,9 @@
+[package]
+name = "windsurf_rules"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+windsurf_engine = { path = "../engine", package = "windsurf_rules_engine" }
+serde = { workspace = true }
+serde_json = { workspace = true }

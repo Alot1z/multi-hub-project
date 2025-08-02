@@ -1,0 +1,166 @@
+# Clippy-konfiguration for Windsurf Rules Engine
+
+# Tillad disse regler, men giv ikke advarsler
+allow = [
+    "clippy::too_many_arguments",  # Nogle gange er mange argumenter nødvendige
+    "clippy::module_name_repetitions",  # Modulnavne med gentagelser er fint
+    "clippy::missing_errors_doc",  # Ikke altid nødvendigt med fejldokumentation
+    "clippy::missing_panics_doc",  # Ikke altid nødvendigt med panic-dokumentation
+    "clippy::must_use_candidate",  # Kan give falske positiver
+    "clippy::cast_precision_loss",  # Nogle gange er dette acceptabelt
+    "clippy::cast_possible_truncation",  # Nogle gange er dette acceptabelt
+    "clippy::cast_sign_loss",  # Nogle gange er dette acceptabelt
+    "clippy::cast_possible_wrap",  # Nogle gange er dette acceptabelt
+    "clippy::cast_lossless",  # Nogle gange er eksplicit cast nødvendigt
+    "clippy::unreadable_literal",  # Nogle gange er store tal mere læselige med understregninger
+    "clippy::similar_names",  # Kan give falske positiver
+    "clippy::module_inception",  # Nogle gange er indlejrede moduler meningsfulde
+    "clippy::new_without_default",  # Ikke alle typer skal have en Default-implementering
+    "clippy::new_ret_no_self",  # Nogle gange er det bedre at returnere Self
+    "clippy::single_match_else",  # Nogle gange er enkel match mere læselig
+    "clippy::redundant_closure",  # Nogle gange er closures mere læselige
+    "clippy::unnecessary_wraps",  # Nogle gange er Result<T, E> nødvendigt for konsistens
+    "clippy::unnecessary_lazy_evaluations",  # Nogle gange er lazy evaluation nødvendig
+    "clippy::missing_const_for_fn",  # Ikke alle funktioner skal være const
+    "clippy::unnecessary_join",  # Nogle gange er join mere læselig
+    "clippy::unnecessary_to_owned",  # Nogle gange er to_owned nødvendigt
+    "clippy::unnecessary_sort_by",  # Nogle gange er sort_by mere læselig
+    "clippy::unnecessary_unwrap",  # Nogle gange er unwrap mere læselig
+    "clippy::unused_self",  # Nogle gange er self nødvendigt for konsistens
+    "clippy::use_self",  # Nogle gange er Self mindre læseligt
+    "clippy::wildcard_imports",  # Nogle gange er wildcard-imports fint i tests
+]
+
+# Tillad disse regler, men giv kun advarsler
+warn = [
+    "clippy::pedantic",
+    "clippy::nursery",
+    "clippy::cargo",
+    "clippy::complexity",
+    "clippy::perf",
+    "clippy::style",
+    "clippy::suspicious",
+    "clippy::correctness",
+]
+
+# Fejl på disse regler
+denylint = [
+    "clippy::unwrap_used",
+    "clippy::expect_used",
+    "clippy::unimplemented",
+    "clippy::todo",
+    "clippy::panic",
+    "clippy::unreachable",
+    "clippy::unreachable_code",
+    "clippy::unreachable_patterns",
+    "clippy::unimplemented",
+    "clippy::missing_panics_doc",
+    "clippy::missing_errors_doc",
+    "clippy::missing_safety_doc",
+    "clippy::missing_const_for_fn",
+    "clippy::missing_errors_doc",
+    "clippy::missing_panics_doc",
+    "clippy::missing_safety_doc",
+    "clippy::missing_const_for_fn",
+]
+
+# Konfigurer specifikke regler
+
+# Maksimal længde af funktioner (i linjer)
+# too_many_lines = { max = 100 }
+
+# Maksimal kompleksitet
+cyclomatic_complexity = 25
+
+# Maksimal parameterantal for funktioner
+too_many_arguments = 7
+
+# Maksimal længde af typer
+type_complexity = 25
+
+# Tillad doc-kommentarer i private elementer
+doc_markdown = { allow_private_items = true }
+
+# Tillad doc-kommentarer i testmoduler
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i eksempler
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i benchmarks
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i integrationstests
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i dokumentationstests
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i eksempler
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i benchmarks
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i integrationstests
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i dokumentationstests
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i eksempler
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i benchmarks
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i integrationstests
+doc_markdown.allow_private_items = true
+
+# Tillad doc-kommentarer i dokumentationstests
+doc_markdown.allow_private_items = true
+
+# Ignorer disse filer/mapper
+ignore = ["target/", "benches/"]
+
+# Ignorer disse lints i testfiler
+[test]
+allow = [
+    "clippy::unwrap_used",
+    "clippy::expect_used",
+    "clippy::unimplemented",
+    "clippy::todo",
+    "clippy::panic",
+    "clippy::unreachable",
+    "clippy::unreachable_code",
+    "clippy::unreachable_patterns",
+    "clippy::unimplemented",
+]
+
+# Ignorer disse lints i eksempler
+[example]
+allow = [
+    "clippy::unwrap_used",
+    "clippy::expect_used",
+    "clippy::unimplemented",
+    "clippy::todo",
+    "clippy::panic",
+    "clippy::unreachable",
+    "clippy::unreachable_code",
+    "clippy::unreachable_patterns",
+    "clippy::unimplemented",
+]
+
+# Ignorer disse lints i benchmarks
+[bench]
+allow = [
+    "clippy::unwrap_used",
+    "clippy::expect_used",
+    "clippy::unimplemented",
+    "clippy::todo",
+    "clippy::panic",
+    "clippy::unreachable",
+    "clippy::unreachable_code",
+    "clippy::unreachable_patterns",
+    "clippy::unimplemented",
+]

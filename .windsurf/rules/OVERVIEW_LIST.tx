@@ -1,0 +1,221 @@
+# KOMPLET WINDSURF & MCP TOOLS OVERSIGT
+*Systematisk reference til alle regel-filer (6000 tegn hver, ALWAYS ON)*
+
+## 1. WINDSURF CORE KOMPONENTER
+### 1.1 Grundlæggende Funktioner
+- `memory_system.md` - Hukommelsessystem og persistente data
+- `workflows.md` - Workflow definitioner og slash commands
+- `file_rules.md` - Filbaserede regler og aktiveringsmetoder
+- `user_rules.md` - Brugerspecifikke regelintegrationer
+- `chain_analysis.md` - Chain-Analysis Protocol implementering
+- `communication_style.md` - Kommunikationsstilguide
+- `code_research.md` - Koderedskaber og søgestrategier
+
+### 1.2 Editering og Filhåndtering
+- `code_edit_tools.md` - Koderedigeringsværktøjer
+- `making_code_changes.md` - Kodegenerering og ændringsstrategi
+- `running_commands.md` - Kommandoeksekvering
+- `browser_preview.md` - Browser preview funktionalitet
+- `api_integration.md` - Ekstern API-integration
+
+### 1.3 Deployment & Web
+- `deploy_web_app.md` - Web app deployment værktøjer
+- `check_deploy_status.md` - Deployment status værktøjer
+- `read_deployment_config.md` - Deployment konfiguration
+
+### 1.4 Avancerede Funktioner
+- `search_web.md` - Web søgning og integration
+- `suggested_responses.md` - Foreslåede svar funktionalitet
+- `view_content_chunk.md` - Chunked indholdsvisning
+- `model_context_protocol.md` - MCP arkitektur og integration
+
+## 2. CASCADE TOOLS
+### 2.1 Kodesøgning
+- `codebase_search.md` - Codebase semantic search
+- `find_by_name.md` - Filnavnsøgning
+- `grep_search.md` - Mønster matchning i filer
+- `view_code_item.md` - Kodeelementvisning
+- `view_file.md` - Filvisning og analyse
+
+### 2.2 Filmodifikation
+- `edit_file.md` - Filredigeringsværktøjer
+- `replace_file_content.md` - Erstatning af filindhold
+- `write_to_file.md` - Skrivning til nye filer
+- `list_dir.md` - Directory listning funktionalitet
+
+### 2.3 Kommandoer & Processer
+- `run_command.md` - Kommandoeksekvering
+- `command_status.md` - Kommandostatus kontrol
+
+### 2.4 Browsing & Ressourcer
+- `browser_preview.md` - Browser preview
+- `list_resources.md` - Ressourceliste funktionalitet
+- `read_resource.md` - Ressourcelæsning
+- `read_url_content.md` - URL indholdsvisning
+
+### 2.5 Hukommelse
+- `create_memory.md` - Hukommelsesoprettelse og -styring
+
+## 3. MCP SERVERS & TOOLS
+### 3.1 desktop-commander
+- `mcp0_execute_command.md` - Terminal kommandoer med timeout
+- `mcp0_read_output.md` - Læsning af terminaloutput
+- `mcp0_force_terminate.md` - Tvungen terminering af sessions
+- `mcp0_list_sessions.md` - Visning af aktive sessions
+- `mcp0_list_processes.md` - Process liste funktionalitet
+- `mcp0_kill_process.md` - Process terminering
+- `mcp0_read_file.md` - Fillæsning med encoding detection
+- `mcp0_read_multiple_files.md` - Multi-fil læsning
+- `mcp0_write_file.md` - Filskrivning med atomic operations
+- `mcp0_create_directory.md` - Mappestrukturering
+- `mcp0_list_directory.md` - Mappeindholdsvisning
+- `mcp0_move_file.md` - Filflytning og omdøbning
+- `mcp0_get_file_info.md` - Metadata om filer/directories
+- `mcp0_search_files.md` - Filnavnsøgning med patterns
+- `mcp0_search_code.md` - Indholdssøgning i kodefiler
+- `mcp0_list_allowed_directories.md` - Tilgængelige stier
+- `mcp0_block_command.md` - Kommandoblokering
+- `mcp0_unblock_command.md` - Kommandounblokering
+- `mcp0_list_blocked_commands.md` - Blokerede kommandolister
+- `mcp0_edit_block.md` - Præcis tekstredigering
+
+### 3.2 mcp-filesystem-python
+- `mcp1_delete-file.md` - Filsletning funktionalitet
+- `mcp1_search-files.md` - Indholdssøgning i filer
+- `mcp1_write-file.md` - Filskrivning med directory oprettelse
+
+### 3.3 playwright-cdp
+- `mcp2_playwright_click.md` - Element klik funktionalitet
+- `mcp2_playwright_delete.md` - HTTP DELETE requests
+- `mcp2_playwright_evaluate.md` - JavaScript eksekvering
+- `mcp2_playwright_fill.md` - Formularudfyldning
+- `mcp2_playwright_get.md` - HTTP GET requests
+- `mcp2_playwright_hover.md` - Element hover funktionalitet
+- `mcp2_playwright_navigate.md` - URL navigation
+- `mcp2_playwright_patch.md` - HTTP PATCH requests
+- `mcp2_playwright_post.md` - HTTP POST requests
+- `mcp2_playwright_put.md` - HTTP PUT requests
+- `mcp2_playwright_screenshot.md` - Screenshot funktionalitet
+- `mcp2_playwright_select.md` - Element valg i dropdown
+
+### 3.4 puppeteer
+- `mcp3_puppeteer_click.md` - Element klik funktionalitet
+- `mcp3_puppeteer_connect_active_tab.md` - Chrome tab tilslutning
+- `mcp3_puppeteer_evaluate.md` - JavaScript eksekvering
+- `mcp3_puppeteer_fill.md` - Formularudfyldning
+- `mcp3_puppeteer_hover.md` - Element hover funktionalitet
+- `mcp3_puppeteer_navigate.md` - URL navigation
+- `mcp3_puppeteer_screenshot.md` - Screenshot funktionalitet
+- `mcp3_puppeteer_select.md` - Element valg i dropdown
+
+### 3.5 sequential-thinking
+- `mcp4_sequentialthinking_tools.md` - Sequential thinking processer
+
+## 4. INTEGRATION PATTERNS
+### 4.1 Cross-Tool Workflows
+- `tool_combination_patterns.md` - Optimale værktøjskombinationer
+- `error_recovery_workflows.md` - Fejlhåndteringsprocesser
+- `chain_analysis_integration.md` - Chain-analyse på tværs af værktøjer
+
+### 4.2 Performanceoptimering
+- `resource_management.md` - Ressourcestyringsstrategier
+- `batch_operation_patterns.md` - Batch-operationsoptimering
+- `caching_strategies.md` - Cache-strategier for værktøjer
+
+## 5. NYE KOMPONENTER TEMPLATES
+
+### 5.1 Ny MCP Server Template
+```markdown
+---
+activation: ALWAYS ON
+description: [Server Navn] MCP Server Integration
+version: 1.0
+---
+
+# [Server Navn] MCP Server
+*Komplet integrations- og værktøjsguide*
+
+## 1. Server Oversigt
+[Serverens formål og funktionalitet - ~1000 tegn]
+
+## 2. Værktøjsoversigt
+[Liste over alle server-værktøjer - ~1200 tegn]
+
+## 3. Integrationsstrategi
+[Integration med eksisterende værktøjer - ~1500 tegn]
+
+## 4. Chain-analyse Applikation
+[Chain-analyse strategier - ~1300 tegn]
+
+## 5. Fejlhåndtering
+[Server-specifikke fejlscenarier - ~1000 tegn]
+```
+
+### 5.2 Nyt MCP Tool Template
+```markdown
+---
+activation: ALWAYS ON
+description: [Tool Navn] - Implementeringsguide
+version: 1.0
+---
+
+# [Tool Navn] Implementering
+*Detaljeret værktøjsguide*
+
+## 1. Formål og Funktionalitet
+[Værktøjets kernefunktionalitet - ~1000 tegn]
+
+## 2. Parameter Optimering
+[Parameter beskrivelser og bedste praksis - ~1200 tegn]
+
+## 3. Anvendelsesmønstre
+[Optimale anvendelsesscenarier - ~1500 tegn]
+
+## 4. Chain-analyse Integration
+[Chain-analyse anvendelse - ~1300 tegn]
+
+## 5. Fejlhåndtering
+[Fejlscenarier og løsninger - ~1000 tegn]
+```
+
+### 5.3 Ny Windsurf Funktion Template
+```markdown
+---
+activation: ALWAYS ON
+description: [Funktion Navn] - Implementeringsguide
+version: 1.0
+---
+
+# [Funktion Navn] Implementering
+*Detaljeret funktionsguide*
+
+## 1. Funktionsbeskrivelse
+[Funktionens formål og anvendelse - ~1000 tegn]
+
+## 2. Konfigurationsparametre
+[Parameter beskrivelser og optimering - ~1200 tegn]
+
+## 3. Anvendelsesstrategier
+[Optimale anvendelsesscenarier - ~1500 tegn]
+
+## 4. Chain-analyse Integration
+[Chain-analyse anvendelse - ~1300 tegn]
+
+## 5. Fejlhåndtering
+[Fejlscenarier og løsninger - ~1000 tegn]
+```
+
+## 6. AKTIVERINGSMETODER
+- **ALWAYS ON**: Altid aktive regler på tværs af workspaces (anbefalet)
+- **MODEL DECISION**: Aktiveres baseret på model-beslutninger
+- **GLOB**: Aktiveres baseret på filnavnsmønstre
+- **MANUAL**: Kræver manuel aktivering
+
+## 7. VEDLIGEHOLDELSESPROTOKOL
+1. Opret nye filer med præcis 6000 tegn
+2. Følg navngivningskonventioner præcist
+3. Opdater denne oversigt ved tilføjelse
+4. Verificer ALWAYS ON aktivering
+5. Test integration med eksisterende regler
+
+*Sidst opdateret: 2025-05-08*
